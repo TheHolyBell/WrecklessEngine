@@ -13,5 +13,218 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Dynamic">
+      <UniqueIdentifier>{b16a99bb-ee58-4744-9712-7adec0539810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TextureLoaders">
+      <UniqueIdentifier>{63c66a40-b791-4e09-94fd-798f2a958c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{c2e6b1df-688d-4f1a-a9e8-b3138c07b5ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LogRelatedStuff">
+      <UniqueIdentifier>{fc37e70b-6f83-4ad4-a10c-497215ef47e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{1b7a2a5c-edbe-4914-915c-b84817c3652a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Interfaces">
+      <UniqueIdentifier>{2c498b09-db63-4d8e-80c3-fa85f2590c52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Implementations">
+      <UniqueIdentifier>{7c7adbef-a0b8-4955-b8c6-2c5f7d3dd342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bindable">
+      <UniqueIdentifier>{45f2a89e-e825-48c0-8dea-1a9a122f32c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Debug">
+      <UniqueIdentifier>{1d5f521e-0ca5-4459-998d-db911bc511c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Debug\DxErr">
+      <UniqueIdentifier>{83a81008-edcf-46a5-98e9-bd912079e0e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exception">
+      <UniqueIdentifier>{0f1e5666-7bfb-48f1-bc80-2a691dd0279f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Implementations\D3D11/Windows">
+      <UniqueIdentifier>{9a050646-28b7-4b94-ae39-26822dbc9136}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ShaderReflector.cpp">
+      <Filter>Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicConstant.cpp">
+      <Filter>Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>TextureLoaders</Filter>
+    </ClCompile>
+    <ClCompile Include="WICTextureLoader.cpp">
+      <Filter>TextureLoaders</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleClass.cpp">
+      <Filter>LogRelatedStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="LayoutCodex.cpp">
+      <Filter>Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="InputOutputStream.cpp">
+      <Filter>LogRelatedStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Manipulators.cpp">
+      <Filter>LogRelatedStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleAdapter.cpp">
+      <Filter>LogRelatedStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="dxerr.cpp">
+      <Filter>Graphics\Debug\DxErr</Filter>
+    </ClCompile>
+    <ClCompile Include="DXGIInfoManager.cpp">
+      <Filter>Graphics\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="WrecklessException.cpp">
+      <Filter>Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="HrException.cpp">
+      <Filter>Exception</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32Window.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ShaderReflector.h">
+      <Filter>Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicConstant.h">
+      <Filter>Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>TextureLoaders</Filter>
+    </ClInclude>
+    <ClInclude Include="WICTextureLoader.h">
+      <Filter>TextureLoaders</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleClass.h">
+      <Filter>LogRelatedStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="InputOutputStream.h">
+      <Filter>LogRelatedStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionalNoexcept.h">
+      <Filter>Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonInclude.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Manipulators.h">
+      <Filter>LogRelatedStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="LayoutCodex.h">
+      <Filter>Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleAdapter.h">
+      <Filter>LogRelatedStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderContext.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IDevice.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ITexture.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IShader.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IConstantBuffer.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="BindableCodex.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoManager.h">
+      <Filter>Graphics\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DXGIInfoManager.h">
+      <Filter>Graphics\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="dxerr.h">
+      <Filter>Graphics\Debug\DxErr</Filter>
+    </ClInclude>
+    <ClInclude Include="WrecklessException.h">
+      <Filter>Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsThrowMacros.h">
+      <Filter>Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsThrowMacros.h">
+      <Filter>Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="HrException.h">
+      <Filter>Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="IWindow.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Texture.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Device.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11RenderContext.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Shader.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32Window.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DXGetErrorDescription.inl">
+      <Filter>Graphics\Debug\DxErr</Filter>
+    </None>
+    <None Include="DXGetErrorString.inl">
+      <Filter>Graphics\Debug\DxErr</Filter>
+    </None>
+    <None Include="DXTrace.inl">
+      <Filter>Graphics\Debug\DxErr</Filter>
+    </None>
   </ItemGroup>
 </Project>
