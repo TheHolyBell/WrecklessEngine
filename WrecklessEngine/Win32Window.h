@@ -14,7 +14,7 @@ namespace Graphics
 		virtual int GetWidth() const override;
 		virtual int GetHeight() const override;
 		virtual void SetTitle(const char* title) override;
-
+		virtual void SetIcon(const char* filename) override;
 		virtual ~Win32Window() = default;
 	private:
 		static LRESULT CALLBACK HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

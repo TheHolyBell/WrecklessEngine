@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,7 +84,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -95,13 +95,19 @@
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DXGIInfoManager.cpp" />
     <ClCompile Include="DynamicConstant.cpp" />
+    <ClCompile Include="GamePad.cpp" />
+    <ClCompile Include="GlobalClock.cpp" />
     <ClCompile Include="HrException.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="InputOutputStream.cpp" />
     <ClCompile Include="LayoutCodex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manipulators.cpp" />
     <ClCompile Include="ShaderReflector.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="Win32Window.cpp" />
@@ -110,6 +116,7 @@
   <ItemGroup>
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableCodex.h" />
+    <ClInclude Include="Buttons.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="ConditionalNoexcept.h" />
@@ -123,10 +130,18 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DXGIInfoManager.h" />
     <ClInclude Include="DynamicConstant.h" />
+    <ClInclude Include="GamePad.h" />
+    <ClInclude Include="GamePadType.h" />
+    <ClInclude Include="GlobalClock.h" />
+    <ClInclude Include="GraphicsFormats.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="HrException.h" />
     <ClInclude Include="InfoManager.h" />
     <ClInclude Include="IWindow.h" />
+    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Keys.h" />
+    <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Profiler.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="IConstantBuffer.h" />
     <ClInclude Include="IDevice.h" />
@@ -138,6 +153,7 @@
     <ClInclude Include="Manipulators.h" />
     <ClInclude Include="ITexture.h" />
     <ClInclude Include="ShaderReflector.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="WICTextureLoader.h" />

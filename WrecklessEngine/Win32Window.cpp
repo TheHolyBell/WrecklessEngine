@@ -50,6 +50,13 @@ namespace Graphics
     {
         SetWindowTextA(m_hWnd, title);
     }
+    void Win32Window::SetIcon(const char* filename)
+    {
+        auto _hIcon = (HICON)LoadImage(nullptr, filename, IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+        auto _hIconSmall = (HICON)LoadImage(nullptr, filename, IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+        SendMessageA(m_hWnd, WM_SETICON, ICON_BIG, (LPARAM)_hIcon);
+        SendMessageA(m_hWnd, WM_SETICON, ICON_SMALL, (LPARAM)_hIcon);
+    }
     LRESULT Win32Window::HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         // use create parameter passed in from CreateWindow() to store window class pointer at WinAPI side
@@ -90,7 +97,7 @@ namespace Graphics
         case WM_CLOSE:
         case WM_QUIT:
             PostQuitMessage(0);
-            return 0;
+            break;
         }
 
         return DefWindowProc(hwnd, msg, wParam, lParam);

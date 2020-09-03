@@ -49,6 +49,12 @@
     <Filter Include="Graphics\Implementations\D3D11/Windows">
       <UniqueIdentifier>{9a050646-28b7-4b94-ae39-26822dbc9136}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Profiling/Time">
+      <UniqueIdentifier>{c16cb057-90b3-43ed-b5cd-d9d65bcdbc9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{52031d8b-b5fd-49df-a86e-782f949c6340}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -104,6 +110,24 @@
     </ClCompile>
     <ClCompile Include="Win32Window.cpp">
       <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Profiling/Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Profiler.cpp">
+      <Filter>Profiling/Time</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalClock.cpp">
+      <Filter>Profiling/Time</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePad.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +238,36 @@
     </ClInclude>
     <ClInclude Include="Win32Window.h">
       <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsFormats.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Profiling/Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Profiler.h">
+      <Filter>Profiling/Time</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalClock.h">
+      <Filter>Profiling/Time</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePad.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Buttons.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePadType.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Keys.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

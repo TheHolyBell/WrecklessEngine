@@ -1,3 +1,4 @@
+#include "Timer.h"
 #include "DXGIInfoManager.h"
 #include "HrException.h"
 #include "GraphicsThrowMacros.h"

@@ -8,18 +8,10 @@
 #include <DirectXMath.h>
 #include "ITexture.h"
 #include "Bindable.h"
+#include "GraphicsFormats.h"
 
 namespace Graphics
 {
-	enum SHADER_TYPES : short
-	{
-		VS = 0x1,
-		HS = 0x2,
-		DS = 0x4,
-		GS = 0x8,
-		PS = 0x10,
-		CS = 0x20
-	};
 
 	class IShader
 	{
