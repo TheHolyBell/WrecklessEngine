@@ -11,15 +11,15 @@ namespace Input
 
 	int Mouse::GetPositionX()
 	{
-		return GetPosition().first;
+		return GetPosition().X;
 	}
 
 	int Mouse::GetPositionY()
 	{
-		return GetPosition().second;
+		return GetPosition().Y;
 	}
 
-	std::pair<int, int> Mouse::GetPosition()
+	MouseCoords Mouse::GetPosition()
 	{
 		POINT pos;
 		GetCursorPos(&pos);
@@ -28,12 +28,12 @@ namespace Input
 
 	bool Mouse::IsLeftMouseDown()
 	{
-		return GetKeyState(VK_LBUTTON);
+		return (GetKeyState(VK_LBUTTON) & 0x8000) != 0;
 	}
 
 	bool Mouse::IsRightMouseDown()
 	{
-		return GetKeyState(VK_RBUTTON);
+		return (GetKeyState(VK_RBUTTON) & 0x8000) != 0;
 	}
 
 }

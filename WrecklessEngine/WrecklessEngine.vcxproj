@@ -45,13 +45,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Vendor\Mono\lib;$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\Vendor\Mono\lib;$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -65,7 +65,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;assimp-vc140-mt.lib;mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,7 +84,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;assimp-vc140-mt.lib;mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -92,20 +92,34 @@
     <ClCompile Include="ConsoleAdapter.cpp" />
     <ClCompile Include="ConsoleClass.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="DebugConsoleCSharp.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DXGIInfoManager.cpp" />
     <ClCompile Include="DynamicConstant.cpp" />
     <ClCompile Include="GamePad.cpp" />
+    <ClCompile Include="GamePadCSharp.cpp" />
     <ClCompile Include="GlobalClock.cpp" />
     <ClCompile Include="HrException.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="MouseCSharp.cpp" />
+    <ClCompile Include="Parameters.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="InputOutputStream.cpp" />
     <ClCompile Include="LayoutCodex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manipulators.cpp" />
+    <ClCompile Include="ScriptClass.cpp" />
+    <ClCompile Include="ScriptDomain.cpp" />
+    <ClCompile Include="ScriptField.cpp" />
+    <ClCompile Include="ScriptingEngine.cpp" />
+    <ClCompile Include="ScriptingError.cpp" />
+    <ClCompile Include="ScriptMethod.cpp" />
+    <ClCompile Include="ScriptObject.cpp" />
+    <ClCompile Include="ScriptParameterList.cpp" />
+    <ClCompile Include="ScriptProperty.cpp" />
+    <ClCompile Include="ScriptString.cpp" />
     <ClCompile Include="ShaderReflector.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vertex.cpp" />
@@ -127,20 +141,25 @@
     <ClInclude Include="D3D11Shader.h" />
     <ClInclude Include="D3D11Texture.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DebugConsoleCSharp.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DXGIInfoManager.h" />
     <ClInclude Include="DynamicConstant.h" />
     <ClInclude Include="GamePad.h" />
+    <ClInclude Include="GamePadCSharp.h" />
     <ClInclude Include="GamePadType.h" />
     <ClInclude Include="GlobalClock.h" />
     <ClInclude Include="GraphicsFormats.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="HrException.h" />
     <ClInclude Include="InfoManager.h" />
+    <ClInclude Include="IParameter.h" />
     <ClInclude Include="IWindow.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="MouseCSharp.h" />
+    <ClInclude Include="Parameters.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="IConstantBuffer.h" />
@@ -152,6 +171,16 @@
     <ClInclude Include="LayoutCodex.h" />
     <ClInclude Include="Manipulators.h" />
     <ClInclude Include="ITexture.h" />
+    <ClInclude Include="ScriptClass.h" />
+    <ClInclude Include="ScriptDomain.h" />
+    <ClInclude Include="ScriptField.h" />
+    <ClInclude Include="ScriptingEngine.h" />
+    <ClInclude Include="ScriptingError.h" />
+    <ClInclude Include="ScriptMethod.h" />
+    <ClInclude Include="ScriptObject.h" />
+    <ClInclude Include="ScriptParameterList.h" />
+    <ClInclude Include="ScriptProperty.h" />
+    <ClInclude Include="ScriptString.h" />
     <ClInclude Include="ShaderReflector.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vertex.h" />

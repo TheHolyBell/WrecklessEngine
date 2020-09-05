@@ -6,12 +6,23 @@
 
 namespace Input
 {
+	struct StickCoords
+	{
+		float X;
+		float Y;
+	};
 
-	class Gamepad
+	struct VibrationState
+	{
+		int LeftMotor;
+		int RightMotor;
+	};
+
+	class GamePad
 	{
 	public:
 		// @ Get instance of Gamepad class (singleton implementation)
-		static Gamepad& Get();
+		static GamePad& Get();
 
 		// @ Checks whether particular button is pressed
 		bool IsPressed(Button btn) const;
@@ -26,12 +37,12 @@ namespace Input
 		// @ Sets percentage of vibration power for both motors
 		void SetVibration(int leftMotor, int rightMotor);
 		// @ Returns percentage of vibration power for both motors
-		std::pair<int, int> GetVibration() const;
+		VibrationState GetVibration() const;
 
 		// @ Returns normalized values of left stick's x- and y-axis tilt
-		std::pair<float, float> LeftStick() const;
+		StickCoords LeftStick() const;
 		// @ Returns normalized values of right stick's x- and y-axis tilt
-		std::pair<float, float> RightStick() const;
+		StickCoords RightStick() const;
 
 		// @ Check whether state of Gamepad has been changed since last UpdateState()
 		bool StateChanged() const;
@@ -39,7 +50,7 @@ namespace Input
 		void SetSensitivity(int sensitivity);
 		int GetSensitivity() const;
 	private:
-		Gamepad();
+		GamePad();
 		XINPUT_STATE m_State = {};
 		int m_PlayerID;
 		DWORD m_PrevDWPacketNumber;

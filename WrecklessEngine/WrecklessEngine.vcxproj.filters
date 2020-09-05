@@ -55,6 +55,18 @@
     <Filter Include="Input">
       <UniqueIdentifier>{52031d8b-b5fd-49df-a86e-782f949c6340}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{293739cb-d3a4-4443-8014-f7dbfe26510e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\Members">
+      <UniqueIdentifier>{aabb1884-8b08-41d1-b22e-550ac12f51a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\Core">
+      <UniqueIdentifier>{1940e2f6-43b4-451d-8060-faffacb36184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\Bridges">
+      <UniqueIdentifier>{61e9c3f0-953a-4547-bc62-9fd4e7751589}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -128,6 +140,48 @@
     </ClCompile>
     <ClCompile Include="Mouse.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Parameters.cpp">
+      <Filter>Scripting\Members</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptField.cpp">
+      <Filter>Scripting\Members</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptMethod.cpp">
+      <Filter>Scripting\Members</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptParameterList.cpp">
+      <Filter>Scripting\Members</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptProperty.cpp">
+      <Filter>Scripting\Members</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptString.cpp">
+      <Filter>Scripting\Members</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptObject.cpp">
+      <Filter>Scripting\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptingEngine.cpp">
+      <Filter>Scripting\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptingError.cpp">
+      <Filter>Scripting\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptDomain.cpp">
+      <Filter>Scripting\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptClass.cpp">
+      <Filter>Scripting\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePadCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugConsoleCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +322,51 @@
     </ClInclude>
     <ClInclude Include="Keys.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="IParameter.h">
+      <Filter>Scripting\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters.h">
+      <Filter>Scripting\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptField.h">
+      <Filter>Scripting\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptMethod.h">
+      <Filter>Scripting\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptParameterList.h">
+      <Filter>Scripting\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptProperty.h">
+      <Filter>Scripting\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptString.h">
+      <Filter>Scripting\Members</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptObject.h">
+      <Filter>Scripting\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingEngine.h">
+      <Filter>Scripting\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingError.h">
+      <Filter>Scripting\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptDomain.h">
+      <Filter>Scripting\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptClass.h">
+      <Filter>Scripting\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePadCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugConsoleCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

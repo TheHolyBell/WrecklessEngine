@@ -8,7 +8,7 @@ namespace Exceptions
 	{
 	}
 
-	const char* WrecklessException::what() const noexcept
+	const char* WrecklessException::what() const
 	{
 		std::ostringstream oss;
 		oss << GetType() << std::endl

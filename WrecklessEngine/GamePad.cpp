@@ -5,20 +5,20 @@
 
 namespace Input
 {
-	Gamepad& Gamepad::Get()
+	GamePad& GamePad::Get()
 	{
-		static Gamepad _Instance;
+		static GamePad _Instance;
 		return _Instance;
 	}
 
-	bool Gamepad::IsPressed(Button btn) const
+	bool GamePad::IsPressed(Button btn) const
 	{
 		if (StateChanged())
 			return (m_State.Gamepad.wButtons & (int)btn) != 0;
 		return false;
 	}
 
-	void Gamepad::UpdateState()
+	void GamePad::UpdateState()
 	{
 		
 		XInputGetState(m_PlayerID, &m_State);
@@ -33,17 +33,17 @@ namespace Input
 		}
 	}
 
-	float Gamepad::LeftTrigger() const
+	float GamePad::LeftTrigger() const
 	{
 		return m_State.Gamepad.bLeftTrigger / 255.0f;
 	}
 
-	float Gamepad::RightTrigger() const
+	float GamePad::RightTrigger() const
 	{
 		return m_State.Gamepad.bRightTrigger / 255.0f;
 	}
 
-	void Gamepad::SetVibration(int leftMotor, int rightMotor)
+	void GamePad::SetVibration(int leftMotor, int rightMotor)
 	{
 		m_LeftMotorVibration = leftMotor;
 		m_RightMotorVibration = rightMotor;
@@ -54,12 +54,12 @@ namespace Input
 		XInputSetState(m_PlayerID, &_vibration);
 	}
 
-	std::pair<int, int> Gamepad::GetVibration() const
+	VibrationState GamePad::GetVibration() const
 	{
 		return { m_LeftMotorVibration, m_RightMotorVibration };
 	}
 
-	std::pair<float, float> Gamepad::LeftStick() const
+	StickCoords GamePad::LeftStick() const
 	{
 		float normX = std::max(-1.0f, (float)m_State.Gamepad.sThumbLX / 32767);
 		float normY = std::max(-1.0f, (float)m_State.Gamepad.sThumbLY / 32767);
@@ -73,7 +73,7 @@ namespace Input
 		return { normX, normY };
 	}
 
-	std::pair<float, float> Gamepad::RightStick() const
+	StickCoords GamePad::RightStick() const
 	{
 		float normX = std::max(-1.0f, (float)m_State.Gamepad.sThumbRX / 32767);
 		float normY = std::max(-1.0f, (float)m_State.Gamepad.sThumbRY / 32767);
@@ -86,22 +86,22 @@ namespace Input
 		return { normX, normY };
 	}
 
-	bool Gamepad::StateChanged() const
+	bool GamePad::StateChanged() const
 	{
 		return m_bStateChanged;
 	}
 
-	void Gamepad::SetSensitivity(int sensitivity)
+	void GamePad::SetSensitivity(int sensitivity)
 	{
 		m_Sensitivity = sensitivity;
 	}
 
-	int Gamepad::GetSensitivity() const
+	int GamePad::GetSensitivity() const
 	{
 		return m_Sensitivity;
 	}
 
-	Gamepad::Gamepad()
+	GamePad::GamePad()
 		: m_PlayerID(-1), m_Sensitivity(1500)
 	{
 		for (int i = 0; i < XUSER_MAX_COUNT && m_PlayerID == -1; ++i)
