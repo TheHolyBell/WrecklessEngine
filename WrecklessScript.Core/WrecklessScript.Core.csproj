@@ -45,8 +45,10 @@
     <Compile Include="Input\Buttons.cs" />
     <Compile Include="Input\GamePad.cs" />
     <Compile Include="Input\Keyboard.cs" />
+    <Compile Include="Input\KeyCode.cs" />
     <Compile Include="Input\Mouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Time.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

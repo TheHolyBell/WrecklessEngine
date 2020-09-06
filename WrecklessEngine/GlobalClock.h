@@ -9,21 +9,31 @@ namespace Profiling
 
 		std::chrono::steady_clock::time_point m_StartTime;
 		std::chrono::steady_clock::time_point m_LastFrameTime;
-		float m_Delta;
-	public:
-
-		GlobalClock(const GlobalClock& rhs) = delete;
-		GlobalClock& operator=(const GlobalClock& rhs) = delete;
+		float m_Delta = 0;
+		float m_TimeScale = 1;
+		int m_FrameCount = 0;
 
 		static GlobalClock& GetInstance()
 		{
 			static GlobalClock _Instance;
 			return _Instance;
 		}
+	public:
 
-		float GetDelta() const;
-		float TotalTime() const;
+		GlobalClock(const GlobalClock& rhs) = delete;
+		GlobalClock& operator=(const GlobalClock& rhs) = delete;
+
+		GlobalClock(GlobalClock&& rhs) = delete;
+		GlobalClock& operator=(GlobalClock&& rhs) = delete;
+
+		static float GetDelta();
+		static float TotalTime();
+
+		static float GetTimeScale();
+		static void SetTimeScale(float timeScale);
+
+		static int GetFrameCount();
 		// @ Call once per frame
-		void Update();
+		static void Update();
 	};
 }

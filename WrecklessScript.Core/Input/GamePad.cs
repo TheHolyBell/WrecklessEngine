@@ -31,11 +31,14 @@ namespace WrecklessScript.Core
 			[MethodImpl(MethodImplOptions.InternalCall)]
 			public static extern float RightTrigger();
 
-			[MethodImpl(MethodImplOptions.InternalCall)]
-			public static extern void SetVibration(int leftMotor, int rightMotor);
 
-			[MethodImpl(MethodImplOptions.InternalCall)]
-			public static extern VibrationState GetVibration();
+			public static extern VibrationState Vibration
+            {
+				[MethodImpl(MethodImplOptions.InternalCall)]
+				get;
+				[MethodImpl(MethodImplOptions.InternalCall)]
+				set;
+            }
 
 			[MethodImpl(MethodImplOptions.InternalCall)]
 			public static extern StickCoords LeftStick();
@@ -43,11 +46,13 @@ namespace WrecklessScript.Core
 			[MethodImpl(MethodImplOptions.InternalCall)]
 			public static extern StickCoords RightStick();
 
-			[MethodImpl(MethodImplOptions.InternalCall)]
-			public static extern void SetSensitivity(int sensitivity);
-
-			[MethodImpl(MethodImplOptions.InternalCall)]
-			public static extern int GetSensitivity();
+			public static extern int Sensitivity
+            {
+				[MethodImpl(MethodImplOptions.InternalCall)]
+				get;
+				[MethodImpl(MethodImplOptions.InternalCall)]
+				set;
+            }
 		}
     }
 }

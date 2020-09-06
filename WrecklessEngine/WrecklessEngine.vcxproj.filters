@@ -183,6 +183,12 @@
     <ClCompile Include="MouseCSharp.cpp">
       <Filter>Scripting\Bridges</Filter>
     </ClCompile>
+    <ClCompile Include="KeyboardCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReflector.h">
@@ -320,9 +326,6 @@
     <ClInclude Include="Mouse.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="Keys.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="IParameter.h">
       <Filter>Scripting\Members</Filter>
     </ClInclude>
@@ -366,6 +369,15 @@
       <Filter>Scripting\Bridges</Filter>
     </ClInclude>
     <ClInclude Include="MouseCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCode.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeCSharp.h">
       <Filter>Scripting\Bridges</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,11 +13,6 @@ namespace Scripting
 
         while ((m = mono_class_get_methods(m_pClass, &iter)) != nullptr)
             m_Methods[mono_method_get_name(m)] = std::make_shared<ScriptMethod>(m);
-
-        iter = nullptr;
-
-        while ((f = mono_class_get_fields(m_pClass, &iter)) != nullptr)
-            m_Fields[mono_field_get_name(f)] = std::make_shared<ScriptField>(m_pClass, f);
     }
     ScriptObject Scripting::ScriptClass::CreateInstance()
     {
@@ -25,7 +20,7 @@ namespace Scripting
 
         mono_runtime_object_init(object);
 
-        return ScriptObject(object, m_Fields, m_Methods);
+        return ScriptObject(object, m_Methods);
     }
     void ScriptClass::Invoke(const std::string& method, ParameterList params)
     {
@@ -35,5 +30,54 @@ namespace Scripting
             iter->second->Invoke(params, nullptr);
         else
             SCRIPT_ERROR("Cannot find method");
+    }
+
+    std::vector<std::string> ScriptClass::GetFieldNames() const
+    {
+        std::vector<std::string> _Fields;
+
+        MonoClassField* field;
+        void* iter = nullptr;
+
+        while ((field = mono_class_get_fields(m_pClass, &iter)) != nullptr)
+            _Fields.push_back(mono_field_get_name(field));
+
+        return _Fields;
+    }
+    std::vector<std::string> ScriptClass::GetMethodNames() const
+    {
+        std::vector<std::string> _Methods;
+
+        MonoMethod* method;
+        void* iter = nullptr;
+
+        while ((method = mono_class_get_methods(m_pClass, &iter)) != nullptr)
+            _Methods.push_back(mono_method_get_name(method));
+
+        return _Methods;
+    }
+    std::vector<std::string> ScriptClass::GetPropertyNames() const
+    {
+        std::vector<std::string> _Properties;
+
+        MonoProperty* property;
+        void* iter = nullptr;
+
+        while ((property = mono_class_get_properties(m_pClass, &iter)) != nullptr)
+            _Properties.push_back(mono_property_get_name(property));
+
+        return _Properties;
+    }
+    std::vector<std::string> ScriptClass::GetEventNames() const
+    {
+        std::vector<std::string> _Events;
+
+        MonoEvent* event;
+        void* iter = nullptr;
+
+        while ((event = mono_class_get_events(m_pClass, &iter)) != nullptr)
+            _Events.push_back(mono_event_get_name(event));
+
+        return _Events;
     }
 }

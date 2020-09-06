@@ -12,7 +12,9 @@
 #include "ScriptingEngine.h"
 #include "GamePadCSharp.h"
 #include "MouseCSharp.h"
+#include "KeyboardCSharp.h"
 #include "DebugConsoleCSharp.h"
+#include "TimeCSharp.h"
 #include "GlobalClock.h"
 
 
@@ -40,17 +42,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Scripting::Debug::Bind();
 	Scripting::GamePadCSharp::Bind();
 	Scripting::MouseCSharp::Bind();
+	Scripting::KeyboardCSharp::Bind();
+	Scripting::TimeCSharp::Bind();
 
 	auto klass = domain.GetClass("Sandbox", "Sandbox");
 
 	klass.Invoke("Function");
+	
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT)
 	{
 		Keyboard::Update();
 		GamePad::Get().UpdateState();
-		Profiling::GlobalClock::GetInstance().Update();
+		Profiling::GlobalClock::Update();
 		WRECK_PROFILE_FUNCTION();
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
@@ -59,13 +64,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		else
 		{
-			//if (Keyboard::IsKeyDown(Keys::SPACE)) IO::cout << "Space is down!!" << IO::endl;
+			//if (Keyboard::IsKeyDown(KeyCode::SPACE)) IO::cout << "Space is down!!" << IO::endl;
 			//IO::cout << "Window dimensions: " << pWindow->GetWidth() << "-" << pWindow->GetHeight() << IO::endl;
 			//IO::cout << Profiling::Profiler::GetInstance().GetStatistics() << IO::endl;
 			//Profiling::Profiler::GetInstance().Reset();
-			Scripting::ParameterList params;
-			params.Append(Profiling::GlobalClock::GetInstance().GetDelta());
-			klass.Invoke("UpdateRoutine", params);
+			//Scripting::ParameterList params;
+			//params.Append(Profiling::GlobalClock::GetDelta());
+			klass.Invoke("UpdateRoutine");
 		}
 	}
 

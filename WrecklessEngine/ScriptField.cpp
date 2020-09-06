@@ -2,13 +2,13 @@
 
 namespace Scripting
 {
-	ScriptField::ScriptField(MonoClass* pClass, MonoClassField* pField)
-		: m_pClass(pClass), m_pField(pField)
+	ScriptField::ScriptField(MonoObject* pObject, MonoClassField* pField)
+		: m_pObject(pObject), m_pField(pField)
 	{
 	}
 	std::string ScriptField::GetName() const
 	{
-		return std::string(mono_class_get_name(m_pClass)) + "::" + mono_field_get_name(m_pField);
+		return std::string(mono_class_get_name(mono_object_get_class(m_pObject))) + "::" + mono_field_get_name(m_pField);
 	}
 	const char* ScriptField::GetType()
 	{

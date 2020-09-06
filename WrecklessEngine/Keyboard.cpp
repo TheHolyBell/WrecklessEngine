@@ -8,7 +8,7 @@ static LPDIRECTINPUT8 g_pDirectInput;
 namespace Input
 {
 	Microsoft::WRL::ComPtr<IDirectInputDevice8> Keyboard::m_pKeyboard;
-	Keys Keyboard::m_KeyboardState[256] = {};
+	KeyCode Keyboard::m_KeyboardState[256] = {};
 
 	void Keyboard::Initialize(HWND hwnd)
 	{
@@ -33,17 +33,17 @@ namespace Input
 	}
 	bool Keyboard::CapsLock()
 	{
-		return (int)m_KeyboardState[(int)Keys::CAPSLOCK] & 0x80;
+		return (int)m_KeyboardState[(int)KeyCode::CAPSLOCK] & 0x80;
 	}
 	bool Keyboard::NumLock()
 	{
-		return (int)m_KeyboardState[(int)Keys::NUMLOCK] & 0x80;
+		return (int)m_KeyboardState[(int)KeyCode::NUMLOCK] & 0x80;
 	}
-	bool Keyboard::IsKeyDown(Keys key)
+	bool Keyboard::IsKeyDown(KeyCode key)
 	{
 		return (int)m_KeyboardState[(int)key] & 0x80;
 	}
-	bool Keyboard::IsKeyUp(Keys key)
+	bool Keyboard::IsKeyUp(KeyCode key)
 	{
 		return !IsKeyDown(key);
 	}

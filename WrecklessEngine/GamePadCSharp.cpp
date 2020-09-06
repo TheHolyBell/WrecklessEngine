@@ -10,12 +10,12 @@ namespace Scripting
         ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::IsPressed", IsPressed);
         ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::LeftTrigger", LeftTrigger);
         ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::RightTrigger", RightTrigger);
-        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::SetVibration", SetVibration);
-        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::GetVibration", GetVibration);
+        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::set_Vibration", SetVibration);
+        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::get_Vibration", GetVibration);
         ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::LeftStick", LeftStick);
         ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::RightStick", RightStick);
-        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::SetSensitivity", SetSensitivity);
-        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::GetSensitivity", GetSensitivity);
+        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::set_Sensitivity", SetSensitivity);
+        ScriptingEngine::DirectBindCallback("WrecklessScript.Core.Input.GamePad::get_Sensitivity", GetSensitivity);
     }
 
     bool GamePadCSharp::IsPressed(Input::Button btn)
@@ -30,9 +30,9 @@ namespace Scripting
     {
         return GamePad::Get().RightTrigger();
     }
-    void GamePadCSharp::SetVibration(int leftMotor, int rightMotor)
+    void GamePadCSharp::SetVibration(Input::VibrationState state)
     {
-        GamePad::Get().SetVibration(leftMotor, rightMotor);
+        GamePad::Get().SetVibration(state);
     }
     Input::VibrationState GamePadCSharp::GetVibration()
     {

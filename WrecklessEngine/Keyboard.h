@@ -1,5 +1,5 @@
 #pragma once
-#include "Keys.h"
+#include "KeyCode.h"
 #include <dinput.h>
 #include <wrl/client.h>
 
@@ -15,10 +15,10 @@ namespace Input
 		static bool CapsLock();
 		static bool NumLock();
 
-		static bool IsKeyDown(Keys key);
-		static bool IsKeyUp(Keys key);
+		static bool IsKeyDown(KeyCode key);
+		static bool IsKeyUp(KeyCode key);
 	private:
 		static Microsoft::WRL::ComPtr<IDirectInputDevice8> m_pKeyboard;
-		static Keys m_KeyboardState[256];
+		static KeyCode m_KeyboardState[256];
 	};
 }

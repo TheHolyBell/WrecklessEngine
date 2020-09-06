@@ -5,10 +5,9 @@
 
 namespace Scripting
 {
-    ScriptObject::ScriptObject(MonoObject* pObject, 
-        const std::unordered_map<std::string, std::shared_ptr<ScriptField>>& fields, 
+    ScriptObject::ScriptObject(MonoObject* pObject,
         const std::unordered_map<std::string, std::shared_ptr<ScriptMethod>>& methods)
-        : m_pObject(pObject), m_Fields(fields), m_Methods(methods)
+        : m_pObject(pObject), m_Methods(methods)
     {
     }
     void ScriptObject::Invoke(const std::string& method, ParameterList params)
@@ -24,23 +23,17 @@ namespace Scripting
     {
         return m_pObject;
     }
-    ScriptProperty ScriptObject::GetProperty(const std::string& name)
+    ScriptProperty& ScriptObject::GetProperty(const std::string& name)
     {
-        /*MonoClass* pClass = mono_object_get_class(m_pObject);
-        MonoProperty* pProperty = mono_class_get_property_from_name(pClass, name.c_str());
-
-        return ScriptProperty(m_pObject, pProperty);*/
-
-        MonoClass* pClass = mono_object_get_class(m_pObject);
         auto iter = m_Properties.find(name);
-        MonoProperty* pProperty = nullptr;
         if (iter != m_Properties.end())
             return *iter->second;
         else
         {
-            void* it = nullptr;
+            MonoClass* pClass = mono_object_get_class(m_pObject);
+            MonoProperty* pProperty = nullptr;
             pProperty = mono_class_get_property_from_name(pClass, name.c_str());
-            if(pProperty == nullptr)
+            if (pProperty == nullptr)
                 SCRIPT_ERROR("Cannot find property");
 
             auto prop = std::make_shared<ScriptProperty>(m_pObject, pProperty);
@@ -48,13 +41,22 @@ namespace Scripting
             return *prop;
         }
     }
-    ScriptField ScriptObject::GetField(const std::string& name)
+    ScriptField& ScriptObject::GetField(const std::string& name)
     {
         auto iter = m_Fields.find(name);
 
         if (iter != m_Fields.end())
             return *iter->second;
+        else
+        {
+            MonoClass* pClass = mono_object_get_class(m_pObject);
+            MonoClassField* pField = mono_class_get_field_from_name(pClass, name.c_str());
+            if (pField == nullptr)
+                SCRIPT_ERROR("Couldn't find field: " + name);
 
-        SCRIPT_ERROR("Cannot find field");
+            auto field = std::make_shared<ScriptField>(m_pObject, pField);
+            m_Fields[name] = field;
+            return *field;
+        }
     }
 }

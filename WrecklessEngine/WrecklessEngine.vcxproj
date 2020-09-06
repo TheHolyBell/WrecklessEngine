@@ -101,6 +101,7 @@
     <ClCompile Include="GlobalClock.cpp" />
     <ClCompile Include="HrException.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="KeyboardCSharp.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MouseCSharp.cpp" />
     <ClCompile Include="Parameters.cpp" />
@@ -121,6 +122,7 @@
     <ClCompile Include="ScriptProperty.cpp" />
     <ClCompile Include="ScriptString.cpp" />
     <ClCompile Include="ShaderReflector.cpp" />
+    <ClCompile Include="TimeCSharp.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
@@ -156,7 +158,8 @@
     <ClInclude Include="IParameter.h" />
     <ClInclude Include="IWindow.h" />
     <ClInclude Include="Keyboard.h" />
-    <ClInclude Include="Keys.h" />
+    <ClInclude Include="KeyboardCSharp.h" />
+    <ClInclude Include="KeyCode.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseCSharp.h" />
     <ClInclude Include="Parameters.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="ScriptProperty.h" />
     <ClInclude Include="ScriptString.h" />
     <ClInclude Include="ShaderReflector.h" />
+    <ClInclude Include="TimeCSharp.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />

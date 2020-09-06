@@ -35,7 +35,7 @@ namespace Input
 		float RightTrigger() const;
 
 		// @ Sets percentage of vibration power for both motors
-		void SetVibration(int leftMotor, int rightMotor);
+		void SetVibration(VibrationState state);
 		// @ Returns percentage of vibration power for both motors
 		VibrationState GetVibration() const;
 

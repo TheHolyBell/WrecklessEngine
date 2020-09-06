@@ -2,19 +2,19 @@
 
 namespace Input
 {
-	enum class Keys : unsigned char
+	enum class KeyCode : unsigned char
 	{
 		ESCAPE        =  0x01,
-		NUM_1             =  0x02,
-		NUM_2             =  0x03,
-		NUM_3             =  0x04,
-		NUM_4             =  0x05,
-		NUM_5             =  0x06,
-		NUM_6             =  0x07,
-		NUM_7             =  0x08,
-		NUM_8             =  0x09,
-		NUM_9             =  0x0A,
-		NUM_0             =  0x0B,
+		NUM_1         =  0x02,
+		NUM_2         =  0x03,
+		NUM_3         =  0x04,
+		NUM_4         =  0x05,
+		NUM_5         =  0x06,
+		NUM_6         =  0x07,
+		NUM_7         =  0x08,
+		NUM_8         =  0x09,
+		NUM_9         =  0x0A,
+		NUM_0         =  0x0B,
 		MINUS         =  0x0C,
 		EQUALS        =  0x0D,
 		BACK          =  0x0E,

@@ -29,10 +29,15 @@ namespace Scripting
 		ScriptObject CreateInstance();
 
 		void Invoke(const std::string& method, ParameterList params = {});
+	
+		// Convenience methods for runtime reflection of classes
+		std::vector<std::string> GetFieldNames() const;
+		std::vector<std::string> GetMethodNames() const;
+		std::vector<std::string> GetPropertyNames() const;
+		std::vector<std::string> GetEventNames() const;
 	private:
 		MonoClass* m_pClass;
 		MonoDomain* m_pDomain;
-		std::unordered_map<std::string, std::shared_ptr<ScriptField>> m_Fields;
 		std::unordered_map<std::string, std::shared_ptr<ScriptMethod>> m_Methods;
 	};
 }

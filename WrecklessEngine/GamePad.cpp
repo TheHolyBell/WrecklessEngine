@@ -43,14 +43,14 @@ namespace Input
 		return m_State.Gamepad.bRightTrigger / 255.0f;
 	}
 
-	void GamePad::SetVibration(int leftMotor, int rightMotor)
+	void GamePad::SetVibration(VibrationState state)
 	{
-		m_LeftMotorVibration = leftMotor;
-		m_RightMotorVibration = rightMotor;
+		m_LeftMotorVibration = state.LeftMotor;
+		m_RightMotorVibration = state.RightMotor;
 
 		XINPUT_VIBRATION _vibration = {};
-		_vibration.wLeftMotorSpeed = short(leftMotor * 655);
-		_vibration.wRightMotorSpeed = short(rightMotor * 655);
+		_vibration.wLeftMotorSpeed = short(m_LeftMotorVibration * 655);
+		_vibration.wRightMotorSpeed = short(m_RightMotorVibration * 655);
 		XInputSetState(m_PlayerID, &_vibration);
 	}
 

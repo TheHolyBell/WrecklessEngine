@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace WrecklessScript.Core
 {
@@ -10,6 +7,14 @@ namespace WrecklessScript.Core
     {
         public static class Keyboard
         {
+            [MethodImpl(MethodImplOptions.InternalCall)]
+            public static extern bool CapsLock();
+            [MethodImpl(MethodImplOptions.InternalCall)]
+            public static extern bool NumLock();
+            [MethodImpl(MethodImplOptions.InternalCall)]
+            public static extern bool IsKeyDown(KeyCode key);
+            [MethodImpl(MethodImplOptions.InternalCall)]
+            public static extern bool IsKeyUp(KeyCode key);
         }
     }
 }

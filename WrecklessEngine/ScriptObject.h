@@ -25,15 +25,14 @@ namespace Scripting
 	{
 	public:
 		ScriptObject(MonoObject* pObject,
-			const std::unordered_map<std::string, std::shared_ptr<ScriptField>>& fields,
 			const std::unordered_map<std::string, std::shared_ptr<ScriptMethod>>& methods);
 
 		void Invoke(const std::string& method, ParameterList params = {});
 
 		MonoObject* GetObject() const;
 
-		ScriptProperty GetProperty(const std::string& name);
-		ScriptField GetField(const std::string& name);
+		ScriptProperty& GetProperty(const std::string& name);
+		ScriptField& GetField(const std::string& name);
 	private:
 		MonoObject* m_pObject;
 		std::unordered_map<std::string, std::shared_ptr<ScriptField>> m_Fields;

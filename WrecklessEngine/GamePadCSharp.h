@@ -16,7 +16,7 @@ namespace Scripting
 
 		static float RightTrigger();
 
-		static void SetVibration(int leftMotor, int rightMotor);
+		static void SetVibration(Input::VibrationState state);
 
 		static Input::VibrationState GetVibration();
 
