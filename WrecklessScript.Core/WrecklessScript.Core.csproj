@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Debug.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="Input\Buttons.cs" />
     <Compile Include="Input\GamePad.cs" />
     <Compile Include="Input\Keyboard.cs" />

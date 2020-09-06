@@ -10,7 +10,7 @@ namespace Scripting
 	}
 	std::string ScriptProperty::GetName() const
 	{
-		return  mono_property_get_name(m_pProperty);
+		return  std::string(mono_class_get_name(mono_object_get_class(m_pObject))) + "::" + mono_property_get_name(m_pProperty);
 	}
 	bool ScriptProperty::HasSetProperty() const
 	{

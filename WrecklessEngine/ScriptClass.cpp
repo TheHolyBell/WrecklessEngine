@@ -1,6 +1,7 @@
 #include "ScriptClass.h"
 #include "ScriptingError.h"
 #include "ScriptField.h"
+#include "Hasher.h"
 
 namespace Scripting
 {
@@ -12,7 +13,7 @@ namespace Scripting
         void* iter = nullptr;
 
         while ((m = mono_class_get_methods(m_pClass, &iter)) != nullptr)
-            m_Methods[mono_method_get_name(m)] = std::make_shared<ScriptMethod>(m);
+            m_Methods[HASH(mono_method_get_name(m))] = std::make_shared<ScriptMethod>(m);
     }
     ScriptObject Scripting::ScriptClass::CreateInstance()
     {
@@ -24,12 +25,12 @@ namespace Scripting
     }
     void ScriptClass::Invoke(const std::string& method, ParameterList params)
     {
-        auto iter = m_Methods.find(method);
+        auto iter = m_Methods.find(HASH(method));
 
         if (iter != m_Methods.end())
             iter->second->Invoke(params, nullptr);
         else
-            SCRIPT_ERROR("Cannot find method");
+            SCRIPT_ERROR("Cannot find method: " + method);
     }
 
     std::vector<std::string> ScriptClass::GetFieldNames() const

@@ -46,7 +46,7 @@ namespace Scripting
 		template<typename T>
 		void Set(T value)
 		{
-			if(m_pSetMethod == nullptr)
+			if (m_pSetMethod == nullptr)
 				SCRIPT_ERROR("Set method doesn't exists");
 
 			void* params[1];

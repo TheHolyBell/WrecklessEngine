@@ -16,6 +16,13 @@
 #include "DebugConsoleCSharp.h"
 #include "TimeCSharp.h"
 #include "GlobalClock.h"
+#include "Timer.h"
+
+#include "Hasher.h"
+
+#include "Scene.h"
+#include "Entity.h"
+#include "Components.h"
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int)
@@ -24,6 +31,32 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	using namespace IO;
 	Console::Initialize();
 
+	/*std::hash<std::string> hasher;
+	
+	IO::cout << hasher("dick") << IO::endl;
+
+	std::hash<int> hasher2;
+	std::hash<int> hasher3;
+
+	IO::cout << hasher2(1488) << IO::endl;
+	IO::cout << hasher3(1488) << IO::endl;*/
+
+	/*IO::cout << HASH(1488) << IO::endl;
+	IO::cout << HASH(1488) << IO::endl;
+	IO::cout << HASH("Dick Gibson") << IO::endl;
+
+	int value;
+	IO::cin >> value;
+
+	IO::cout << HASH(value) << IO::endl;*/
+
+	/*std::string joe = "Joe Huy Na";
+	const char* john = "Joe Huy Na";
+
+	IO::cout << HASH(joe) << IO::endl;
+	IO::cout << HASH(john) << IO::endl;*/
+
+	
 	std::shared_ptr<Graphics::IWindow> pWindow = std::make_shared<Graphics::Win32Window>("Hello buddy", 800, 600);
 
 	Keyboard::Initialize((HWND)pWindow->GetWindowHandle());
@@ -45,10 +78,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Scripting::KeyboardCSharp::Bind();
 	Scripting::TimeCSharp::Bind();
 
+
 	auto klass = domain.GetClass("Sandbox", "Sandbox");
 
-	klass.Invoke("Function");
-	
+	ECS::Scene scene;
+	ECS::Entity ent = scene.CreateEntity();
+	ECS::Entity ent2 = scene.CreateEntity();
+	ECS::Entity ent3 = scene.CreateEntity();
+
+	ent.AddComponent<ECS::ScriptComponent>(domain.GetClass("Sandbox", "Actor"));
+	ent2.AddComponent<ECS::ScriptComponent>(domain.GetClass("Sandbox", "Actor"));
+	ent3.AddComponent<ECS::ScriptComponent>(domain.GetClass("Sandbox", "Actor"));
+
+	try
+	{
+		klass.Invoke("Dickie");
+	}
+	catch (std::exception& exc)
+	{
+		IO::cout << exc.what() << IO::endl;
+	}
+
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT)
@@ -70,11 +120,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//Profiling::Profiler::GetInstance().Reset();
 			//Scripting::ParameterList params;
 			//params.Append(Profiling::GlobalClock::GetDelta());
-			klass.Invoke("UpdateRoutine");
+			//klass.Invoke("UpdateRoutine");
+			scene.OnUpdate();
 		}
 	}
 
-	IO::cin.Get();
+	//IO::cin.Get();
 
 	return 0;
 }

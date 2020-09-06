@@ -11,7 +11,7 @@ namespace Scripting
 	{
 		std::ostringstream oss;
 		oss << WrecklessException::what();
-		oss << std::endl << "[Message]: " << m_Message;
+		oss << std::endl << "[Message] " << m_Message;
 		m_WhatBuffer = oss.str();
 		return m_WhatBuffer.c_str();
 	}

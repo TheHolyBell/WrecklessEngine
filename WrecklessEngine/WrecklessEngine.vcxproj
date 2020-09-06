@@ -45,12 +45,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Vendor\EnTT;$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Vendor\Mono\lib;$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Vendor\EnTT;$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Vendor\Mono\lib;$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -96,6 +96,7 @@
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DXGIInfoManager.cpp" />
     <ClCompile Include="DynamicConstant.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GamePadCSharp.cpp" />
     <ClCompile Include="GlobalClock.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="LayoutCodex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manipulators.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ScriptClass.cpp" />
     <ClCompile Include="ScriptDomain.cpp" />
     <ClCompile Include="ScriptField.cpp" />
@@ -135,6 +137,7 @@
     <ClInclude Include="Buttons.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CommonInclude.h" />
+    <ClInclude Include="Components.h" />
     <ClInclude Include="ConditionalNoexcept.h" />
     <ClInclude Include="ConsoleAdapter.h" />
     <ClInclude Include="ConsoleClass.h" />
@@ -147,12 +150,14 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DXGIInfoManager.h" />
     <ClInclude Include="DynamicConstant.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GamePadCSharp.h" />
     <ClInclude Include="GamePadType.h" />
     <ClInclude Include="GlobalClock.h" />
     <ClInclude Include="GraphicsFormats.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
+    <ClInclude Include="Hasher.h" />
     <ClInclude Include="HrException.h" />
     <ClInclude Include="InfoManager.h" />
     <ClInclude Include="IParameter.h" />
@@ -174,6 +179,7 @@
     <ClInclude Include="LayoutCodex.h" />
     <ClInclude Include="Manipulators.h" />
     <ClInclude Include="ITexture.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="ScriptClass.h" />
     <ClInclude Include="ScriptDomain.h" />
     <ClInclude Include="ScriptField.h" />

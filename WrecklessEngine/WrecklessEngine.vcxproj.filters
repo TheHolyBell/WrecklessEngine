@@ -67,6 +67,12 @@
     <Filter Include="Scripting\Bridges">
       <UniqueIdentifier>{61e9c3f0-953a-4547-bc62-9fd4e7751589}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hashing">
+      <UniqueIdentifier>{e6d3d3fe-0481-4b52-942d-c4ff7dde835d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{9919d8d6-a611-43b2-a558-e126f6d3a830}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -188,6 +194,12 @@
     </ClCompile>
     <ClCompile Include="TimeCSharp.cpp">
       <Filter>Scripting\Bridges</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -379,6 +391,18 @@
     </ClInclude>
     <ClInclude Include="TimeCSharp.h">
       <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Hasher.h">
+      <Filter>Hashing</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

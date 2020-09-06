@@ -25,7 +25,7 @@ namespace Scripting
 	{
 	public:
 		ScriptObject(MonoObject* pObject,
-			const std::unordered_map<std::string, std::shared_ptr<ScriptMethod>>& methods);
+			const std::unordered_map<size_t, std::shared_ptr<ScriptMethod>>& methods);
 
 		void Invoke(const std::string& method, ParameterList params = {});
 
@@ -35,8 +35,8 @@ namespace Scripting
 		ScriptField& GetField(const std::string& name);
 	private:
 		MonoObject* m_pObject;
-		std::unordered_map<std::string, std::shared_ptr<ScriptField>> m_Fields;
-		std::unordered_map<std::string, std::shared_ptr<ScriptMethod>> m_Methods;
-		std::unordered_map<std::string, std::shared_ptr<ScriptProperty>> m_Properties;
+		std::unordered_map<size_t, std::shared_ptr<ScriptField>> m_Fields;
+		std::unordered_map<size_t, std::shared_ptr<ScriptMethod>> m_Methods;
+		std::unordered_map<size_t, std::shared_ptr<ScriptProperty>> m_Properties;
 	};
 }

@@ -38,6 +38,6 @@ namespace Scripting
 	private:
 		MonoClass* m_pClass;
 		MonoDomain* m_pDomain;
-		std::unordered_map<std::string, std::shared_ptr<ScriptMethod>> m_Methods;
+		std::unordered_map<size_t, std::shared_ptr<ScriptMethod>> m_Methods;
 	};
 }
