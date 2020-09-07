@@ -38,4 +38,16 @@ namespace Scripting
 	{
 		return &m_Value;
 	}
+	UInt::UInt(unsigned value) noexcept
+		: m_Value(value)
+	{
+	}
+	UInt::operator unsigned() const noexcept
+	{
+		return m_Value;
+	}
+	void* UInt::ptr() noexcept
+	{
+		return &m_Value;
+	}
 }

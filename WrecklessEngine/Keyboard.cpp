@@ -33,7 +33,7 @@ namespace Input
 	}
 	bool Keyboard::CapsLock()
 	{
-		return (int)m_KeyboardState[(int)KeyCode::CAPSLOCK] & 0x80;
+		return (int)m_KeyboardState[(int)KeyCode::CapsLock] & 0x80;
 	}
 	bool Keyboard::NumLock()
 	{

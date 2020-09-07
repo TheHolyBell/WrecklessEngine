@@ -9,16 +9,21 @@ namespace ECS
 
 	class Scene
 	{
-	public :
-		Scene();
+	public:
+		Scene(const std::string& name);
 		~Scene();
 
+		std::string GetName() const noexcept;
+
 		Entity CreateEntity(const std::string& name = {});
+
+		Entity GetEntityByIndex(entt::entity handle);
+		bool EntityExists(entt::entity handle) const;
 
 		void OnUpdate();
 	private:
 		entt::registry m_Registry;
-
+		std::string m_Name;
 		friend class Entity;
 	};
 }

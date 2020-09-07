@@ -89,6 +89,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bindable.cpp" />
+    <ClCompile Include="ComponentsCSharp.cpp" />
     <ClCompile Include="ConsoleAdapter.cpp" />
     <ClCompile Include="ConsoleClass.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
@@ -97,6 +98,8 @@
     <ClCompile Include="DXGIInfoManager.cpp" />
     <ClCompile Include="DynamicConstant.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityCSharp.cpp" />
+    <ClCompile Include="FastNoise.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GamePadCSharp.cpp" />
     <ClCompile Include="GlobalClock.cpp" />
@@ -105,6 +108,8 @@
     <ClCompile Include="KeyboardCSharp.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MouseCSharp.cpp" />
+    <ClCompile Include="Noise.cpp" />
+    <ClCompile Include="NoiseCSharp.cpp" />
     <ClCompile Include="Parameters.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -113,6 +118,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manipulators.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScriptClass.cpp" />
     <ClCompile Include="ScriptDomain.cpp" />
     <ClCompile Include="ScriptField.cpp" />
@@ -138,6 +144,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Components.h" />
+    <ClInclude Include="ComponentsCSharp.h" />
     <ClInclude Include="ConditionalNoexcept.h" />
     <ClInclude Include="ConsoleAdapter.h" />
     <ClInclude Include="ConsoleClass.h" />
@@ -151,6 +158,8 @@
     <ClInclude Include="DXGIInfoManager.h" />
     <ClInclude Include="DynamicConstant.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityCSharp.h" />
+    <ClInclude Include="FastNoise.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GamePadCSharp.h" />
     <ClInclude Include="GamePadType.h" />
@@ -167,6 +176,8 @@
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseCSharp.h" />
+    <ClInclude Include="Noise.h" />
+    <ClInclude Include="NoiseCSharp.h" />
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Renderer.h" />
@@ -180,6 +191,7 @@
     <ClInclude Include="Manipulators.h" />
     <ClInclude Include="ITexture.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScriptClass.h" />
     <ClInclude Include="ScriptDomain.h" />
     <ClInclude Include="ScriptField.h" />

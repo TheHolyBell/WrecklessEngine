@@ -48,6 +48,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="Sandbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shkura.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

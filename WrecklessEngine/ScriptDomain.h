@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include <mono/jit/jit.h>
 
@@ -21,12 +22,13 @@ namespace Scripting
 		// @ Optional since .DLL files doesn't have that method
 		void ExecuteMain(int argc, char** argv);
 
-		ScriptClass GetClass(const std::string& name_space, const std::string& name);
+		ScriptClass& GetClass(const std::string& name_space, const std::string& name);
 
 		~ScriptDomain();
 	private:
 		MonoDomain* m_pDomain;
 		MonoAssembly* m_pAssembly;
 		MonoImage* m_pImage;
+		std::unordered_map<size_t, std::shared_ptr<ScriptClass>> m_Classes;
 	};
 }

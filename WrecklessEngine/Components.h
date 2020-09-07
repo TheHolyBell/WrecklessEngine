@@ -19,28 +19,34 @@ namespace ECS
 
 	struct TransformComponent
 	{
-		DirectX::XMMATRIX Transform;
+		DirectX::XMFLOAT4X4 Transform;
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(const DirectX::XMMATRIX& transform)
+		TransformComponent(const DirectX::XMFLOAT4X4& transform)
 			: Transform(transform) {}
 
-		operator DirectX::XMMATRIX& () { return Transform; }
-		operator const DirectX::XMMATRIX& () const { return Transform; }
+		operator DirectX::XMFLOAT4X4& () { return Transform; }
+		operator const DirectX::XMFLOAT4X4& () const { return Transform; }
 	};
 
 	class ScriptComponent
 	{
 	public:
-		ScriptComponent(Scripting::ScriptClass klass)
+		ScriptComponent(uint32_t id, Scripting::ScriptClass klass)
 			: m_Object(klass.CreateInstance())
 		{
 			m_Object.Invoke("Start");
+			m_Object.GetProperty("ID").Set(id);
 		}
 		void Update()
 		{
 			m_Object.Invoke("Update");
+		}
+
+		Scripting::ScriptObject& Object()
+		{
+			return m_Object; 
 		}
 	private:
 		Scripting::ScriptObject m_Object;

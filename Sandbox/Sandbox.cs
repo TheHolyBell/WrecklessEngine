@@ -47,7 +47,7 @@ namespace Sandbox
             Debug.Log($"Mouse coords: {mouseCoords.X} :: {mouseCoords.Y}");*/
 
             //Debug.Log("Welcome to the club buddy");
-            if (Keyboard.IsKeyDown(KeyCode.SPACE))
+            if (Keyboard.IsKeyDown(KeyCode.Space))
                 Debug.Log("Motherfucker");
             if (Keyboard.IsKeyDown(KeyCode.A))
                 Debug.Log("Fuck yourself");

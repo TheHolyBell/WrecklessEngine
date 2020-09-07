@@ -1,5 +1,6 @@
 #include "ScriptDomain.h"
 #include "ScriptingError.h"
+#include "Hasher.h"
 
 namespace Scripting
 {
@@ -24,12 +25,25 @@ namespace Scripting
 	{
 		mono_jit_exec(m_pDomain, m_pAssembly, argc, argv);
 	}
-	ScriptClass ScriptDomain::GetClass(const std::string& name_space, const std::string& name)
+	ScriptClass& ScriptDomain::GetClass(const std::string& name_space, const std::string& name)
 	{
-		MonoClass* pClass = mono_class_from_name(m_pImage, name_space.c_str(), name.c_str());
-		if (pClass == nullptr)
-			SCRIPT_ERROR("Failed to find class");
-		return ScriptClass(pClass, m_pDomain);
+		size_t token = HASH(name_space + name);
+		auto iter = m_Classes.find(token);
+
+		if (iter != m_Classes.end())
+			return *iter->second;
+
+		else
+		{
+			MonoClass* pClass = mono_class_from_name(m_pImage, name_space.c_str(), name.c_str());
+			if (pClass == nullptr)
+				SCRIPT_ERROR("Failed to find class");
+			
+			auto klass = std::make_shared<ScriptClass>(pClass, m_pDomain);
+			m_Classes[token] = klass;
+
+			return *klass;
+		}
 	}
 	ScriptDomain::~ScriptDomain()
 	{

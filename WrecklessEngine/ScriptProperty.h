@@ -32,17 +32,7 @@ namespace Scripting
 
 			return *(T*)mono_object_unbox(result);
 		}
-
-		template<>
-		String Get() const
-		{
-			if (m_pGetMethod == nullptr)
-				SCRIPT_ERROR("Get method doesn't exists");
-
-			String str((MonoString*)mono_property_get_value(m_pProperty, m_pObject, nullptr, nullptr));
-			return std::move(str);
-		}
-
+		
 		template<typename T>
 		void Set(T value)
 		{
@@ -56,6 +46,17 @@ namespace Scripting
 		}
 
 		template<>
+		String Get() const
+		{
+			if (m_pGetMethod == nullptr)
+				SCRIPT_ERROR("Get method doesn't exists");
+
+			String str((MonoString*)mono_property_get_value(m_pProperty, m_pObject, nullptr, nullptr));
+			return std::move(str);
+		}
+
+
+		template<>
 		void Set(String value)
 		{
 			if (m_pSetMethod == nullptr)
@@ -66,6 +67,13 @@ namespace Scripting
 
 			mono_property_set_value(m_pProperty, m_pObject, params, nullptr);
 		}
+
+		template<>
+		void Set(const char* str)
+		{
+			Set(String(str));
+		}
+
 	private:
 		MonoProperty* m_pProperty;
 		MonoMethod* m_pGetMethod;

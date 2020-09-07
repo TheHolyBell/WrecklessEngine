@@ -73,6 +73,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{9919d8d6-a611-43b2-a558-e126f6d3a830}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Miscellanious">
+      <UniqueIdentifier>{243dc6fe-84b0-4051-9624-fb1de2639856}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -200,6 +203,24 @@
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FastNoise.cpp">
+      <Filter>Miscellanious</Filter>
+    </ClCompile>
+    <ClCompile Include="Noise.cpp">
+      <Filter>Miscellanious</Filter>
+    </ClCompile>
+    <ClCompile Include="NoiseCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentsCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityCSharp.cpp">
+      <Filter>Scripting\Bridges</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +424,24 @@
     </ClInclude>
     <ClInclude Include="Components.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Noise.h">
+      <Filter>Miscellanious</Filter>
+    </ClInclude>
+    <ClInclude Include="FastNoise.h">
+      <Filter>Miscellanious</Filter>
+    </ClInclude>
+    <ClInclude Include="NoiseCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentsCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityCSharp.h">
+      <Filter>Scripting\Bridges</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

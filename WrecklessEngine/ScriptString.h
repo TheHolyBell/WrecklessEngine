@@ -32,13 +32,13 @@ namespace Scripting
 
 		int Length() const;
 
-		const char* ToUTF8() const;
+		const char* ToUTF8();
 
 		virtual void* ptr() noexcept override;
 		MonoString* GetString() const;
 
 	private:
-		MonoString* m_pString;
-		char* m_pBuffer;
+		MonoString* m_pString = nullptr;
+		char* m_pBuffer = nullptr;
 	};
 }

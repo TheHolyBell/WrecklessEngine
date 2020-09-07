@@ -44,6 +44,8 @@ namespace ECS
 		operator bool() const { return m_Entity != entt::null; }
 		operator uint32_t() const { return (uint32_t)m_Entity; }
 
+		uint32_t GetID() const { return (uint32_t)m_Entity; }
+
 		bool operator==(const Entity& rhs) const
 		{
 			return m_Entity == rhs.m_Entity && m_pScene == rhs.m_pScene;

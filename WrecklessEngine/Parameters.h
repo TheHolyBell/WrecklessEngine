@@ -24,6 +24,24 @@ namespace Scripting
 		int m_Value = 0;
 	};
 
+	class UInt : public IParameter
+	{
+	public:
+		UInt() = default;
+		UInt(unsigned value) noexcept;
+
+		UInt(const UInt& rhs) = default;
+		UInt& operator=(const UInt& rhs) = default;
+
+		UInt(UInt&& rhs) = default;
+		UInt& operator=(UInt&& rhs) = default;
+
+		operator unsigned() const noexcept;
+		virtual void* ptr() noexcept override;
+	private:
+		unsigned m_Value = 0;
+	};
+
 	class Float : public IParameter
 	{
 	public:

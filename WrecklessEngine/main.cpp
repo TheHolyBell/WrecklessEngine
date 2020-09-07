@@ -15,6 +15,10 @@
 #include "KeyboardCSharp.h"
 #include "DebugConsoleCSharp.h"
 #include "TimeCSharp.h"
+#include "EntityCSharp.h"
+#include "NoiseCSharp.h"
+#include "ComponentsCSharp.h"
+
 #include "GlobalClock.h"
 #include "Timer.h"
 
@@ -23,6 +27,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Components.h"
+#include "SceneManager.h"
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int)
@@ -77,18 +82,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	Scripting::MouseCSharp::Bind();
 	Scripting::KeyboardCSharp::Bind();
 	Scripting::TimeCSharp::Bind();
+	Scripting::NoiseCSharp::Bind();
+	Scripting::ComponentsCSharp::Bind();
+	Scripting::EntityCSharp::Bind();
 
 
 	auto klass = domain.GetClass("Sandbox", "Sandbox");
 
-	ECS::Scene scene;
-	ECS::Entity ent = scene.CreateEntity();
-	ECS::Entity ent2 = scene.CreateEntity();
-	ECS::Entity ent3 = scene.CreateEntity();
+	std::shared_ptr<ECS::Scene> scene = std::make_shared<ECS::Scene>("main");
+	ECS::Entity ent = scene->CreateEntity();
+	ECS::Entity ent2 = scene->CreateEntity();
+	ECS::Entity ent3 = scene->CreateEntity();
+	ECS::Entity ent4 = scene->CreateEntity();
+	ECS::Entity ent5 = scene->CreateEntity();
+	ECS::Entity ent6 = scene->CreateEntity();
 
-	ent.AddComponent<ECS::ScriptComponent>(domain.GetClass("Sandbox", "Actor"));
-	ent2.AddComponent<ECS::ScriptComponent>(domain.GetClass("Sandbox", "Actor"));
-	ent3.AddComponent<ECS::ScriptComponent>(domain.GetClass("Sandbox", "Actor"));
+	ECS::SceneManager::AddScene(scene);
+	ECS::SceneManager::SetActiveScene("main");
+
+	ent.AddComponent<ECS::ScriptComponent> (ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Dick");
+	ent2.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Richard");
+	ent3.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Edward");
+	ent4.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Sally");
+	ent5.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Nathan");
+	ent6.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Shkura"));
+
+	//ent.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Shkura"));
+
+	if (ent.HasComponent<ECS::TransformComponent>())
+		IO::cout << "ent has TransformComponent" << IO::endl;
 
 	try
 	{
@@ -104,7 +126,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	while (msg.message != WM_QUIT)
 	{
 		Keyboard::Update();
-		GamePad::Get().UpdateState();
+		//GamePad::Get().UpdateState();
 		Profiling::GlobalClock::Update();
 		WRECK_PROFILE_FUNCTION();
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -121,7 +143,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//Scripting::ParameterList params;
 			//params.Append(Profiling::GlobalClock::GetDelta());
 			//klass.Invoke("UpdateRoutine");
-			scene.OnUpdate();
+			scene->OnUpdate();
 		}
 	}
 
