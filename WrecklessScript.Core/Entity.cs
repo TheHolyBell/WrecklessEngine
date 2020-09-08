@@ -45,9 +45,16 @@ namespace WrecklessScript.Core
             return null;
         }
 
+        public void RemoveComponent<T>() where T : Component
+        {
+            RemoveComponent_Native(ID, typeof(T));
+        }
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern void AddComponent_Native(uint entityID, Type type);
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern bool HasComponent_Native(uint entityID, Type type);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        private static extern void RemoveComponent_Native(uint entityID, Type type);
     }
 }

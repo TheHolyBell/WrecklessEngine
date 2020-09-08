@@ -4,8 +4,6 @@ namespace WrecklessScript.Core
 {
     public static class Debug
     {
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public static extern void Log(string message);
 
         public static void Log(string message, params object[] objects)
         {
@@ -28,6 +26,8 @@ namespace WrecklessScript.Core
             Assert(condition, null);
         }
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern void Log(string message);
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern void Assert(bool condition, string message);
     }

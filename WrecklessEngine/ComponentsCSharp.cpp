@@ -30,7 +30,7 @@ static void SetTag_Native(unsigned int entityID, MonoString* string)
 
 static void GetTransform_Native(unsigned int entityID, DirectX::XMFLOAT4X4* result)
 {
-	result = &ECS::SceneManager::GetActiveScene()->GetEntityByIndex((entt::entity)entityID).GetComponent<ECS::TransformComponent>().Transform;
+	memcpy(result, &ECS::SceneManager::GetActiveScene()->GetEntityByIndex((entt::entity)entityID).GetComponent<ECS::TransformComponent>().Transform, sizeof(DirectX::XMFLOAT4X4));
 }
 
 static void SetTransform_Native(unsigned int entityID, DirectX::XMFLOAT4X4* result)
@@ -44,7 +44,7 @@ namespace Scripting
 	{
 		ScriptingEngine::DirectBindCallback("WrecklessScript.Core.TagComponent::GetTag_Native", GetTag_Native);
 		ScriptingEngine::DirectBindCallback("WrecklessScript.Core.TagComponent::SetTag_Native", SetTag_Native);
-		ScriptingEngine::DirectBindCallback("WrecklessScript.Core.TagComponent::GetTransform_Native", GetTransform_Native);
-		ScriptingEngine::DirectBindCallback("WrecklessScript.Core.TagComponent::SetTransform_Native", SetTransform_Native);
+		ScriptingEngine::DirectBindCallback("WrecklessScript.Core.TransformComponent::GetTransform_Native", GetTransform_Native);
+		ScriptingEngine::DirectBindCallback("WrecklessScript.Core.TransformComponent::SetTransform_Native", SetTransform_Native);
 	}
 }

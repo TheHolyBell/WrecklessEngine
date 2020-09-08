@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <memory>
 
+#include "CommonInclude.h"
+
 #include <mono/jit/jit.h>
 
 #include <mono/metadata/object.h>
@@ -38,6 +40,6 @@ namespace Scripting
 	private:
 		MonoClass* m_pClass;
 		MonoDomain* m_pDomain;
-		std::unordered_map<size_t, std::shared_ptr<ScriptMethod>> m_Methods;
+		std::unordered_map<size_t, Ref<ScriptMethod>> m_Methods;
 	};
 }

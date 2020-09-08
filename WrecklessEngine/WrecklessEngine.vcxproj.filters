@@ -76,6 +76,18 @@
     <Filter Include="Miscellanious">
       <UniqueIdentifier>{243dc6fe-84b0-4051-9624-fb1de2639856}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{79aa9950-c24d-4809-a79d-a283355424e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\BindableSystem">
+      <UniqueIdentifier>{28e9dd22-147f-4616-a3c9-1995705f7590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileSystem">
+      <UniqueIdentifier>{76eebe2e-ee8d-42f0-bafb-2a07bdaee0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{03c3c94a-2298-4a4d-94c3-9a5498e9ceb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -222,6 +234,63 @@
     <ClCompile Include="EntityCSharp.cpp">
       <Filter>Scripting\Bridges</Filter>
     </ClCompile>
+    <ClCompile Include="ImGui\ImCurveEdit.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGradient.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuizmo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImSequencer.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="FileDialog.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FileHelper.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderContext.cpp">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Texture.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Device.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>Miscellanious</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Shader.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11SwapChain.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11RenderContext.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReflector.h">
@@ -276,9 +345,6 @@
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="IShader.h">
-      <Filter>Graphics\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IConstantBuffer.h">
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
@@ -442,6 +508,63 @@
     </ClInclude>
     <ClInclude Include="EntityCSharp.h">
       <Filter>Scripting\Bridges</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImCurveEdit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGradient.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_dx11.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_win32.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImGuizmo.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\ImSequencer.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="FileDialog.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHelper.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ISwapChain.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>Miscellanious</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11SwapChain.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewport.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

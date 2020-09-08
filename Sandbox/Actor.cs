@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using WrecklessScript.Core;
 using WrecklessScript.Core.Input;
+using WrecklessScript.Core.Math;
 
 namespace Sandbox
 {
@@ -21,12 +22,29 @@ namespace Sandbox
             Number++;
             Debug.Log("I've been created");
             //AddComponent<TagComponent>();
+            //RemoveComponent<TagComponent>();
+            AddComponent<TransformComponent>().Transform = Matrix4.Translate(new Vector3(5, 20, 100));
+            
         }
         public override void Update()
         {
+            /*Matrix4 mat = new Matrix4();
+            mat.D00 = 5;
+            mat.D10 = 10;
+            mat.D20 = 15;*/
+            //if (HasComponent<TransformComponent>())
+            //    GetComponent<TransformComponent>().Transform = mat;
             //if(GamePad.IsPressed(Button.GAMEPAD_A))
-                //Debug.Log("Here in Update routine. FrameCount: " + Time.FrameCount + " DeltaTime is: " + Time.DeltaTime + " | " + Name);
-            Debug.Log(GetComponent<TagComponent>().Tag);
+            //Debug.Log("Here in Update routine. FrameCount: " + Time.FrameCount + " DeltaTime is: " + Time.DeltaTime + " | " + Name);
+
+            Debug.Log("Update function. Tag: " + GetComponent<TagComponent>().Tag + ". Total time: " + Time.TotalTime + ". Delta Time: " + Time.DeltaTime);
+            if (HasComponent<TransformComponent>())
+            {
+                //Debug.Log(GetComponent<TagComponent>().Tag);
+                GetComponent<TransformComponent>().Transform.DebugPrint();
+                Debug.Log("\n\n");
+            }
+                //Debug.Log("Hey guys!!! I have transform component");
         }
     }
 }

@@ -12,7 +12,6 @@
 
 namespace Graphics
 {
-
 	class IShader
 	{
 	public:
@@ -26,10 +25,14 @@ namespace Graphics
 
 		virtual ~IShader() = default;
 
-		/*// @ Currently available for DirectX11
+		virtual SHADER_TYPE GetType() const noexcept PURE;
+
+		// @ Currently available for DirectX11
 		virtual void* GetByteCode() PURE;
+		virtual void* GetNativePointer() PURE;
+
 		// @ Check whether variable exists
-		virtual bool VariableExists(const std::string& Name, float value) PURE;
+		/*virtual bool VariableExists(const std::string& Name, float value) PURE;
 		// @ Throws exception if float not exists
 		virtual void SetFloat(const std::string& Name, float value) PURE;
 		// @ Throws exception if float2 not exists

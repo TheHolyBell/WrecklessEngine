@@ -22,4 +22,32 @@ namespace Graphics
 
         virtual ~ITexture() = default;
     };
+
+    class IRenderTarget : public ITexture
+    {
+    public:
+        IRenderTarget() = default;
+
+        IRenderTarget(const IRenderTarget& rhs) = delete;
+        IRenderTarget& operator=(const IRenderTarget& rhs) = delete;
+
+        IRenderTarget(IRenderTarget&& rhs) = delete;
+        IRenderTarget& operator=(IRenderTarget&& rhs) = delete;
+
+        virtual ~IRenderTarget() = default;
+    };
+
+    class IDepthStencilView : public ITexture
+    {
+    public:
+        IDepthStencilView() = default;
+
+        IDepthStencilView(const IDepthStencilView& rhs) = delete;
+        IDepthStencilView& operator=(const IDepthStencilView& rhs) = delete;
+    
+        IDepthStencilView(IDepthStencilView&& rhs) = delete;
+        IDepthStencilView& operator=(IDepthStencilView&& rhs) = delete;
+    
+        virtual ~IDepthStencilView() = default;
+    };
 }

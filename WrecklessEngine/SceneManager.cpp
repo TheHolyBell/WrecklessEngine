@@ -4,13 +4,14 @@
 namespace ECS
 {
 	std::shared_ptr<Scene> SceneManager::m_pActiveScene;
-	std::unordered_map<std::string, std::shared_ptr<Scene>> SceneManager::m_Scenes;
+	std::unordered_map<std::string, Ref<Scene>> SceneManager::m_Scenes;
 
-	void SceneManager::AddScene(std::shared_ptr<Scene> scene)
+	void SceneManager::AddScene(Ref<Scene> scene)
 	{
+		m_pActiveScene = scene;
 		m_Scenes[scene->GetName()] = std::move(scene);
 	}
-	std::shared_ptr<Scene> SceneManager::GetActiveScene()
+	Ref<Scene> SceneManager::GetActiveScene()
 	{
 		return m_pActiveScene;
 	}

@@ -1,4 +1,5 @@
 #pragma once
+#include "CommonInclude.h"
 #include <string>
 #include <unordered_map>
 #include <memory>
@@ -35,8 +36,8 @@ namespace Scripting
 		ScriptField& GetField(const std::string& name);
 	private:
 		MonoObject* m_pObject;
-		std::unordered_map<size_t, std::shared_ptr<ScriptField>> m_Fields;
-		std::unordered_map<size_t, std::shared_ptr<ScriptMethod>> m_Methods;
-		std::unordered_map<size_t, std::shared_ptr<ScriptProperty>> m_Properties;
+		std::unordered_map<size_t, Ref<ScriptField>> m_Fields;
+		std::unordered_map<size_t, Ref<ScriptMethod>> m_Methods;
+		std::unordered_map<size_t, Ref<ScriptProperty>> m_Properties;
 	};
 }

@@ -29,6 +29,8 @@
 #include "Components.h"
 #include "SceneManager.h"
 
+#include "Renderer.h"
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int)
 {
@@ -64,17 +66,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	std::shared_ptr<Graphics::IWindow> pWindow = std::make_shared<Graphics::Win32Window>("Hello buddy", 800, 600);
 
+	Graphics::Renderer::Initialize(Graphics::RendereringAPI::DirectX11, pWindow);
+
+	Graphics::Renderer::GetRenderContext()->SetOutputRenderTarget(Graphics::Renderer::GetSwapChain()->GetBackBuffer());
+
 	Keyboard::Initialize((HWND)pWindow->GetWindowHandle());
 
 	pWindow->SetTitle("Dickson");
 	pWindow->SetIcon("D:\\VisualStudio\\C++\\Hardware3D\\chili.ico");
 
-
-	Scripting::DirectoriesInfo info;
-	info.etc_location = "D:\\VisualStudio\\C++\\WrecklessEngine\\Vendor\\Mono\\etc";
-	info.lib_location = "D:\\VisualStudio\\C++\\WrecklessEngine\\Vendor\\Mono\\lib";
 	
-	Scripting::ScriptingEngine::Initialize(&info);
+	Scripting::ScriptingEngine::Initialize();
 	Scripting::ScriptDomain domain = Scripting::ScriptingEngine::GetDomain("Sandbox.dll");
 
 	Scripting::Debug::Bind();
@@ -89,38 +91,37 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	auto klass = domain.GetClass("Sandbox", "Sandbox");
 
-	std::shared_ptr<ECS::Scene> scene = std::make_shared<ECS::Scene>("main");
+	Ref<ECS::Scene> scene = std::make_shared<ECS::Scene>("main");
 	ECS::Entity ent = scene->CreateEntity();
-	ECS::Entity ent2 = scene->CreateEntity();
+	/*ECS::Entity ent2 = scene->CreateEntity();
 	ECS::Entity ent3 = scene->CreateEntity();
 	ECS::Entity ent4 = scene->CreateEntity();
 	ECS::Entity ent5 = scene->CreateEntity();
-	ECS::Entity ent6 = scene->CreateEntity();
+	ECS::Entity ent6 = scene->CreateEntity();*/
 
 	ECS::SceneManager::AddScene(scene);
-	ECS::SceneManager::SetActiveScene("main");
 
 	ent.AddComponent<ECS::ScriptComponent> (ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Dick");
-	ent2.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Richard");
-	ent3.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Edward");
-	ent4.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Sally");
-	ent5.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Nathan");
-	ent6.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Shkura"));
+	/*ent2.AddComponent<ECS::ScriptComponent>(ent2.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Richard");
+	ent3.AddComponent<ECS::ScriptComponent>(ent3.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Edward");
+	ent4.AddComponent<ECS::ScriptComponent>(ent4.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Sally");
+	ent5.AddComponent<ECS::ScriptComponent>(ent5.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Nathan");
+	ent6.AddComponent<ECS::ScriptComponent>(ent6.GetID(),domain.GetClass("Sandbox", "Shkura"));*/
+
+	//ent.AddComponent<ECS::TransformComponent>();
 
 	//ent.AddComponent<ECS::ScriptComponent>(ent.GetID(),domain.GetClass("Sandbox", "Shkura"));
 
-	if (ent.HasComponent<ECS::TransformComponent>())
-		IO::cout << "ent has TransformComponent" << IO::endl;
-
 	try
 	{
-		klass.Invoke("Dickie");
+		klass.Invoke("Function");
 	}
 	catch (std::exception& exc)
 	{
 		IO::cout << exc.what() << IO::endl;
 	}
 
+	float color[] = { 0.2f, 0.5f, 0.8f, 1.0f };
 
 	MSG msg = {};
 	while (msg.message != WM_QUIT)
@@ -143,7 +144,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			//Scripting::ParameterList params;
 			//params.Append(Profiling::GlobalClock::GetDelta());
 			//klass.Invoke("UpdateRoutine");
-			scene->OnUpdate();
+
+			ECS::SceneManager::GetActiveScene()->OnUpdate();
+
+			Graphics::Renderer::GetRenderContext()->ClearRenderTarget(Graphics::Renderer::GetSwapChain()->GetBackBuffer(), color);
+			Graphics::Renderer::GetSwapChain()->SwapBuffers(Graphics::SwapFlags::NO_LIMIT);
 		}
 	}
 

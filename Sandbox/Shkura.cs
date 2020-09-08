@@ -16,6 +16,7 @@ namespace Sandbox
             GetComponent<TagComponent>().Tag = "Su4ka";
             //AddComponent<TransformComponent>();
             Debug.Log(GetComponent<TagComponent>().Tag + " has been created");
+            RemoveComponent<TagComponent>();
         }
 
         public override void Update()
@@ -26,7 +27,8 @@ namespace Sandbox
             //state.RightMotor = 40;
             //GamePad.Vibration = state;
             Debug.Log("Skura::Update. ID" + ID);
-            Debug.Log(GetComponent<TagComponent>().Tag);
+            if(HasComponent<TagComponent>())
+                Debug.Log(GetComponent<TagComponent>().Tag);
         }
     }
 }

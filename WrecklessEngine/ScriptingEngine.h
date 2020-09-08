@@ -13,7 +13,7 @@ namespace Scripting
 	class ScriptingEngine
 	{
 	public:
-		static void Initialize(DirectoriesInfo* dirsInfo = nullptr);
+		static void Initialize();
 		static ScriptDomain GetDomain(const char* filename);
 
 		template<typename FuncPtr>

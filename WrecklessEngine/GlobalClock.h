@@ -9,6 +9,7 @@ namespace Profiling
 
 		std::chrono::steady_clock::time_point m_StartTime;
 		std::chrono::steady_clock::time_point m_LastFrameTime;
+		std::chrono::steady_clock::time_point m_CurrentFrameTime;
 		float m_Delta = 0;
 		float m_TimeScale = 1;
 		int m_FrameCount = 0;

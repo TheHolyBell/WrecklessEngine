@@ -19,12 +19,17 @@ namespace ECS
 
 	struct TransformComponent
 	{
-		DirectX::XMFLOAT4X4 Transform;
+		DirectX::XMFLOAT4X4 Transform = {};
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
 		TransformComponent(const DirectX::XMFLOAT4X4& transform)
 			: Transform(transform) {}
+
+		TransformComponent(DirectX::XMMATRIX matrix)
+		{
+			DirectX::XMStoreFloat4x4(&Transform, matrix);
+		}
 
 		operator DirectX::XMFLOAT4X4& () { return Transform; }
 		operator const DirectX::XMFLOAT4X4& () const { return Transform; }
@@ -36,8 +41,8 @@ namespace ECS
 		ScriptComponent(uint32_t id, Scripting::ScriptClass klass)
 			: m_Object(klass.CreateInstance())
 		{
-			m_Object.Invoke("Start");
 			m_Object.GetProperty("ID").Set(id);
+			m_Object.Invoke("Start");
 		}
 		void Update()
 		{

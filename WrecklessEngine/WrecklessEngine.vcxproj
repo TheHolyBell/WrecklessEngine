@@ -92,6 +92,11 @@
     <ClCompile Include="ComponentsCSharp.cpp" />
     <ClCompile Include="ConsoleAdapter.cpp" />
     <ClCompile Include="ConsoleClass.cpp" />
+    <ClCompile Include="D3D11Device.cpp" />
+    <ClCompile Include="D3D11RenderContext.cpp" />
+    <ClCompile Include="D3D11Shader.cpp" />
+    <ClCompile Include="D3D11SwapChain.cpp" />
+    <ClCompile Include="D3D11Texture.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugConsoleCSharp.cpp" />
     <ClCompile Include="dxerr.cpp" />
@@ -100,10 +105,23 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityCSharp.cpp" />
     <ClCompile Include="FastNoise.cpp" />
+    <ClCompile Include="FileDialog.cpp" />
+    <ClCompile Include="FileHelper.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="GamePadCSharp.cpp" />
     <ClCompile Include="GlobalClock.cpp" />
     <ClCompile Include="HrException.cpp" />
+    <ClCompile Include="ImGui\ImCurveEdit.cpp" />
+    <ClCompile Include="ImGui\ImGradient.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\ImGuizmo.cpp" />
+    <ClCompile Include="ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="ImGui\ImSequencer.cpp" />
+    <ClCompile Include="IRenderContext.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="KeyboardCSharp.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -130,6 +148,7 @@
     <ClCompile Include="ScriptProperty.cpp" />
     <ClCompile Include="ScriptString.cpp" />
     <ClCompile Include="ShaderReflector.cpp" />
+    <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="TimeCSharp.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Vertex.cpp" />
@@ -138,6 +157,7 @@
     <ClCompile Include="WrecklessException.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableCodex.h" />
     <ClInclude Include="Buttons.h" />
@@ -151,6 +171,7 @@
     <ClInclude Include="D3D11Device.h" />
     <ClInclude Include="D3D11RenderContext.h" />
     <ClInclude Include="D3D11Shader.h" />
+    <ClInclude Include="D3D11SwapChain.h" />
     <ClInclude Include="D3D11Texture.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DebugConsoleCSharp.h" />
@@ -160,6 +181,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityCSharp.h" />
     <ClInclude Include="FastNoise.h" />
+    <ClInclude Include="FileDialog.h" />
+    <ClInclude Include="FileHelper.h" />
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="GamePadCSharp.h" />
     <ClInclude Include="GamePadType.h" />
@@ -168,8 +191,21 @@
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="Hasher.h" />
     <ClInclude Include="HrException.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\ImCurveEdit.h" />
+    <ClInclude Include="ImGui\ImGradient.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\ImGuizmo.h" />
+    <ClInclude Include="ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\ImSequencer.h" />
+    <ClInclude Include="ImGui\imstb_rectpack.h" />
+    <ClInclude Include="ImGui\imstb_textedit.h" />
+    <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="InfoManager.h" />
     <ClInclude Include="IParameter.h" />
+    <ClInclude Include="ISwapChain.h" />
     <ClInclude Include="IWindow.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="KeyboardCSharp.h" />
@@ -181,7 +217,6 @@
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="IConstantBuffer.h" />
     <ClInclude Include="IDevice.h" />
     <ClInclude Include="InputOutputStream.h" />
     <ClInclude Include="IRenderContext.h" />
@@ -203,10 +238,12 @@
     <ClInclude Include="ScriptProperty.h" />
     <ClInclude Include="ScriptString.h" />
     <ClInclude Include="ShaderReflector.h" />
+    <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TimeCSharp.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />
+    <ClInclude Include="Viewport.h" />
     <ClInclude Include="WICTextureLoader.h" />
     <ClInclude Include="Win32Window.h" />
     <ClInclude Include="WindowsThrowMacros.h" />

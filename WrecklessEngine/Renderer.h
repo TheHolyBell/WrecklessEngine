@@ -1,6 +1,8 @@
 #pragma once
+#include "CommonInclude.h"
 #include "IDevice.h"
 #include "IRenderContext.h"
+#include "ISwapChain.h"
 #include "InfoManager.h"
 #include "WrecklessException.h"
 #include "IWindow.h"
@@ -10,6 +12,7 @@ namespace Graphics
 {
 	enum class RendereringAPI
 	{
+		None,
 		DirectX11,
 		OpenGL
 	};
@@ -56,9 +59,7 @@ namespace Graphics
 			std::string m_Reason;
 		};
 #pragma endregion
-
 	public:
-		Renderer(RendereringAPI apiType, std::shared_ptr<IWindow> window);
 
 		Renderer(const Renderer& rhs) = delete;
 		Renderer& operator=(const Renderer& rhs) = delete;
@@ -68,12 +69,18 @@ namespace Graphics
 
 
 
-		std::shared_ptr<IDevice> GetDevice();
-		std::shared_ptr<IRenderContext> GetRenderContext();
-		std::shared_ptr<InfoManager> GetInfoManager();
+		static void Initialize(RendereringAPI apiType, Ref<IWindow> window);
+		static Ref<IDevice> GetDevice();
+		static Ref<IRenderContext> GetRenderContext();
+		static Ref<ISwapChain> GetSwapChain();
+		static Ref<InfoManager> GetInfoManager();
 	private:
-		std::shared_ptr<IDevice> m_Device;
-		std::shared_ptr<IRenderContext> m_RenderContext;
-		std::shared_ptr<InfoManager> m_InfoManager;
+		static void InitializeD3D11(Ref<IWindow> window);
+		static void InitializeOpenGL(Ref<IWindow> window);
+	private:
+		static Ref<IDevice> s_Device;
+		static Ref<IRenderContext> s_RenderContext;
+		static Ref<InfoManager> s_InfoManager;
+		static Ref<ISwapChain> s_SwapChain;
 	};
 }

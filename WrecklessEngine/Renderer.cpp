@@ -2,24 +2,87 @@
 #include "dxerr.h"
 #include <sstream>
 #include "DXGIInfoManager.h"
+#include <d3d11.h>
+#include <wrl/client.h>
+
+#include "D3D11Device.h"
+#include "D3D11RenderContext.h"
+#include "D3D11SwapChain.h"
 
 namespace Graphics
 {
-	Renderer::Renderer(RendereringAPI apiType, std::shared_ptr<IWindow> window)
+	Ref<IDevice> Renderer::s_Device;
+	Ref<IRenderContext> Renderer::s_RenderContext;
+	Ref<InfoManager> Renderer::s_InfoManager;
+	Ref<ISwapChain> Renderer::s_SwapChain;
+
+	void Renderer::Initialize(RendereringAPI apiType, Ref<IWindow> window)
 	{
-		m_InfoManager = std::make_shared<DXGIInfoManager>();
+		s_InfoManager = std::make_shared<DXGIInfoManager>();
+
+		switch (apiType)
+		{
+		case RendereringAPI::DirectX11:
+			InitializeD3D11(window);
+			break;
+		case RendereringAPI::OpenGL:
+			InitializeOpenGL(window);
+			break;
+		}
 	}
 	std::shared_ptr<IDevice> Renderer::GetDevice()
 	{
-		return m_Device;
+		return s_Device;
 	}
 	std::shared_ptr<IRenderContext> Renderer::GetRenderContext()
 	{
-		return m_RenderContext;
+		return s_RenderContext;
+	}
+	Ref<ISwapChain> Renderer::GetSwapChain()
+	{
+		return s_SwapChain;
 	}
 	std::shared_ptr<InfoManager> Renderer::GetInfoManager()
 	{
-		return m_InfoManager;
+		return s_InfoManager;
+	}
+
+	void Renderer::InitializeD3D11(Ref<IWindow> window)
+	{
+		Microsoft::WRL::ComPtr<ID3D11Device> _device;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
+		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
+
+		DXGI_SWAP_CHAIN_DESC _scd = {};
+		_scd.BufferDesc.Width = window->GetWidth();
+		_scd.BufferDesc.Height = window->GetHeight();
+		_scd.BufferDesc.RefreshRate.Numerator = 60;
+		_scd.BufferDesc.RefreshRate.Denominator = 1;
+		_scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		_scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+		_scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		_scd.BufferCount = 1;
+		_scd.OutputWindow = (HWND)window->GetWindowHandle();
+		_scd.Windowed = true;
+		_scd.SampleDesc.Count = 1;
+		_scd.SampleDesc.Quality = 0;
+		_scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		_scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+
+		D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0,
+			D3D11_SDK_VERSION, &_scd, &_swapChain, &_device, nullptr, &_deviceContext);
+
+		if (_swapChain == nullptr || _device == nullptr || _deviceContext == nullptr)
+			throw std::exception("Failed to initialize graphics");
+
+		s_Device = std::make_shared<D3D11Device>(_device);
+		s_RenderContext = std::make_shared<D3D11RenderContext>(_deviceContext);
+		s_SwapChain = std::make_shared<D3D11SwapChain>(_swapChain);
+	}
+
+	void Renderer::InitializeOpenGL(Ref<IWindow> window)
+	{
+		WRECK_ASSERT(false, "Not yet implemented");
 	}
 
 
