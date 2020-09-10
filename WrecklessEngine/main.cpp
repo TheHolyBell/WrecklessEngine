@@ -31,6 +31,9 @@
 
 #include "Renderer.h"
 
+#include "FileHelper.h"
+#include "Application.h"
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int)
 {
@@ -64,13 +67,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	IO::cout << HASH(john) << IO::endl;*/
 
 	
-	std::shared_ptr<Graphics::IWindow> pWindow = std::make_shared<Graphics::Win32Window>("Hello buddy", 800, 600);
+	/*std::shared_ptr<Graphics::IWindow> pWindow = std::make_shared<Graphics::Win32Window>("Hello buddy", 800, 600);
 
 	Graphics::Renderer::Initialize(Graphics::RendereringAPI::DirectX11, pWindow);
 
 	Graphics::Renderer::GetRenderContext()->SetOutputRenderTarget(Graphics::Renderer::GetSwapChain()->GetBackBuffer());
 
-	Keyboard::Initialize((HWND)pWindow->GetWindowHandle());
 
 	pWindow->SetTitle("Dickson");
 	pWindow->SetIcon("D:\\VisualStudio\\C++\\Hardware3D\\chili.ico");
@@ -97,7 +99,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ECS::Entity ent3 = scene->CreateEntity();
 	ECS::Entity ent4 = scene->CreateEntity();
 	ECS::Entity ent5 = scene->CreateEntity();
-	ECS::Entity ent6 = scene->CreateEntity();*/
+	ECS::Entity ent6 = scene->CreateEntity();
 
 	ECS::SceneManager::AddScene(scene);
 
@@ -106,7 +108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ent3.AddComponent<ECS::ScriptComponent>(ent3.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Edward");
 	ent4.AddComponent<ECS::ScriptComponent>(ent4.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Sally");
 	ent5.AddComponent<ECS::ScriptComponent>(ent5.GetID(),domain.GetClass("Sandbox", "Actor")).Object().GetProperty("Name").Set("Nathan");
-	ent6.AddComponent<ECS::ScriptComponent>(ent6.GetID(),domain.GetClass("Sandbox", "Shkura"));*/
+	ent6.AddComponent<ECS::ScriptComponent>(ent6.GetID(),domain.GetClass("Sandbox", "Shkura"));
 
 	//ent.AddComponent<ECS::TransformComponent>();
 
@@ -126,7 +128,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	MSG msg = {};
 	while (msg.message != WM_QUIT)
 	{
-		Keyboard::Update();
 		//GamePad::Get().UpdateState();
 		Profiling::GlobalClock::Update();
 		WRECK_PROFILE_FUNCTION();
@@ -154,5 +155,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//IO::cin.Get();
 
+	return 0;*/
+	cout << FileSystem::FileHelper::GetFileExtension("D:\\VisualStudio\\C++\\WrecklessEngine\\WrecklessEngine\\WrecklessScript.Core.dll") << IO::endl;
+	Wreckless::Application* app = new Wreckless::Application("Dickie", 1600, 900);
+	app->Run();
+	delete app;
 	return 0;
 }

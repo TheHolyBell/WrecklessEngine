@@ -1,12 +1,13 @@
 #include "InputOutputStream.h"
 #include "ConsoleAdapter.h"
+#include "ImGuiLogger.h"
 
 namespace IO
 {
 
     IOutput& IOStream::GetOutputStream()
     {
-        static ConsoleOutput _Output;
+        static ImGuiOutput _Output;
         return _Output;
     }
 

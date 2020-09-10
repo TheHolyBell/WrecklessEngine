@@ -23,6 +23,18 @@ namespace Graphics
 		virtual void BindPixelShader(Ref<IPixelShader> pixel_shader) override;
 		virtual void BindViewport(Viewport viewport) override;
 
+		virtual void BindVertexBuffer(Ref<IVertexBuffer> vertex_buffer, unsigned strides, unsigned offsets) override;
+		virtual void BindIndexBuffer(Ref<IIndexBuffer> index_buffer, TEX_FORMAT format, unsigned offset) override;
+		virtual void BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot) override;
+		virtual void BindInputLayout(Ref<IInputLayout> input_layout) override;
+		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) override;
+
+		virtual void MapDataToBuffer(Ref<IBuffer> buffer, void* data, unsigned size) override;
+		virtual void LoadDataFromBuffer(Ref<IBuffer> buffer, void* outputBuffer, unsigned size) override;
+
+		virtual void Draw(unsigned vertex_count, unsigned start_vertex_location) override;
+		virtual void DrawIndexed(unsigned index_count, unsigned start_index_location, unsigned base_vertex_location) override;
+
 		virtual void* GetNativePointer() const override;
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_pDeviceContext;

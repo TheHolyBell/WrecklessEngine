@@ -3,22 +3,26 @@
 #include <dinput.h>
 #include <wrl/client.h>
 
+namespace Graphics
+{
+	class Win32Window;
+}
+
 namespace Input
 {
 	class Keyboard
 	{
+		friend class Graphics::Win32Window;
 	public:
-		static void Initialize(HWND hwnd);
-
-		static void Update();
-
 		static bool CapsLock();
 		static bool NumLock();
 
 		static bool IsKeyDown(KeyCode key);
 		static bool IsKeyUp(KeyCode key);
 	private:
-		static Microsoft::WRL::ComPtr<IDirectInputDevice8> m_pKeyboard;
-		static KeyCode m_KeyboardState[256];
+		static void KeyPressed(KeyCode key);
+		static void KeyReleased(KeyCode key);
+	private:
+		static bool m_KeyboardState[256];
 	};
 }

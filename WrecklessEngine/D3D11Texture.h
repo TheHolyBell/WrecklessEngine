@@ -30,6 +30,8 @@ namespace Graphics
 
 		virtual void* GetNativePointer() const override;
 
+		virtual ~D3D11RenderTarget() = default;
+
 	private:
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_RTV;
 		TEX_FORMAT m_Format;
@@ -43,6 +45,8 @@ namespace Graphics
 		virtual TEX_FORMAT GetFormat() const override;
 
 		virtual void* GetNativePointer() const override;
+
+		virtual ~D3D11DepthStencilView() = default;
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_DSV;

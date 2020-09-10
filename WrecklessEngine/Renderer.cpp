@@ -15,8 +15,14 @@ namespace Graphics
 	Ref<IRenderContext> Renderer::s_RenderContext;
 	Ref<InfoManager> Renderer::s_InfoManager;
 	Ref<ISwapChain> Renderer::s_SwapChain;
+	RendererAPICapabilities Renderer::s_Capabilities;
 
-	void Renderer::Initialize(RendereringAPI apiType, Ref<IWindow> window)
+	RendererAPICapabilities& Renderer::GetCapabilities()
+	{
+		return s_Capabilities;
+	}
+
+	void Renderer::Initialize(RendereringAPI apiType, IWindow& window)
 	{
 		s_InfoManager = std::make_shared<DXGIInfoManager>();
 
@@ -47,22 +53,22 @@ namespace Graphics
 		return s_InfoManager;
 	}
 
-	void Renderer::InitializeD3D11(Ref<IWindow> window)
+	void Renderer::InitializeD3D11(IWindow& window)
 	{
 		Microsoft::WRL::ComPtr<ID3D11Device> _device;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swapChain;
 
 		DXGI_SWAP_CHAIN_DESC _scd = {};
-		_scd.BufferDesc.Width = window->GetWidth();
-		_scd.BufferDesc.Height = window->GetHeight();
+		_scd.BufferDesc.Width = window.GetWidth();
+		_scd.BufferDesc.Height = window.GetHeight();
 		_scd.BufferDesc.RefreshRate.Numerator = 60;
 		_scd.BufferDesc.RefreshRate.Denominator = 1;
 		_scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		_scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		_scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		_scd.BufferCount = 1;
-		_scd.OutputWindow = (HWND)window->GetWindowHandle();
+		_scd.OutputWindow = (HWND)window.GetWindowHandle();
 		_scd.Windowed = true;
 		_scd.SampleDesc.Count = 1;
 		_scd.SampleDesc.Quality = 0;
@@ -80,7 +86,7 @@ namespace Graphics
 		s_SwapChain = std::make_shared<D3D11SwapChain>(_swapChain);
 	}
 
-	void Renderer::InitializeOpenGL(Ref<IWindow> window)
+	void Renderer::InitializeOpenGL(IWindow& window)
 	{
 		WRECK_ASSERT(false, "Not yet implemented");
 	}

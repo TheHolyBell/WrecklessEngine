@@ -88,6 +88,9 @@
     <Filter Include="Application">
       <UniqueIdentifier>{03c3c94a-2298-4a4d-94c3-9a5498e9ceb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{18993d56-9998-45e9-8433-3811cef1da02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -289,6 +292,30 @@
       <Filter>Graphics\Implementations\D3D11/Windows</Filter>
     </ClCompile>
     <ClCompile Include="D3D11RenderContext.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="LayerStack.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiLayer.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiLogger.cpp">
+      <Filter>LogRelatedStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Buffer.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11InputLayout.cpp">
       <Filter>Graphics\Implementations\D3D11/Windows</Filter>
     </ClCompile>
   </ItemGroup>
@@ -565,6 +592,48 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="LayerStack.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiLayer.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiLogger.h">
+      <Filter>LogRelatedStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="IBuffer.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Buffer.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="IInputLayout.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11InputLayout.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Topology.h">
+      <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

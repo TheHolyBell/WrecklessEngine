@@ -55,7 +55,12 @@ namespace Graphics
 			WRECK_ASSERT(false, "SwapChain's buffers are not fully initialized");
 
 		DXGI_FORMAT prevFormat = (DXGI_FORMAT)m_pRenderTarget->GetFormat();
-		WRECK_HR(m_pSwapChain->ResizeBuffers(1, width, height, prevFormat, 0));
+		
+		m_pRenderTarget.reset();
+		m_pDepthStencilView.reset();
+
+		HRESULT hr = m_pSwapChain->ResizeBuffers(1, width, height, prevFormat, 0);
+		WRECK_HR(hr);
 
 		ID3D11Device* _device = reinterpret_cast<ID3D11Device*>(Renderer::GetDevice()->GetNativePointer());
 

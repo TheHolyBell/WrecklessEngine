@@ -56,7 +56,7 @@ namespace ECS
 			return !this->operator==(rhs);
 		}
 	private:
-		entt::entity m_Entity;
-		Scene* m_pScene;
+		entt::entity m_Entity = entt::null;
+		Scene* m_pScene = nullptr;
 	};
 }

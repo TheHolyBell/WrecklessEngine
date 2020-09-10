@@ -1,6 +1,11 @@
 #include "Win32Window.h"
 #include "HrException.h"
 #include "WindowsThrowMacros.h"
+#include "Keyboard.h"
+#include "ApplicationEvent.h"
+#include "KeyEvent.h"
+#include "MouseEvent.h"
+#include "ImGui/imgui_impl_win32.h"
 
 namespace Graphics
 {
@@ -57,6 +62,19 @@ namespace Graphics
         SendMessageA(m_hWnd, WM_SETICON, ICON_BIG, (LPARAM)_hIcon);
         SendMessageA(m_hWnd, WM_SETICON, ICON_SMALL, (LPARAM)_hIcon);
     }
+    void Win32Window::OnUpdate()
+    {
+        MSG msg = {};
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
+    void Win32Window::SetEventCallback(const EventCallbackFn& callback)
+    {
+        m_Callback = callback;
+    }
     LRESULT Win32Window::HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         // use create parameter passed in from CreateWindow() to store window class pointer at WinAPI side
@@ -86,16 +104,96 @@ namespace Graphics
 
     LRESULT Win32Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
+        if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+            return 0;
+
         switch (msg)
         {
+        case WM_SYSKEYDOWN:
+        case WM_KEYDOWN:
+        {
+            Input::Keyboard::KeyPressed((Input::KeyCode)wParam);
+            KeyPressedEvent event((Input::KeyCode)wParam);
+            m_Callback(event);
+            break;
+        }
+
+        case WM_SYSKEYUP:
+        case WM_KEYUP:
+        { 
+            Input::Keyboard::KeyReleased((Input::KeyCode)wParam);
+            KeyReleasedEvent event((Input::KeyCode)wParam);
+            m_Callback(event);
+            break;
+        }
+
+        case WM_CHAR:
+        {
+            KeyTypedEvent event((Input::KeyCode)wParam);
+            m_Callback(event);
+            break;
+        }
+
         case WM_SIZE:
         {
             m_Width = LOWORD(lParam);
             m_Height = HIWORD(lParam);
+            WindowResizeEvent event(m_Width, m_Height);
+            if(m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
+
+        case WM_LBUTTONDOWN:
+        {
+            MouseButtonPressedEvent event(Input::KeyCode::LButton);
+            m_Callback(event);
+            break;
+        }
+        case WM_RBUTTONDOWN:
+        {
+            MouseButtonPressedEvent event(Input::KeyCode::RButton);
+            m_Callback(event);
+            break;
+        }
+        case WM_MBUTTONDOWN:
+        {
+            MouseButtonPressedEvent event(Input::KeyCode::MButton);
+            m_Callback(event);
+            break;
+        }
+
+        case WM_LBUTTONUP:
+        {
+            MouseButtonReleasedEvent event(Input::KeyCode::LButton);
+            m_Callback(event);
+            break;
+        }
+        case WM_RBUTTONUP:
+        {
+            MouseButtonReleasedEvent event(Input::KeyCode::RButton);
+            m_Callback(event);
+            break;
+        }
+        case WM_MBUTTONUP:
+        {
+            MouseButtonReleasedEvent event(Input::KeyCode::MButton);
+            m_Callback(event);
+            break;
+        }
+
+        case WM_MOUSEWHEEL:
+        {
+            const POINTS pt = MAKEPOINTS(lParam);
+            MouseScrolledEvent event(pt.x, pt.y);
+            m_Callback(event);
+            break;
+        }
+
         case WM_CLOSE:
         case WM_QUIT:
+            WindowCloseEvent event;
+            m_Callback(event);
             PostQuitMessage(0);
             break;
         }

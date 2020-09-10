@@ -37,7 +37,8 @@ namespace Sandbox
             //if(GamePad.IsPressed(Button.GAMEPAD_A))
             //Debug.Log("Here in Update routine. FrameCount: " + Time.FrameCount + " DeltaTime is: " + Time.DeltaTime + " | " + Name);
 
-            Debug.Log("Update function. Tag: " + GetComponent<TagComponent>().Tag + ". Total time: " + Time.TotalTime + ". Delta Time: " + Time.DeltaTime);
+            if(Keyboard.IsKeyDown(KeyCode.Escape))
+                Debug.Log("Update function. Tag: " + GetComponent<TagComponent>().Tag + ". Total time: " + Time.TotalTime + ". Delta Time: " + Time.DeltaTime);
             if (HasComponent<TransformComponent>())
             {
                 //Debug.Log(GetComponent<TagComponent>().Tag);

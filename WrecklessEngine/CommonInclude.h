@@ -7,6 +7,7 @@
 #include <vector>
 #include <Windows.h>
 #include <cassert>
+#include <functional>
 
 #define BIND_MEM_FN( fn ) std::bind(&fn, this);
 #define STRINGIFY_( s ) #s
@@ -17,6 +18,9 @@
 #define WRECK_PROFILE_SCOPE(name) Profiling::ScopedTimer _profiler##name(name)
 #define WRECK_PROFILE_FUNCTION() WRECK_PROFILE_SCOPE(__func__)
 #define WRECK_HR( x ) if( FAILED(x) ) assert(false)
+
+#define WRECK_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+#define BIT(x) (1 << x)
 
 #define PURE = 0
 

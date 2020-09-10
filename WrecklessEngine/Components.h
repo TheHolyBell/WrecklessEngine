@@ -56,4 +56,9 @@ namespace ECS
 	private:
 		Scripting::ScriptObject m_Object;
 	};
+
+	struct CameraComponent
+	{
+		
+	};
 }

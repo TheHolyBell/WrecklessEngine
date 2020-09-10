@@ -3,9 +3,13 @@
 #include "ITexture.h"
 #include "IShader.h"
 #include "Viewport.h"
+#include "IBuffer.h"
+#include "IInputLayout.h"
+#include "Topology.h"
 
 namespace Graphics
 {
+
 	class IRenderContext
 	{
 	public:
@@ -29,6 +33,18 @@ namespace Graphics
 		virtual void BindVertexShader(Ref<IVertexShader> vertex_shader) PURE;
 		virtual void BindPixelShader(Ref<IPixelShader> pixel_shader) PURE;
 		virtual void BindViewport(Viewport viewport) PURE;
+
+		virtual void BindVertexBuffer(Ref<IVertexBuffer> vertex_buffer, unsigned strides, unsigned offsets) PURE;
+		virtual void BindIndexBuffer(Ref<IIndexBuffer> index_buffer, TEX_FORMAT format, unsigned offset) PURE;
+		virtual void BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot) PURE;
+		virtual void BindInputLayout(Ref<IInputLayout> input_layout) PURE;
+		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) PURE;
+
+		virtual void MapDataToBuffer(Ref<IBuffer> buffer, void* data, unsigned size) PURE;
+		virtual void LoadDataFromBuffer(Ref<IBuffer> buffer, void* outputBuffer, unsigned size) PURE;
+
+		virtual void Draw(unsigned vertex_count, unsigned start_vertex_location) PURE;
+		virtual void DrawIndexed(unsigned index_count, unsigned start_index_location, unsigned base_vertex_location) PURE;
 
 		virtual void* GetNativePointer() const PURE;
 		// ----------------------------------

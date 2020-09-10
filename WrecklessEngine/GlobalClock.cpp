@@ -1,4 +1,5 @@
 #include "GlobalClock.h"
+#include "InputOutputStream.h"
 
 namespace Profiling
 {

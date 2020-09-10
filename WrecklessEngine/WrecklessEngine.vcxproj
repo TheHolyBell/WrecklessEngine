@@ -61,6 +61,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -78,6 +79,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -88,11 +90,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Bindable.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ComponentsCSharp.cpp" />
     <ClCompile Include="ConsoleAdapter.cpp" />
     <ClCompile Include="ConsoleClass.cpp" />
+    <ClCompile Include="D3D11Buffer.cpp" />
     <ClCompile Include="D3D11Device.cpp" />
+    <ClCompile Include="D3D11InputLayout.cpp" />
     <ClCompile Include="D3D11RenderContext.cpp" />
     <ClCompile Include="D3D11Shader.cpp" />
     <ClCompile Include="D3D11SwapChain.cpp" />
@@ -111,6 +117,8 @@
     <ClCompile Include="GamePadCSharp.cpp" />
     <ClCompile Include="GlobalClock.cpp" />
     <ClCompile Include="HrException.cpp" />
+    <ClCompile Include="ImGuiLayer.cpp" />
+    <ClCompile Include="ImGuiLogger.cpp" />
     <ClCompile Include="ImGui\ImCurveEdit.cpp" />
     <ClCompile Include="ImGui\ImGradient.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -124,6 +132,8 @@
     <ClCompile Include="IRenderContext.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="KeyboardCSharp.cpp" />
+    <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="LayerStack.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MouseCSharp.cpp" />
     <ClCompile Include="Noise.cpp" />
@@ -158,9 +168,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="ApplicationEvent.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableCodex.h" />
     <ClInclude Include="Buttons.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Components.h" />
@@ -168,7 +180,9 @@
     <ClInclude Include="ConditionalNoexcept.h" />
     <ClInclude Include="ConsoleAdapter.h" />
     <ClInclude Include="ConsoleClass.h" />
+    <ClInclude Include="D3D11Buffer.h" />
     <ClInclude Include="D3D11Device.h" />
+    <ClInclude Include="D3D11InputLayout.h" />
     <ClInclude Include="D3D11RenderContext.h" />
     <ClInclude Include="D3D11Shader.h" />
     <ClInclude Include="D3D11SwapChain.h" />
@@ -180,6 +194,7 @@
     <ClInclude Include="DynamicConstant.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityCSharp.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="FastNoise.h" />
     <ClInclude Include="FileDialog.h" />
     <ClInclude Include="FileHelper.h" />
@@ -191,6 +206,10 @@
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="Hasher.h" />
     <ClInclude Include="HrException.h" />
+    <ClInclude Include="IBuffer.h" />
+    <ClInclude Include="IInputLayout.h" />
+    <ClInclude Include="ImGuiLayer.h" />
+    <ClInclude Include="ImGuiLogger.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\ImCurveEdit.h" />
     <ClInclude Include="ImGui\ImGradient.h" />
@@ -210,8 +229,12 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="KeyboardCSharp.h" />
     <ClInclude Include="KeyCode.h" />
+    <ClInclude Include="KeyEvent.h" />
+    <ClInclude Include="Layer.h" />
+    <ClInclude Include="LayerStack.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MouseCSharp.h" />
+    <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Noise.h" />
     <ClInclude Include="NoiseCSharp.h" />
     <ClInclude Include="Parameters.h" />
@@ -241,6 +264,7 @@
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TimeCSharp.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Topology.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Viewport.h" />

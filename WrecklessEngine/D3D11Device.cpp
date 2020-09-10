@@ -11,6 +11,10 @@
 #include "DDSTextureLoader.h"
 #include "Renderer.h"
 
+#include "D3D11Buffer.h"
+#include "D3D11InputLayout.h"
+#include "D3D11Shader.h"
+
 namespace Graphics
 {
 	D3D11Device::D3D11Device(Microsoft::WRL::ComPtr<ID3D11Device> pDevice)
@@ -43,10 +47,94 @@ namespace Graphics
 	}
 	Ref<IVertexShader> D3D11Device::CreateVertexShader(const std::string& path)
 	{
-		return Ref<IVertexShader>();
+		Microsoft::WRL::ComPtr<ID3DBlob> _pCompiledCode;
+		Microsoft::WRL::ComPtr<ID3D11VertexShader> _pVertexShader;
+
+		WRECK_HR(D3DReadFileToBlob(Misc::StringHelper::ToWide(path).c_str(), &_pCompiledCode));
+		WRECK_HR(m_pDevice->CreateVertexShader(_pCompiledCode->GetBufferPointer(), _pCompiledCode->GetBufferSize(), nullptr, &_pVertexShader));
+
+		return std::make_shared<D3D11VertexShader>(_pVertexShader, _pCompiledCode);
 	}
 	Ref<IPixelShader> D3D11Device::CreatePixelShader(const std::string& path)
 	{
-		return Ref<IPixelShader>();
+		Microsoft::WRL::ComPtr<ID3DBlob> _pCompiledCode;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader> _pPixelShader;
+
+		WRECK_HR(D3DReadFileToBlob(Misc::StringHelper::ToWide(path).c_str(), &_pCompiledCode));
+		WRECK_HR(m_pDevice->CreatePixelShader(_pCompiledCode->GetBufferPointer(), _pCompiledCode->GetBufferSize(), nullptr, &_pPixelShader));
+
+		return std::make_shared<D3D11PixelShader>(_pPixelShader, _pCompiledCode);
+	}
+	Ref<IVertexBuffer> D3D11Device::CreateVertexBuffer(const Dynamic::VertexBuffer& buffer)
+	{
+		Microsoft::WRL::ComPtr<ID3D11Buffer> _pBuffer;
+
+		D3D11_BUFFER_DESC _vbDesc = {};
+
+		_vbDesc.ByteWidth = buffer.SizeBytes();
+		_vbDesc.Usage = D3D11_USAGE_DEFAULT;
+		_vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+		D3D11_SUBRESOURCE_DATA _vinitData = {};
+		_vinitData.pSysMem = buffer.GetData();
+
+		WRECK_HR(m_pDevice->CreateBuffer(&_vbDesc, &_vinitData, &_pBuffer));
+
+		return std::make_shared<D3D11VertexBuffer>(_pBuffer);
+	}
+	Ref<IIndexBuffer> D3D11Device::CreateIndexBuffer(const std::vector<unsigned int>& buffer)
+	{
+		Microsoft::WRL::ComPtr<ID3D11Buffer> _pBuffer;
+
+		D3D11_BUFFER_DESC _vbDesc = {};
+
+		_vbDesc.ByteWidth = buffer.size() * sizeof(unsigned int);
+		_vbDesc.Usage = D3D11_USAGE_DEFAULT;
+		_vbDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+		D3D11_SUBRESOURCE_DATA _vinitData = {};
+		_vinitData.pSysMem = buffer.data();
+
+		WRECK_HR(m_pDevice->CreateBuffer(&_vbDesc, &_vinitData, &_pBuffer));
+
+		return std::make_shared<D3D11IndexBuffer>(_pBuffer);
+	}
+	Ref<IConstantBuffer> D3D11Device::CreateConstantBuffer(const Dynamic::Buffer& buffer, BUFFER_USAGE usage)
+	{
+		Microsoft::WRL::ComPtr<ID3D11Buffer> _pBuffer;
+
+		D3D11_BUFFER_DESC _cbDesc = {};
+
+		_cbDesc.ByteWidth = buffer.GetSizeInBytes();
+		_cbDesc.Usage = (D3D11_USAGE)usage;
+		_cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		
+		switch (usage)
+		{
+		case USAGE_DYNAMIC:
+			_cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			break;
+		case USAGE_STAGING:
+			_cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+			break;
+		}
+
+		D3D11_SUBRESOURCE_DATA _cbInitData = {};
+		_cbInitData.pSysMem = buffer.GetData();
+
+		WRECK_HR(m_pDevice->CreateBuffer(&_cbDesc, &_cbInitData, &_pBuffer));
+
+		return std::make_shared<D3D11ConstantBuffer>(_pBuffer);
+	}
+	Ref<IInputLayout> D3D11Device::CreateInputLayout(const Dynamic::VertexLayout& layout, Ref<IVertexShader> vertex_shader)
+	{
+		Microsoft::WRL::ComPtr<ID3D11InputLayout> _pInputLayout;
+
+		auto layoutDesc = layout.GetD3DLayout();
+		ID3DBlob* pCode = reinterpret_cast<ID3DBlob*>(vertex_shader->GetByteCode());
+
+		WRECK_HR(m_pDevice->CreateInputLayout(layoutDesc.data(), layoutDesc.size(), pCode->GetBufferPointer(), pCode->GetBufferSize(), &_pInputLayout));
+
+		return std::make_shared<D3D11InputLayout>(_pInputLayout);
 	}
 }

@@ -47,6 +47,81 @@ namespace Graphics
 
 		m_pDeviceContext->RSSetViewports(1, &vp);
 	}
+	void D3D11RenderContext::BindVertexBuffer(Ref<IVertexBuffer> vertex_buffer, unsigned strides, unsigned offsets)
+	{
+		ID3D11Buffer* _vertexBuffer = reinterpret_cast<ID3D11Buffer*>(vertex_buffer->GetNativePointer());
+
+		m_pDeviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &strides, &offsets);
+	}
+	void D3D11RenderContext::BindIndexBuffer(Ref<IIndexBuffer> index_buffer, TEX_FORMAT format, unsigned offset)
+	{
+		ID3D11Buffer* _indexBuffer = reinterpret_cast<ID3D11Buffer*>(index_buffer->GetNativePointer());
+
+		m_pDeviceContext->IASetIndexBuffer(_indexBuffer, (DXGI_FORMAT)format, offset);
+	}
+	void D3D11RenderContext::BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot)
+	{
+		ID3D11Buffer* _constantBuffer = reinterpret_cast<ID3D11Buffer*>(constant_buffer->GetNativePointer());
+		
+		switch (stage)
+		{
+		case SHADER_TYPE::Vertex:
+			m_pDeviceContext->VSSetConstantBuffers(slot, 1, &_constantBuffer);
+			break;
+		case SHADER_TYPE::Hull:
+			m_pDeviceContext->HSSetConstantBuffers(slot, 1, &_constantBuffer);
+			break;
+		case SHADER_TYPE::Domain:
+			m_pDeviceContext->DSSetConstantBuffers(slot, 1, &_constantBuffer);
+			break;
+		case SHADER_TYPE::Geometry:
+			m_pDeviceContext->GSSetConstantBuffers(slot, 1, &_constantBuffer);
+			break;
+		case SHADER_TYPE::Pixel:
+			m_pDeviceContext->PSSetConstantBuffers(slot, 1, &_constantBuffer);
+			break;
+		case SHADER_TYPE::Compute:
+			m_pDeviceContext->CSSetConstantBuffers(slot, 1, &_constantBuffer);
+			break;
+		}
+	}
+	void D3D11RenderContext::BindInputLayout(Ref<IInputLayout> input_layout)
+	{
+		ID3D11InputLayout* _pInputLayout = reinterpret_cast<ID3D11InputLayout*>(input_layout->GetNativePointer());
+		m_pDeviceContext->IASetInputLayout(_pInputLayout);
+	}
+	void D3D11RenderContext::BindTopology(PRIMITIVE_TOPOLOGY topology)
+	{
+		m_pDeviceContext->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)topology);
+	}
+	void D3D11RenderContext::MapDataToBuffer(Ref<IBuffer> buffer, void* data, unsigned size)
+	{
+		ID3D11Buffer* _pBuffer = reinterpret_cast<ID3D11Buffer*>(buffer->GetNativePointer());
+		D3D11_MAPPED_SUBRESOURCE _mapData = {};
+		WRECK_HR(m_pDeviceContext->Map(_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &_mapData));
+
+		memcpy(_mapData.pData, data, size);
+
+		m_pDeviceContext->Unmap(_pBuffer, 0);
+	}
+	void D3D11RenderContext::LoadDataFromBuffer(Ref<IBuffer> buffer, void* outputBuffer, unsigned size)
+	{
+		ID3D11Buffer* _pBuffer = reinterpret_cast<ID3D11Buffer*>(buffer->GetNativePointer());
+		D3D11_MAPPED_SUBRESOURCE _mapData = {};
+		WRECK_HR(m_pDeviceContext->Map(_pBuffer, 0, D3D11_MAP_READ, 0, &_mapData));
+
+		memcpy(outputBuffer, _mapData.pData, size);
+
+		m_pDeviceContext->Unmap(_pBuffer, 0);
+	}
+	void D3D11RenderContext::Draw(unsigned vertex_count, unsigned start_vertex_location)
+	{
+		m_pDeviceContext->Draw(vertex_count, start_vertex_location);
+	}
+	void D3D11RenderContext::DrawIndexed(unsigned index_count, unsigned start_index_location, unsigned base_vertex_location)
+	{
+		m_pDeviceContext->DrawIndexed(index_count, start_index_location, base_vertex_location);
+	}
 	void* D3D11RenderContext::GetNativePointer() const
 	{
 		return m_pDeviceContext.Get();

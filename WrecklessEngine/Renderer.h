@@ -17,6 +17,16 @@ namespace Graphics
 		OpenGL
 	};
 
+	struct RendererAPICapabilities
+	{
+		std::string Vendor;
+		std::string Renderer;
+		std::string Version;
+
+		int MaxSamples = 0;
+		float MaxAnisotropy = 0.0f;
+	};
+
 	class Renderer
 	{
 	public:
@@ -67,20 +77,21 @@ namespace Graphics
 		Renderer(Renderer&& rhs) = delete;
 		Renderer& operator=(Renderer&& rhs) = delete;
 
+		static RendererAPICapabilities& GetCapabilities();
 
-
-		static void Initialize(RendereringAPI apiType, Ref<IWindow> window);
+		static void Initialize(RendereringAPI apiType, IWindow& window);
 		static Ref<IDevice> GetDevice();
 		static Ref<IRenderContext> GetRenderContext();
 		static Ref<ISwapChain> GetSwapChain();
 		static Ref<InfoManager> GetInfoManager();
 	private:
-		static void InitializeD3D11(Ref<IWindow> window);
-		static void InitializeOpenGL(Ref<IWindow> window);
+		static void InitializeD3D11(IWindow& window);
+		static void InitializeOpenGL(IWindow& window);
 	private:
 		static Ref<IDevice> s_Device;
 		static Ref<IRenderContext> s_RenderContext;
 		static Ref<InfoManager> s_InfoManager;
 		static Ref<ISwapChain> s_SwapChain;
+		static RendererAPICapabilities s_Capabilities;
 	};
 }

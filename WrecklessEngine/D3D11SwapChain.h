@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonInclude.h"
 #include "ISwapChain.h"
+#include "D3D11Texture.h"
 
 #include <d3d11.h>
 #include <wrl/client.h>
@@ -22,7 +23,7 @@ namespace Graphics
 		virtual void* GetNativePointer() const override;
 	private:
 		Microsoft::WRL::ComPtr<IDXGISwapChain> m_pSwapChain;
-		Ref<IRenderTarget> m_pRenderTarget;
-		Ref<IDepthStencilView> m_pDepthStencilView;
+		Ref<D3D11RenderTarget> m_pRenderTarget;
+		Ref<D3D11DepthStencilView> m_pDepthStencilView;
 	};
 }
