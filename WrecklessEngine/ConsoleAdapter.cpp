@@ -31,6 +31,12 @@ namespace IO
 		return *this;
 	}
 
+	IOutput& ConsoleOutput::operator<<(long number)
+	{
+		Console::Write(std::to_string(number));
+		return *this;
+	}
+
 	IOutput& ConsoleOutput::operator<<(long long number)
 	{
 		Console::Write(std::to_string(number));
@@ -44,6 +50,12 @@ namespace IO
 	}
 
 	IOutput& ConsoleOutput::operator<<(unsigned number)
+	{
+		Console::Write(std::to_string(number));
+		return *this;
+	}
+
+	IOutput& ConsoleOutput::operator<<(unsigned long number)
 	{
 		Console::Write(std::to_string(number));
 		return *this;

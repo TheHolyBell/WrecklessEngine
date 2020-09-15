@@ -41,7 +41,7 @@ namespace Graphics
 		return m_Height;
 	}
 	D3D11RenderTarget::D3D11RenderTarget(Microsoft::WRL::ComPtr<ID3D11RenderTargetView> RTV)
-		: m_RTV(RTV)
+		: m_RTV(std::move(RTV))
 	{
 		D3D11_RENDER_TARGET_VIEW_DESC _rtvDesc = {};
 		m_RTV->GetDesc(&_rtvDesc);
@@ -49,7 +49,7 @@ namespace Graphics
 
 		Microsoft::WRL::ComPtr<ID3D11Resource> _pResource;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _pTex;
-		RTV->GetResource(&_pResource);
+		m_RTV->GetResource(&_pResource);
 
 		WRECK_HR(_pResource.As(&_pTex));
 
@@ -81,7 +81,6 @@ namespace Graphics
 	}
 	D3D11RenderTarget::~D3D11RenderTarget()
 	{
-		IO::cout << "D3D11RenderTarget" << IO::endl;
 	}
 	D3D11DepthStencilView::D3D11DepthStencilView(Microsoft::WRL::ComPtr<ID3D11DepthStencilView> DSV)
 		: m_DSV(DSV)
@@ -124,6 +123,5 @@ namespace Graphics
 	}
 	D3D11DepthStencilView::~D3D11DepthStencilView()
 	{
-		IO::cout << "D3D11DepthStencilView" << IO::endl;
 	}
 }

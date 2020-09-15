@@ -19,6 +19,7 @@ namespace Graphics
 		virtual void SetTitle(const char* title) PURE;
 		virtual void SetIcon(const char* filename) PURE;
 		virtual void SetEventCallback(const EventCallbackFn& callback) PURE;
+		virtual void SetVSyncState(bool state) PURE;
 		virtual ~IWindow() = default;
 	};
 }

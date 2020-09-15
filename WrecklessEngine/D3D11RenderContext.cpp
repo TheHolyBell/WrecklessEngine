@@ -99,6 +99,32 @@ namespace Graphics
 	{
 		m_pDeviceContext->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)topology);
 	}
+	void D3D11RenderContext::BindTexture2D(Ref<ITexture> texture, SHADER_TYPE stage, unsigned slot)
+	{
+		ID3D11ShaderResourceView* _pSrv = reinterpret_cast<ID3D11ShaderResourceView*>(texture->GetNativePointer());
+
+		switch (stage)
+		{
+			case SHADER_TYPE::Vertex:
+				m_pDeviceContext->VSSetShaderResources(slot, 1, &_pSrv);
+				break;
+			case SHADER_TYPE::Hull:
+				m_pDeviceContext->HSSetShaderResources(slot, 1, &_pSrv);
+				break;
+			case SHADER_TYPE::Domain:
+				m_pDeviceContext->DSSetShaderResources(slot, 1, &_pSrv);
+				break;
+			case SHADER_TYPE::Geometry:
+				m_pDeviceContext->GSSetShaderResources(slot, 1, &_pSrv);
+				break;
+			case SHADER_TYPE::Pixel:
+				m_pDeviceContext->PSSetShaderResources(slot, 1, &_pSrv);
+				break;
+			case SHADER_TYPE::Compute:
+				m_pDeviceContext->CSSetShaderResources(slot, 1, &_pSrv);
+				break;
+		}
+	}
 	void D3D11RenderContext::MapDataToBuffer(Ref<IBuffer> buffer, const void* data, unsigned size)
 	{
 		ID3D11Buffer* _pBuffer = reinterpret_cast<ID3D11Buffer*>(buffer->GetNativePointer());

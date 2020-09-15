@@ -6,6 +6,7 @@
 #include "Manipulators.h"
 #include "FileDialog.h"
 #include "SceneCamera.h"
+#include "VanillaPass.h"
 
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
@@ -43,32 +44,44 @@ namespace Wreckless
 		Graphics::Renderer::GetRenderContext()->BindViewport(m_Viewport);
 
 		m_pCube = std::make_shared<Misc::TestCube>(5);
+
+		Graphics::VanillaPass::Initialize(width, height);
 	}
 	void Application::Run()
 	{
 		OnInit();
 
-		while (m_Running)
+		MSG msg = {};
+		while (msg.message != WM_QUIT && m_Running)
 		{
-			if (!m_Minimized)
+			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
-				float color[] = { 0.2f, 0.6, 0.8, 1.0f };
-				auto backBuffer = Graphics::Renderer::GetSwapChain()->GetBackBuffer();
-				auto depthBuffer = Graphics::Renderer::GetSwapChain()->GetDepthStencilView();
-
-				Graphics::Renderer::GetRenderContext()->ClearRenderTarget(backBuffer, color);
-				Graphics::Renderer::GetRenderContext()->ClearDepthStencilView(depthBuffer, 1.0f);
-				Graphics::Renderer::GetRenderContext()->SetOutputTargets(backBuffer, depthBuffer);
-				Profiling::GlobalClock::Update();
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate();
-
-				m_pCube->Draw();
-
-				RenderImGui();
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
 			}
+			else
+			{
+				if (!m_Minimized)
+				{
+					Profiling::GlobalClock::Update();
+					float color[] = { 0.2f, 0.6, 0.8, 1.0f };
+					Graphics::VanillaPass::Begin(color);
+					m_pCube->Draw();
+					Graphics::VanillaPass::End();
+					auto backBuffer = Graphics::Renderer::GetSwapChain()->GetBackBuffer();
+					auto depthBuffer = Graphics::Renderer::GetSwapChain()->GetDepthStencilView();
 
-			m_pWindow->OnUpdate();
+					Graphics::Renderer::GetRenderContext()->ClearRenderTarget(backBuffer, color);
+					Graphics::Renderer::GetRenderContext()->ClearDepthStencilView(depthBuffer, 1.0f);
+					Graphics::Renderer::GetRenderContext()->SetOutputTargets(backBuffer, depthBuffer);
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate();
+
+
+					RenderImGui();
+					m_pWindow->OnUpdate();
+				}
+			}
 		}
 
 		OnShutdown();
@@ -101,42 +114,7 @@ namespace Wreckless
 	{
 		WRECK_PROFILE_FUNCTION();
 		m_ImGuiLayer->Begin();
-		if (ImGui::BeginMainMenuBar())
-		{
-			if (ImGui::BeginMenu("File"))
-			{
-				if (ImGui::MenuItem("Open"))
-					IO::cout << *FileSystem::FileDialog::OpenFile() << IO::endl;
-				if (ImGui::MenuItem("Save"))
-					IO::cout << *FileSystem::FileDialog::SaveFile() << IO::endl;
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Data"))
-			{
-				if (ImGui::MenuItem("Clear World"))
-					IO::cout << "Clear World command has been requested" << IO::endl;
-				ImGui::EndMenu();
-			}
-
-			ImGui::EndMainMenuBar();
-		}
-
-		using namespace Graphics;
-		if (ImGui::Begin("Renderer"))
-		{
-			auto& caps = Renderer::GetCapabilities();
-			ImGui::Text("GPU: %s", caps.GPU_Name.c_str());
-			ImGui::Text("Memory size: %d MB", caps.Memory_Size);
-			ImGui::Text("Delta Time: %.5fs", Profiling::GlobalClock::DeltaTime());
-			ImGui::Text("Total Time: %.2fs", Profiling::GlobalClock::TotalTime());
-			ImGui::Text("Framerate: %d", Profiling::GlobalClock::GetFrameCount());
-			ImGui::Text("Image dimensions: %dx%d", m_pTexture->GetWidth(), m_pTexture->GetHeight());
-			ImGui::Image((ImTextureID)m_pTexture->GetNativePointer(), ImVec2(m_pTexture->GetWidth(), m_pTexture->GetHeight()));
-		}
-		ImGui::End();
-		IO::ImGuiOutput::Draw();
-
+		
 		for (Layer* layer : m_LayerStack)
 			layer->OnImGuiRender();
 
@@ -145,6 +123,10 @@ namespace Wreckless
 	Graphics::IWindow& Application::GetWindow()
 	{
 		return *m_pWindow;
+	}
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 	Application& Application::GetInstance()
 	{

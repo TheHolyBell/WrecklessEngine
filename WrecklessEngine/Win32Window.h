@@ -21,6 +21,7 @@ namespace Graphics
 		virtual void SetIcon(const char* filename) override;
 		virtual void OnUpdate() override;
 		virtual void SetEventCallback(const EventCallbackFn& callback) override;
+		virtual void SetVSyncState(bool state) override;
 		virtual ~Win32Window() = default;
 	private:
 		static LRESULT CALLBACK HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -31,5 +32,7 @@ namespace Graphics
 		EventCallbackFn m_Callback = nullptr;
 		int m_Width;
 		int m_Height;
+		bool m_bVSync = false;
+		bool m_bResizing = false;
 	};
 }

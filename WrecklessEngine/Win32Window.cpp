@@ -66,18 +66,15 @@ namespace Graphics
     }
     void Win32Window::OnUpdate()
     {
-        MSG msg = {};
-        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-
-        Graphics::Renderer::GetSwapChain()->SwapBuffers(Graphics::SwapFlags::NO_LIMIT);
+        Graphics::Renderer::GetSwapChain()->SwapBuffers(m_bVSync ? Graphics::SwapFlags::RATE_60 : Graphics::SwapFlags::NO_LIMIT);
     }
     void Win32Window::SetEventCallback(const EventCallbackFn& callback)
     {
         m_Callback = callback;
+    }
+    void Win32Window::SetVSyncState(bool state)
+    {
+        m_bVSync = state;
     }
     LRESULT Win32Window::HandleMsgSetup(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
@@ -145,7 +142,20 @@ namespace Graphics
             m_Width = LOWORD(lParam);
             m_Height = HIWORD(lParam);
             WindowResizeEvent event(m_Width, m_Height);
-            if(m_Callback != nullptr)
+            if (m_Callback != nullptr && !m_bResizing)
+                m_Callback(event);
+            break;
+        }
+
+        case WM_ENTERSIZEMOVE:
+            m_bResizing = true;
+            break;
+
+        case WM_EXITSIZEMOVE:
+        {
+            m_bResizing = false;
+            WindowResizeEvent event(m_Width, m_Height);
+            if (m_Callback != nullptr)
                 m_Callback(event);
             break;
         }

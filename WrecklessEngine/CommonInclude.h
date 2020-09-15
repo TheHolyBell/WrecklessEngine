@@ -16,7 +16,7 @@
 #define STRINGIFY_( s ) #s
 #define STRINGIFY( s ) STRINGIFY_( s )
 
-#define PROFILING
+//#define PROFILING
 
 #ifdef PROFILING
 	#define WRECK_PROFILE_SCOPE(name) Profiling::ScopedTimer _profiler##__LINE__(name)

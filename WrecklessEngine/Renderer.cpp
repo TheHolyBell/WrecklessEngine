@@ -72,7 +72,7 @@ namespace Graphics
 		_scd.BufferCount = 1;
 		_scd.OutputWindow = (HWND)window.GetWindowHandle();
 		_scd.Windowed = true;
-		_scd.SampleDesc.Count = 4;
+		_scd.SampleDesc.Count = 1;
 		_scd.SampleDesc.Quality = 0;
 		_scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		_scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;

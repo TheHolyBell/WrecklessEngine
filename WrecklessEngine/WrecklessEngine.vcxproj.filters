@@ -369,6 +369,18 @@
     <ClCompile Include="TestCube.cpp">
       <Filter>Miscellanious</Filter>
     </ClCompile>
+    <ClCompile Include="EditorLayer.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalApplication.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="VanillaPass.cpp">
+      <Filter>RenderPasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReflector.h">
@@ -739,6 +751,15 @@
     </ClInclude>
     <ClInclude Include="TestCube.h">
       <Filter>Miscellanious</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorLayer.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalApplication.h">
+      <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

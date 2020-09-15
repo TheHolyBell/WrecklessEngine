@@ -34,6 +34,7 @@ namespace Wreckless
 
 		Graphics::IWindow& GetWindow();
 
+		void Close();
 		static Application& GetInstance();
 	private:
 		bool OnWindowResize(WindowResizeEvent& e);

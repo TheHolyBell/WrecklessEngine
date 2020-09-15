@@ -87,19 +87,18 @@ namespace Graphics
 
 		ID3D11Device* _pDevice = reinterpret_cast<ID3D11Device*>(Renderer::GetDevice()->GetNativePointer());
 
-		IO::cout << m_pRenderTarget->Reset() << IO::endl;
 		m_pRenderTarget.reset();
-		m_pDepthStencilView->Reset();
+		m_pDepthStencilView.reset();
 
 		WRECK_HR(m_pSwapChain->ResizeBuffers(1, width, height, previousFormat, 0));
 
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> swapChainBufferReference;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _backBuffer;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _pTarget;
-		m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &swapChainBufferReference);
-		_pDevice->CreateRenderTargetView(swapChainBufferReference.Get(), nullptr, &_pTarget);
+		WRECK_HR(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(_backBuffer.GetAddressOf())));
+		WRECK_HR(_pDevice->CreateRenderTargetView(_backBuffer.Get(), nullptr, &_pTarget));
 
-		m_pRenderTarget = std::make_shared<D3D11RenderTarget>(_pTarget);
-
+		m_pRenderTarget = std::make_shared<D3D11RenderTarget>(std::move(_pTarget));
+		
 		D3D11_TEXTURE2D_DESC _depthDesc = {};
 		_depthDesc.Width = width;
 		_depthDesc.Height = height;
@@ -108,7 +107,7 @@ namespace Graphics
 		_depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 		DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-		m_pSwapChain->GetDesc(&swapChainDesc);
+		WRECK_HR(m_pSwapChain->GetDesc(&swapChainDesc));
 
 		_depthDesc.SampleDesc = swapChainDesc.SampleDesc;
 		_depthDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -118,7 +117,7 @@ namespace Graphics
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _pDepthStencilView;
 		WRECK_HR(_pDevice->CreateTexture2D(&_depthDesc, nullptr, &_pDepthBuffer));
 		WRECK_HR(_pDevice->CreateDepthStencilView(_pDepthBuffer.Get(), nullptr, &_pDepthStencilView));
-		
+		_pDepthBuffer.Reset();
 		m_pDepthStencilView = std::make_shared<D3D11DepthStencilView>(_pDepthStencilView);
 	}
 	Ref<IRenderTarget> D3D11SwapChain::GetBackBuffer() const

@@ -94,6 +94,5 @@ namespace Wreckless
 	}
 	void ImGuiLayer::OnImGuiRender()
 	{
-		WRECK_PROFILE_FUNCTION();
 	}
 }

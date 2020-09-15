@@ -29,6 +29,7 @@ namespace Graphics
 		virtual void BindInputLayout(Ref<IInputLayout> input_layout) override;
 		virtual void BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot) override;
 		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) override;
+		virtual void BindTexture2D(Ref<ITexture> texture, SHADER_TYPE stage, unsigned slot) override;
 
 		virtual void MapDataToBuffer(Ref<IBuffer> buffer, const void* data, unsigned size) override;
 		virtual void LoadDataFromBuffer(Ref<IBuffer> buffer, void* outputBuffer, unsigned size) override;

@@ -104,6 +104,8 @@
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="CameraRegistry.cpp" />
     <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="EditorLayer.cpp" />
+    <ClCompile Include="FinalApplication.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="OrthogonalCamera.cpp" />
@@ -177,10 +179,12 @@
     <ClCompile Include="ShaderReflector.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="TestCube.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TimeCSharp.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Topology.cpp" />
     <ClCompile Include="TransformCBuf.cpp" />
+    <ClCompile Include="VanillaPass.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="VertexShader.cpp" />
@@ -197,6 +201,8 @@
     <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Drawable.h" />
+    <ClInclude Include="EditorLayer.h" />
+    <ClInclude Include="FinalApplication.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />
@@ -297,6 +303,7 @@
     <ClInclude Include="ShadowMapPass.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TestCube.h" />
+    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureDesc.h" />
     <ClInclude Include="TimeCSharp.h" />
     <ClInclude Include="Timer.h" />

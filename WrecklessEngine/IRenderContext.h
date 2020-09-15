@@ -41,6 +41,7 @@ namespace Graphics
 		virtual void BindInputLayout(Ref<IInputLayout> input_layout) PURE;
 		virtual void BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot) PURE;
 		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) PURE;
+		virtual void BindTexture2D(Ref<ITexture> texture, SHADER_TYPE stage, unsigned slot) PURE;
 
 		virtual void MapDataToBuffer(Ref<IBuffer> buffer, const void* data, unsigned size) PURE;
 		virtual void LoadDataFromBuffer(Ref<IBuffer> buffer, void* outputBuffer, unsigned size) PURE;
