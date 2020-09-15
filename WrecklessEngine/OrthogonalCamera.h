@@ -33,7 +33,7 @@ namespace CameraSystem
 		float GetBottomPlane() const;
 
 		// Set frustum
-		void SerFrustumProperties(float left, float right, float bottom, float top, float zn, float zf);
+		void SetFrustumProperties(float left, float right, float bottom, float top, float zn, float zf);
 
 		// Define camera space via LookAt parameters
 		void LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp);

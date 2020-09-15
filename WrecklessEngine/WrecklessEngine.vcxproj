@@ -47,11 +47,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\Vendor\EnTT;$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Vendor\Mono\lib;$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
+    <MultiProcFXC>true</MultiProcFXC>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)\Vendor\EnTT;$(SolutionDir)\Vendor\Mono\include\mono-2.0;$(SolutionDir)\Vendor\assimp\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Vendor\Mono\lib;$(SolutionDir)\Vendor\assimp\bin\x64;$(LibraryPath)</LibraryPath>
+    <MultiProcFXC>true</MultiProcFXC>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -68,6 +70,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;assimp-vc140-mt.lib;mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>$(SolutionDir)WrecklessEngine\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -88,11 +94,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;xinput.lib;dinput8.lib;assimp-vc140-mt.lib;mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+      <ObjectFileOutput>$(SolutionDir)WrecklessEngine\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="CameraRegistry.cpp" />
+    <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="OrthogonalCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="ComponentsCSharp.cpp" />
@@ -141,6 +154,7 @@
     <ClCompile Include="Noise.cpp" />
     <ClCompile Include="NoiseCSharp.cpp" />
     <ClCompile Include="Parameters.cpp" />
+    <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="InputOutputStream.cpp" />
@@ -148,6 +162,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manipulators.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneCamera.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScriptClass.cpp" />
     <ClCompile Include="ScriptDomain.cpp" />
@@ -161,9 +176,14 @@
     <ClCompile Include="ScriptString.cpp" />
     <ClCompile Include="ShaderReflector.cpp" />
     <ClCompile Include="StringHelper.cpp" />
+    <ClCompile Include="TestCube.cpp" />
     <ClCompile Include="TimeCSharp.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Topology.cpp" />
+    <ClCompile Include="TransformCBuf.cpp" />
     <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
     <ClCompile Include="Win32Window.cpp" />
     <ClCompile Include="WrecklessException.cpp" />
@@ -174,6 +194,12 @@
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableCodex.h" />
     <ClInclude Include="Buttons.h" />
+    <ClInclude Include="ConstantBuffers.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Drawable.h" />
+    <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="IndexedTriangleList.h" />
+    <ClInclude Include="InputLayout.h" />
     <ClInclude Include="OrthogonalCamera.h" />
     <ClInclude Include="PerspectiveCamera.h" />
     <ClInclude Include="CameraRegistry.h" />
@@ -243,6 +269,7 @@
     <ClInclude Include="Noise.h" />
     <ClInclude Include="NoiseCSharp.h" />
     <ClInclude Include="Parameters.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="IDevice.h" />
@@ -254,6 +281,7 @@
     <ClInclude Include="Manipulators.h" />
     <ClInclude Include="ITexture.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneCamera.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScriptClass.h" />
     <ClInclude Include="ScriptDomain.h" />
@@ -268,12 +296,16 @@
     <ClInclude Include="ShaderReflector.h" />
     <ClInclude Include="ShadowMapPass.h" />
     <ClInclude Include="StringHelper.h" />
+    <ClInclude Include="TestCube.h" />
     <ClInclude Include="TextureDesc.h" />
     <ClInclude Include="TimeCSharp.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />
+    <ClInclude Include="TopologyTypes.h" />
+    <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="VanillaPass.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Viewport.h" />
     <ClInclude Include="WICTextureLoader.h" />
@@ -285,6 +317,17 @@
     <None Include="DXGetErrorDescription.inl" />
     <None Include="DXGetErrorString.inl" />
     <None Include="DXTrace.inl" />
+    <None Include="Transform.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="DickVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="DickPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

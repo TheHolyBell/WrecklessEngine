@@ -15,10 +15,10 @@ namespace Bindable
 	class IBindable
 	{
 	public:
-		virtual void Bind(Graphics::Renderer& renderer) noxnd PURE;
+		virtual void Bind() noxnd PURE;
 		virtual std::string GetUID() const noexcept PURE;
 		virtual ~IBindable() = default;
-	protected:
-		static std::shared_ptr<Graphics::InfoManager> GetInfoManager(Graphics::Renderer& renderer);
+
+		static Ref<Graphics::InfoManager> GetInfoManager();
 	};
 }

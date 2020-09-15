@@ -71,7 +71,7 @@ namespace CameraSystem
 	{
 		return m_BottomPlane;
 	}
-	void OrthogonalCamera::SerFrustumProperties(float left, float right, float bottom, float top, float zn, float zf)
+	void OrthogonalCamera::SetFrustumProperties(float left, float right, float bottom, float top, float zn, float zf)
 	{
 		m_LeftPlane = left;
 		m_RightPlane = right;

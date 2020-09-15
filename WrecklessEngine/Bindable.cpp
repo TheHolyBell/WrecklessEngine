@@ -3,10 +3,9 @@
 
 namespace Bindable
 {
-
-    std::shared_ptr<Graphics::InfoManager> IBindable::GetInfoManager(Graphics::Renderer& renderer)
+    Ref<Graphics::InfoManager> IBindable::GetInfoManager()
     {
-        return renderer.GetInfoManager();
+        return Graphics::Renderer::GetInfoManager();
     }
 
 }

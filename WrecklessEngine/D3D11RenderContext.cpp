@@ -99,7 +99,7 @@ namespace Graphics
 	{
 		m_pDeviceContext->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)topology);
 	}
-	void D3D11RenderContext::MapDataToBuffer(Ref<IBuffer> buffer, void* data, unsigned size)
+	void D3D11RenderContext::MapDataToBuffer(Ref<IBuffer> buffer, const void* data, unsigned size)
 	{
 		ID3D11Buffer* _pBuffer = reinterpret_cast<ID3D11Buffer*>(buffer->GetNativePointer());
 		D3D11_MAPPED_SUBRESOURCE _mapData = {};

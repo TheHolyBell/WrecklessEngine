@@ -79,9 +79,6 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{79aa9950-c24d-4809-a79d-a283355424e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\BindableSystem">
-      <UniqueIdentifier>{28e9dd22-147f-4616-a3c9-1995705f7590}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FileSystem">
       <UniqueIdentifier>{76eebe2e-ee8d-42f0-bafb-2a07bdaee0bd}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,18 @@
     </Filter>
     <Filter Include="RenderPasses">
       <UniqueIdentifier>{c72af0b6-ddb5-42d3-816e-bde6587f31aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{6eabf3db-1aef-43bc-8507-9de37fadee09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\VS">
+      <UniqueIdentifier>{80d3d40b-4fbb-40de-9312-d81ae4cc5892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PS">
+      <UniqueIdentifier>{c1e8cbe4-8251-478b-906b-060bb7857ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Headers">
+      <UniqueIdentifier>{e7de32ec-d245-444f-9045-f1c6b720a9f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -329,6 +338,36 @@
     </ClCompile>
     <ClCompile Include="CameraRegistry.cpp">
       <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Topology.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCamera.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformCBuf.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Miscellanious</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCube.cpp">
+      <Filter>Miscellanious</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -641,9 +680,6 @@
     <ClInclude Include="D3D11InputLayout.h">
       <Filter>Graphics\Implementations\D3D11/Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Topology.h">
-      <Filter>Graphics\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="ISamplerState.h">
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
@@ -665,6 +701,45 @@
     <ClInclude Include="TextureDesc.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="TopologyTypes.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Topology.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Miscellanious</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexedTriangleList.h">
+      <Filter>Miscellanious</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformCBuf.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffers.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCamera.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Miscellanious</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCube.h">
+      <Filter>Miscellanious</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -676,5 +751,16 @@
     <None Include="DXTrace.inl">
       <Filter>Graphics\Debug\DxErr</Filter>
     </None>
+    <None Include="Transform.hlsli">
+      <Filter>Shaders\Headers</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="DickPS.hlsl">
+      <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="DickVS.hlsl">
+      <Filter>Shaders\VS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

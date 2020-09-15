@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	using namespace Input;
 	using namespace IO;
-	//Console::Initialize();
+	Console::Initialize();
 
 	/*std::hash<std::string> hasher;
 	

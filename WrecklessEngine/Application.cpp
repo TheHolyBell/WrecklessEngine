@@ -5,6 +5,7 @@
 #include "ImGuiLogger.h"
 #include "Manipulators.h"
 #include "FileDialog.h"
+#include "SceneCamera.h"
 
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
@@ -25,7 +26,23 @@ namespace Wreckless
 		m_ImGuiLayer = new ImGuiLayer("ImGui");
 		PushOverlay(m_ImGuiLayer);
 
+		m_pTexture = Graphics::Renderer::GetDevice()->CreateTexture2D("D:\\Downloads\\image.png");
+		m_Camera.SetFrustumProperties(3.14159 / 2, (float)width  / (float)height, 0.1f, 100);
 
+		m_Camera.LookAt(DirectX::XMFLOAT3{ 10.0f, 5.0f, -20.0f }, DirectX::XMFLOAT3{0,0,0},
+			DirectX::XMFLOAT3{ 0,1,0 });
+		m_Camera.UpdateViewMatrix();
+		CameraSystem::SceneCamera::SetView(m_Camera.GetView());
+		CameraSystem::SceneCamera::SetProjection(m_Camera.GetProjection());
+
+		m_Viewport.Width = width;
+		m_Viewport.Height = height;
+		m_Viewport.MinDepth = 0.0f;
+		m_Viewport.MaxDepth = 1.0f;
+
+		Graphics::Renderer::GetRenderContext()->BindViewport(m_Viewport);
+
+		m_pCube = std::make_shared<Misc::TestCube>(5);
 	}
 	void Application::Run()
 	{
@@ -35,17 +52,19 @@ namespace Wreckless
 		{
 			if (!m_Minimized)
 			{
-				float color[] = { 0.2f, 0.4, 0.6, 1.0f };
+				float color[] = { 0.2f, 0.6, 0.8, 1.0f };
 				auto backBuffer = Graphics::Renderer::GetSwapChain()->GetBackBuffer();
 				auto depthBuffer = Graphics::Renderer::GetSwapChain()->GetDepthStencilView();
 
 				Graphics::Renderer::GetRenderContext()->ClearRenderTarget(backBuffer, color);
 				Graphics::Renderer::GetRenderContext()->ClearDepthStencilView(depthBuffer, 1.0f);
 				Graphics::Renderer::GetRenderContext()->SetOutputTargets(backBuffer, depthBuffer);
-				Graphics::Renderer::GetRenderContext()->SetOutputRenderTarget(backBuffer);
 				Profiling::GlobalClock::Update();
 				for (Layer* layer : m_LayerStack)
 					layer->OnUpdate();
+
+				m_pCube->Draw();
+
 				RenderImGui();
 			}
 
@@ -112,6 +131,8 @@ namespace Wreckless
 			ImGui::Text("Delta Time: %.5fs", Profiling::GlobalClock::DeltaTime());
 			ImGui::Text("Total Time: %.2fs", Profiling::GlobalClock::TotalTime());
 			ImGui::Text("Framerate: %d", Profiling::GlobalClock::GetFrameCount());
+			ImGui::Text("Image dimensions: %dx%d", m_pTexture->GetWidth(), m_pTexture->GetHeight());
+			ImGui::Image((ImTextureID)m_pTexture->GetNativePointer(), ImVec2(m_pTexture->GetWidth(), m_pTexture->GetHeight()));
 		}
 		ImGui::End();
 		IO::ImGuiOutput::Draw();

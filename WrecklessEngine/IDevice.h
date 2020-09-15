@@ -35,7 +35,12 @@ namespace Graphics
 
 		virtual Ref<IVertexBuffer> CreateVertexBuffer(const Dynamic::VertexBuffer& buffer) PURE;
 		virtual Ref<IIndexBuffer> CreateIndexBuffer(const std::vector<unsigned int>& buffer) PURE;
+
+		virtual Ref<IConstantBuffer> CreateConstantBuffer(unsigned int size, BUFFER_USAGE usage = USAGE_DYNAMIC) PURE;
 		virtual Ref<IConstantBuffer> CreateConstantBuffer(const Dynamic::Buffer& buffer, BUFFER_USAGE usage = USAGE_DYNAMIC) PURE;
-		virtual Ref<IInputLayout> CreateInputLayout(const Dynamic::VertexLayout& layout, Ref<IVertexShader> vertex_shader) PURE;
+		virtual Ref<IConstantBuffer> CreateConstantBuffer(const void* data, unsigned size, BUFFER_USAGE usage = USAGE_DYNAMIC) PURE;
+		virtual Ref<IConstantBuffer> CreateConstantBuffer(const Dynamic::LayoutElement& layout_root, const Dynamic::Buffer* buffer, BUFFER_USAGE usage = USAGE_DYNAMIC) PURE;
+		
+		virtual Ref<IInputLayout> CreateInputLayout(const Dynamic::VertexLayout& layout, void* compiled_shader) PURE;
 	};
 }

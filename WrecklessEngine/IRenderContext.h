@@ -5,7 +5,7 @@
 #include "Viewport.h"
 #include "IBuffer.h"
 #include "IInputLayout.h"
-#include "Topology.h"
+#include "TopologyTypes.h"
 #include "ISamplerState.h"
 
 namespace Graphics
@@ -42,7 +42,7 @@ namespace Graphics
 		virtual void BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot) PURE;
 		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) PURE;
 
-		virtual void MapDataToBuffer(Ref<IBuffer> buffer, void* data, unsigned size) PURE;
+		virtual void MapDataToBuffer(Ref<IBuffer> buffer, const void* data, unsigned size) PURE;
 		virtual void LoadDataFromBuffer(Ref<IBuffer> buffer, void* outputBuffer, unsigned size) PURE;
 
 		virtual void Draw(unsigned vertex_count, unsigned start_vertex_location) PURE;

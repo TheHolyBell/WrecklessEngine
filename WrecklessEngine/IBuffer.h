@@ -16,6 +16,7 @@ namespace Graphics
 		IBuffer& operator=(IBuffer&& rhs) = delete;
 
 		virtual void* GetNativePointer() PURE;
+
 		virtual ~IBuffer() = default;
 	};
 
@@ -44,6 +45,8 @@ namespace Graphics
 		IIndexBuffer(IIndexBuffer&& rhs) = delete;
 		IIndexBuffer& operator=(IIndexBuffer&& rhs) = delete;
 
+		virtual void* GetNativePointer() PURE;
+
 		virtual ~IIndexBuffer() = default;
 	};
 
@@ -57,6 +60,8 @@ namespace Graphics
 
 		IConstantBuffer(IConstantBuffer&& rhs) = delete;
 		IConstantBuffer& operator=(IConstantBuffer&& rhs) = delete;
+
+		virtual void* GetNativePointer() PURE;
 
 		virtual ~IConstantBuffer() = default;
 	};

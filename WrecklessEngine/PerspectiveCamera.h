@@ -39,7 +39,7 @@ namespace CameraSystem
 		float GetFarWindowHeight() const;
 
 		// Set frustum
-		void SerFrustumProperties(float fovY, float aspect, float zn, float zf);
+		void SetFrustumProperties(float fovY, float aspect, float zn, float zf);
 
 		// Define camera space via LookAt parameters
 		void LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp);

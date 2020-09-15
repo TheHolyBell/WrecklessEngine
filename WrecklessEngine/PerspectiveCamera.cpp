@@ -84,7 +84,7 @@ namespace CameraSystem
 	{
 		return m_FarWindowHeight;
 	}
-	void PerspectiveCamera::SerFrustumProperties(float fovY, float aspect, float zn, float zf)
+	void PerspectiveCamera::SetFrustumProperties(float fovY, float aspect, float zn, float zf)
 	{
 		// Cache properties
 		m_FovY = fovY;

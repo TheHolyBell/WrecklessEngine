@@ -16,7 +16,7 @@ namespace Graphics
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _pTex;
 		m_pView->GetResource(&_pResource);
 
-		_pResource.As(&_pTex);
+		WRECK_HR(_pResource.As(&_pTex));
 
 		D3D11_TEXTURE2D_DESC _texDesc = {};
 		_pTex->GetDesc(&_texDesc);
@@ -51,7 +51,7 @@ namespace Graphics
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _pTex;
 		RTV->GetResource(&_pResource);
 
-		_pResource.As(&_pTex);
+		WRECK_HR(_pResource.As(&_pTex));
 
 		D3D11_TEXTURE2D_DESC _texDesc = {};
 		_pTex->GetDesc(&_texDesc);
@@ -94,7 +94,7 @@ namespace Graphics
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _pTex;
 		DSV->GetResource(&_pResource);
 
-		_pResource.As(&_pTex);
+		WRECK_HR(_pResource.As(&_pTex));
 
 		D3D11_TEXTURE2D_DESC _texDesc = {};
 		_pTex->GetDesc(&_texDesc);

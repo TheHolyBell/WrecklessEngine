@@ -7,6 +7,10 @@
 #include "ApplicationEvent.h"
 #include "ImGuiLayer.h"
 #include "Win32Window.h"
+#include "ITexture.h"
+
+#include "TestCube.h"
+#include "PerspectiveCamera.h"
 
 namespace Wreckless
 {
@@ -39,5 +43,10 @@ namespace Wreckless
 		bool m_Running = true, m_Minimized = false;
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;
+		Ref<Graphics::ITexture> m_pTexture;
+
+		CameraSystem::PerspectiveCamera m_Camera;
+		Ref<Misc::TestCube> m_pCube;
+		Graphics::Viewport m_Viewport = {};
 	};
 }
