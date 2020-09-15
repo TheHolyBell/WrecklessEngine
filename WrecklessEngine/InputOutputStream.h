@@ -31,10 +31,12 @@ namespace IO
 
 		virtual IOutput& operator<<(int number) PURE;
 		virtual IOutput& operator<<(short number) PURE;
+		virtual IOutput& operator<<(long number) PURE;
 		virtual IOutput& operator<<(long long number) PURE;
 
 		virtual IOutput& operator<<(unsigned short number) PURE;
 		virtual IOutput& operator<<(unsigned number) PURE;
+		virtual IOutput& operator<<(unsigned long number) PURE;
 		virtual IOutput& operator<<(unsigned long long number) PURE;
 
 		virtual IOutput& operator<<(float number) PURE;
@@ -64,10 +66,12 @@ namespace IO
 				
 		virtual IInput& operator>>(short& number) PURE;
 		virtual IInput& operator>>(int& number) PURE;
+		virtual IInput& operator>>(long & number) PURE;
 		virtual IInput& operator>>(long long& number) PURE;
 				
 		virtual IInput& operator>>(unsigned& number) PURE;
 		virtual IInput& operator>>(unsigned short& number) PURE;
+		virtual IInput& operator>>(unsigned long& number) PURE;
 		virtual IInput& operator>>(unsigned long long& number) PURE;
 				
 		virtual IInput& operator>>(float& number) PURE;

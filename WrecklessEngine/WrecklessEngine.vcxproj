@@ -92,7 +92,9 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Bindable.cpp" />
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraRegistry.cpp" />
+    <ClCompile Include="OrthogonalCamera.cpp" />
+    <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="ComponentsCSharp.cpp" />
     <ClCompile Include="ConsoleAdapter.cpp" />
     <ClCompile Include="ConsoleClass.cpp" />
@@ -172,7 +174,9 @@
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableCodex.h" />
     <ClInclude Include="Buttons.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="OrthogonalCamera.h" />
+    <ClInclude Include="PerspectiveCamera.h" />
+    <ClInclude Include="CameraRegistry.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CommonInclude.h" />
     <ClInclude Include="Components.h" />
@@ -224,6 +228,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="InfoManager.h" />
     <ClInclude Include="IParameter.h" />
+    <ClInclude Include="ISamplerState.h" />
     <ClInclude Include="ISwapChain.h" />
     <ClInclude Include="IWindow.h" />
     <ClInclude Include="Keyboard.h" />
@@ -261,10 +266,13 @@
     <ClInclude Include="ScriptProperty.h" />
     <ClInclude Include="ScriptString.h" />
     <ClInclude Include="ShaderReflector.h" />
+    <ClInclude Include="ShadowMapPass.h" />
     <ClInclude Include="StringHelper.h" />
+    <ClInclude Include="TextureDesc.h" />
     <ClInclude Include="TimeCSharp.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Topology.h" />
+    <ClInclude Include="VanillaPass.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Viewport.h" />

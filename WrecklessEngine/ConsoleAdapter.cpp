@@ -110,6 +110,12 @@ namespace IO
 		return *this;
 	}
 
+	IInput& ConsoleInput::operator>>(long& number)
+	{
+		number = atol(Console::ReadLine().c_str());
+		return *this;
+	}
+
 	IInput& ConsoleInput::operator>>(long long& number)
 	{
 		number = atoi(Console::ReadLine().c_str());
@@ -128,9 +134,15 @@ namespace IO
 		return *this;
 	}
 
+	IInput& ConsoleInput::operator>>(unsigned long& number)
+	{
+		number = atol(Console::ReadLine().c_str());
+		return *this;
+	}
+
 	IInput& ConsoleInput::operator>>(unsigned long long& number)
 	{
-		number = atoi(Console::ReadLine().c_str());
+		number = atoll(Console::ReadLine().c_str());
 		return *this;
 	}
 

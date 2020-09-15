@@ -20,6 +20,9 @@ namespace Graphics
         virtual TEX_FORMAT GetFormat() const PURE;
         virtual void* GetNativePointer() const PURE;
 
+        virtual unsigned GetWidth() const PURE;
+        virtual unsigned GetHeight() const PURE;
+
         virtual ~ITexture() = default;
     };
 

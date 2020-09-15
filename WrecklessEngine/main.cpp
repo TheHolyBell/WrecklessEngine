@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 	using namespace Input;
 	using namespace IO;
-	Console::Initialize();
+	//Console::Initialize();
 
 	/*std::hash<std::string> hasher;
 	
@@ -156,9 +156,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//IO::cin.Get();
 
 	return 0;*/
+	Profiling::Profiler::GetInstance().BeginSession("Wreckless");
 	cout << FileSystem::FileHelper::GetFileExtension("D:\\VisualStudio\\C++\\WrecklessEngine\\WrecklessEngine\\WrecklessScript.Core.dll") << IO::endl;
 	Wreckless::Application* app = new Wreckless::Application("Dickie", 1600, 900);
 	app->Run();
 	delete app;
+	Profiling::Profiler::GetInstance().EndSession();
 	return 0;
 }

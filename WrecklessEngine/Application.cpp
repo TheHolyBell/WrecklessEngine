@@ -4,6 +4,7 @@
 #include "GlobalClock.h"
 #include "ImGuiLogger.h"
 #include "Manipulators.h"
+#include "FileDialog.h"
 
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
@@ -34,15 +35,18 @@ namespace Wreckless
 		{
 			if (!m_Minimized)
 			{
-				float color[] = { 0, 0, 0,0 };
-				Graphics::Renderer::GetRenderContext()->ClearRenderTarget(Graphics::Renderer::GetSwapChain()->GetBackBuffer(), color);
-				Graphics::Renderer::GetRenderContext()->SetOutputRenderTarget(Graphics::Renderer::GetSwapChain()->GetBackBuffer());
+				float color[] = { 0.2f, 0.4, 0.6, 1.0f };
+				auto backBuffer = Graphics::Renderer::GetSwapChain()->GetBackBuffer();
+				auto depthBuffer = Graphics::Renderer::GetSwapChain()->GetDepthStencilView();
+
+				Graphics::Renderer::GetRenderContext()->ClearRenderTarget(backBuffer, color);
+				Graphics::Renderer::GetRenderContext()->ClearDepthStencilView(depthBuffer, 1.0f);
+				Graphics::Renderer::GetRenderContext()->SetOutputTargets(backBuffer, depthBuffer);
+				Graphics::Renderer::GetRenderContext()->SetOutputRenderTarget(backBuffer);
 				Profiling::GlobalClock::Update();
 				for (Layer* layer : m_LayerStack)
 					layer->OnUpdate();
 				RenderImGui();
-
-				Graphics::Renderer::GetSwapChain()->SwapBuffers();
 			}
 
 			m_pWindow->OnUpdate();
@@ -52,6 +56,7 @@ namespace Wreckless
 	}
 	void Application::OnEvent(Event& event)
 	{
+		WRECK_PROFILE_FUNCTION();
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
@@ -75,20 +80,40 @@ namespace Wreckless
 	}
 	void Application::RenderImGui()
 	{
-		using namespace Graphics;
+		WRECK_PROFILE_FUNCTION();
 		m_ImGuiLayer->Begin();
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Open"))
+					IO::cout << *FileSystem::FileDialog::OpenFile() << IO::endl;
+				if (ImGui::MenuItem("Save"))
+					IO::cout << *FileSystem::FileDialog::SaveFile() << IO::endl;
+				ImGui::EndMenu();
+			}
 
+			if (ImGui::BeginMenu("Data"))
+			{
+				if (ImGui::MenuItem("Clear World"))
+					IO::cout << "Clear World command has been requested" << IO::endl;
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
+
+		using namespace Graphics;
 		if (ImGui::Begin("Renderer"))
 		{
 			auto& caps = Renderer::GetCapabilities();
-			ImGui::Text("Vendor: %s", caps.Vendor.c_str());
-			ImGui::Text("Renderer: %s", caps.Vendor.c_str());
-			ImGui::Text("Version: %s", caps.Vendor.c_str());
-			ImGui::Text("Delta Time: %.5fms", Profiling::GlobalClock::GetDelta() * 1000);
+			ImGui::Text("GPU: %s", caps.GPU_Name.c_str());
+			ImGui::Text("Memory size: %d MB", caps.Memory_Size);
+			ImGui::Text("Delta Time: %.5fs", Profiling::GlobalClock::DeltaTime());
 			ImGui::Text("Total Time: %.2fs", Profiling::GlobalClock::TotalTime());
+			ImGui::Text("Framerate: %d", Profiling::GlobalClock::GetFrameCount());
 		}
 		ImGui::End();
-
 		IO::ImGuiOutput::Draw();
 
 		for (Layer* layer : m_LayerStack)

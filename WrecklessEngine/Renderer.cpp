@@ -9,6 +9,8 @@
 #include "D3D11RenderContext.h"
 #include "D3D11SwapChain.h"
 
+#include "StringHelper.h"
+
 namespace Graphics
 {
 	Ref<IDevice> Renderer::s_Device;
@@ -65,18 +67,18 @@ namespace Graphics
 		_scd.BufferDesc.RefreshRate.Numerator = 60;
 		_scd.BufferDesc.RefreshRate.Denominator = 1;
 		_scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		_scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		_scd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		_scd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		_scd.BufferCount = 1;
 		_scd.OutputWindow = (HWND)window.GetWindowHandle();
 		_scd.Windowed = true;
-		_scd.SampleDesc.Count = 1;
+		_scd.SampleDesc.Count = 4;
 		_scd.SampleDesc.Quality = 0;
 		_scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		_scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
-		D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0,
-			D3D11_SDK_VERSION, &_scd, &_swapChain, &_device, nullptr, &_deviceContext);
+		WRECK_HR(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0,
+			D3D11_SDK_VERSION, &_scd, &_swapChain, &_device, nullptr, &_deviceContext));
 
 		if (_swapChain == nullptr || _device == nullptr || _deviceContext == nullptr)
 			throw std::exception("Failed to initialize graphics");
@@ -84,6 +86,21 @@ namespace Graphics
 		s_Device = std::make_shared<D3D11Device>(_device);
 		s_RenderContext = std::make_shared<D3D11RenderContext>(_deviceContext);
 		s_SwapChain = std::make_shared<D3D11SwapChain>(_swapChain);
+	
+		ID3D11Device* _pDevice = reinterpret_cast<ID3D11Device*>(s_Device->GetNativePointer());
+		
+		Microsoft::WRL::ComPtr<IDXGIDevice> dxgiDevice;
+		WRECK_HR(_pDevice->QueryInterface(__uuidof(IDXGIDevice), &dxgiDevice));
+
+		Microsoft::WRL::ComPtr<IDXGIAdapter> dxgiAdapter;
+		WRECK_HR(dxgiDevice->GetParent(__uuidof(IDXGIAdapter), &dxgiAdapter));
+		
+		DXGI_ADAPTER_DESC adapterDesc = {};
+
+		dxgiAdapter->GetDesc(&adapterDesc);
+
+		s_Capabilities.GPU_Name = Misc::StringHelper::ToNarrow(adapterDesc.Description);
+		s_Capabilities.Memory_Size = adapterDesc.DedicatedVideoMemory / 1024 / 1024;
 	}
 
 	void Renderer::InitializeOpenGL(IWindow& window)

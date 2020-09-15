@@ -6,6 +6,7 @@
 #include "IBuffer.h"
 #include "IInputLayout.h"
 #include "Topology.h"
+#include "ISamplerState.h"
 
 namespace Graphics
 {
@@ -35,9 +36,10 @@ namespace Graphics
 		virtual void BindViewport(Viewport viewport) PURE;
 
 		virtual void BindVertexBuffer(Ref<IVertexBuffer> vertex_buffer, unsigned strides, unsigned offsets) PURE;
-		virtual void BindIndexBuffer(Ref<IIndexBuffer> index_buffer, TEX_FORMAT format, unsigned offset) PURE;
+		virtual void BindIndexBuffer(Ref<IIndexBuffer> index_buffer, unsigned offset) PURE;
 		virtual void BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot) PURE;
 		virtual void BindInputLayout(Ref<IInputLayout> input_layout) PURE;
+		virtual void BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot) PURE;
 		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) PURE;
 
 		virtual void MapDataToBuffer(Ref<IBuffer> buffer, void* data, unsigned size) PURE;

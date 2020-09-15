@@ -36,10 +36,12 @@ namespace IO
 				
 		virtual IInput& operator>>(short& number) override;
 		virtual IInput& operator>>(int& number) override;
+		virtual IInput& operator>>(long& number) override;
 		virtual IInput& operator>>(long long& number) override;
 				
 		virtual IInput& operator>>(unsigned& number) override;
 		virtual IInput& operator>>(unsigned short& number) override;
+		virtual IInput& operator>>(unsigned long& number) override;
 		virtual IInput& operator>>(unsigned long long& number) override;
 				
 		virtual IInput& operator>>(float& number) override;

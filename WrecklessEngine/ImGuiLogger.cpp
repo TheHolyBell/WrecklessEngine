@@ -34,6 +34,11 @@ namespace IO
 		m_Oss << number;
 		return *this;
 	}
+	IOutput& ImGuiOutput::operator<<(long number)
+	{
+		m_Oss << number;
+		return *this;
+	}
 	IOutput& ImGuiOutput::operator<<(long long number)
 	{
 		m_Oss << number;
@@ -45,6 +50,11 @@ namespace IO
 		return *this;
 	}
 	IOutput& ImGuiOutput::operator<<(unsigned number)
+	{
+		m_Oss << number;
+		return *this;
+	}
+	IOutput& ImGuiOutput::operator<<(unsigned long number)
 	{
 		m_Oss << number;
 		return *this;
@@ -79,6 +89,7 @@ namespace IO
 		manip.Execute(*this);
 		m_Messages.emplace_back(m_Oss.str());
 		m_Oss.clear();
+		m_Oss.str("");
 		return *this;
 	}
 }

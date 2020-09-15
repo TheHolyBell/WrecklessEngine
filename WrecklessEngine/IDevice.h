@@ -7,6 +7,7 @@
 #include "Vertex.h"
 #include "IInputLayout.h"
 #include "DynamicConstant.h"
+#include "TextureDesc.h"
 
 namespace Graphics
 {
@@ -26,8 +27,8 @@ namespace Graphics
 		virtual void* GetNativePointer() const PURE;
 
 
-		virtual Ref<ITexture> CreateTexture(const std::string& path) PURE;
-		virtual Ref<ITexture> CreateTexture(UINT width, UINT height) PURE;
+		virtual Ref<ITexture> CreateTexture2D(const std::string& path) PURE;
+		virtual Ref<ITexture> CreateTexture2D(TEXTURE2D_DESC texture_desc) PURE;
 
 		virtual Ref<IVertexShader> CreateVertexShader(const std::string& path) PURE;
 		virtual Ref<IPixelShader> CreatePixelShader(const std::string& path) PURE;

@@ -7,6 +7,8 @@
 #include "MouseEvent.h"
 #include "ImGui/imgui_impl_win32.h"
 
+#include "Renderer.h"
+
 namespace Graphics
 {
     Win32Window::Win32Window(const char* Title, int Width, int Height)
@@ -70,6 +72,8 @@ namespace Graphics
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+        Graphics::Renderer::GetSwapChain()->SwapBuffers(Graphics::SwapFlags::NO_LIMIT);
     }
     void Win32Window::SetEventCallback(const EventCallbackFn& callback)
     {
@@ -105,7 +109,7 @@ namespace Graphics
     LRESULT Win32Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
-            return 0;
+            return 1;
 
         switch (msg)
         {
@@ -123,14 +127,16 @@ namespace Graphics
         { 
             Input::Keyboard::KeyReleased((Input::KeyCode)wParam);
             KeyReleasedEvent event((Input::KeyCode)wParam);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
 
         case WM_CHAR:
         {
             KeyTypedEvent event((Input::KeyCode)wParam);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
 
@@ -147,38 +153,44 @@ namespace Graphics
         case WM_LBUTTONDOWN:
         {
             MouseButtonPressedEvent event(Input::KeyCode::LButton);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
         case WM_RBUTTONDOWN:
         {
             MouseButtonPressedEvent event(Input::KeyCode::RButton);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
         case WM_MBUTTONDOWN:
         {
             MouseButtonPressedEvent event(Input::KeyCode::MButton);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
 
         case WM_LBUTTONUP:
         {
             MouseButtonReleasedEvent event(Input::KeyCode::LButton);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
         case WM_RBUTTONUP:
         {
             MouseButtonReleasedEvent event(Input::KeyCode::RButton);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
         case WM_MBUTTONUP:
         {
             MouseButtonReleasedEvent event(Input::KeyCode::MButton);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
 
@@ -186,14 +198,16 @@ namespace Graphics
         {
             const POINTS pt = MAKEPOINTS(lParam);
             MouseScrolledEvent event(pt.x, pt.y);
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             break;
         }
 
         case WM_CLOSE:
         case WM_QUIT:
             WindowCloseEvent event;
-            m_Callback(event);
+            if (m_Callback != nullptr)
+                m_Callback(event);
             PostQuitMessage(0);
             break;
         }

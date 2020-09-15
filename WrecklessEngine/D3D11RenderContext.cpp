@@ -53,11 +53,11 @@ namespace Graphics
 
 		m_pDeviceContext->IASetVertexBuffers(0, 1, &_vertexBuffer, &strides, &offsets);
 	}
-	void D3D11RenderContext::BindIndexBuffer(Ref<IIndexBuffer> index_buffer, TEX_FORMAT format, unsigned offset)
+	void D3D11RenderContext::BindIndexBuffer(Ref<IIndexBuffer> index_buffer, unsigned offset)
 	{
 		ID3D11Buffer* _indexBuffer = reinterpret_cast<ID3D11Buffer*>(index_buffer->GetNativePointer());
 
-		m_pDeviceContext->IASetIndexBuffer(_indexBuffer, (DXGI_FORMAT)format, offset);
+		m_pDeviceContext->IASetIndexBuffer(_indexBuffer, DXGI_FORMAT_R32_UINT, offset);
 	}
 	void D3D11RenderContext::BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot)
 	{
@@ -89,6 +89,11 @@ namespace Graphics
 	{
 		ID3D11InputLayout* _pInputLayout = reinterpret_cast<ID3D11InputLayout*>(input_layout->GetNativePointer());
 		m_pDeviceContext->IASetInputLayout(_pInputLayout);
+	}
+	void D3D11RenderContext::BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot)
+	{
+		ID3D11SamplerState* _pSamplerState = reinterpret_cast<ID3D11SamplerState*>(sampler_state->GetNativePointer());
+		m_pDeviceContext->PSSetSamplers(slot, 1, &_pSamplerState);
 	}
 	void D3D11RenderContext::BindTopology(PRIMITIVE_TOPOLOGY topology)
 	{

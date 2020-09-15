@@ -14,10 +14,12 @@ namespace IO
 
 		virtual IOutput& operator<<(int number) override;
 		virtual IOutput& operator<<(short number) override;
+		virtual IOutput& operator<<(long number) override;
 		virtual IOutput& operator<<(long long number) override;
 
 		virtual IOutput& operator<<(unsigned short number) override;
 		virtual IOutput& operator<<(unsigned number) override;
+		virtual IOutput& operator<<(unsigned long number) override;
 		virtual IOutput& operator<<(unsigned long long number) override;
 
 		virtual IOutput& operator<<(float number) override;

@@ -25,7 +25,7 @@ namespace Graphics
 	{
 		return m_pDevice.Get();
 	}
-	Ref<ITexture> D3D11Device::CreateTexture(const std::string& path)
+	Ref<ITexture> D3D11Device::CreateTexture2D(const std::string& path)
 	{
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _srv;
 		ID3D11DeviceContext* _deviceContext = reinterpret_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext()->GetNativePointer());
@@ -36,14 +36,18 @@ namespace Graphics
 			DirectX::CreateDDSTextureFromFile(m_pDevice.Get(), _deviceContext, Misc::StringHelper::ToWide(path).c_str(), nullptr, &_srv);
 		else
 			DirectX::CreateWICTextureFromFile(m_pDevice.Get(), _deviceContext, Misc::StringHelper::ToWide(path).c_str(), nullptr, &_srv);
-
+		
 		return std::make_shared<D3D11Texture>(_srv);
 	}
-	Ref<ITexture> D3D11Device::CreateTexture(UINT width, UINT height)
+	Ref<ITexture> D3D11Device::CreateTexture2D(TEXTURE2D_DESC texture_desc)
 	{
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _pTexture;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _pSrv;
-		WRECK_ASSERT(false, "Not yet implemented");
-		return Ref<ITexture>(nullptr);
+
+		m_pDevice->CreateTexture2D(reinterpret_cast<D3D11_TEXTURE2D_DESC*>(&texture_desc), nullptr, &_pTexture);
+		m_pDevice->CreateShaderResourceView(_pTexture.Get(), nullptr, &_pSrv);
+
+		return std::make_shared<D3D11Texture>(_pSrv);
 	}
 	Ref<IVertexShader> D3D11Device::CreateVertexShader(const std::string& path)
 	{
@@ -102,7 +106,7 @@ namespace Graphics
 	Ref<IConstantBuffer> D3D11Device::CreateConstantBuffer(const Dynamic::Buffer& buffer, BUFFER_USAGE usage)
 	{
 		Microsoft::WRL::ComPtr<ID3D11Buffer> _pBuffer;
-
+		
 		D3D11_BUFFER_DESC _cbDesc = {};
 
 		_cbDesc.ByteWidth = buffer.GetSizeInBytes();

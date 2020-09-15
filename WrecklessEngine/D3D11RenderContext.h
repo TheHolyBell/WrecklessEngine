@@ -24,9 +24,10 @@ namespace Graphics
 		virtual void BindViewport(Viewport viewport) override;
 
 		virtual void BindVertexBuffer(Ref<IVertexBuffer> vertex_buffer, unsigned strides, unsigned offsets) override;
-		virtual void BindIndexBuffer(Ref<IIndexBuffer> index_buffer, TEX_FORMAT format, unsigned offset) override;
+		virtual void BindIndexBuffer(Ref<IIndexBuffer> index_buffer,  unsigned offset) override;
 		virtual void BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot) override;
 		virtual void BindInputLayout(Ref<IInputLayout> input_layout) override;
+		virtual void BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot) override;
 		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) override;
 
 		virtual void MapDataToBuffer(Ref<IBuffer> buffer, void* data, unsigned size) override;

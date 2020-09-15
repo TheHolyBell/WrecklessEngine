@@ -7,7 +7,7 @@ namespace Profiling
 	{
 		m_CurrentFrameTime = m_LastFrameTime = m_StartTime = std::chrono::high_resolution_clock::now();
 	}
-	float GlobalClock::GetDelta()
+	float GlobalClock::DeltaTime()
 	{
 		return GetInstance().m_Delta;
 	}

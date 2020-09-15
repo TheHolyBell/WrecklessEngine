@@ -1,6 +1,7 @@
 #pragma once
 // HRESULT hr should exist in the local scope for these macros to work
 
+
 #define GFX_EXCEPT_NOINFO(hr) Graphics::Renderer::HrException( __FILE__, __LINE__,(hr) )
 #define GFX_THROW_NOINFO(hrcall) if( FAILED( hr = (hrcall) ) ) throw Graphics::Renderer::HrException( __FILE__,__LINE__,hr )
 

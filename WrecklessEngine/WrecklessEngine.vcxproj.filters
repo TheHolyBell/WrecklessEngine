@@ -91,6 +91,12 @@
     <Filter Include="Events">
       <UniqueIdentifier>{18993d56-9998-45e9-8433-3811cef1da02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CameraSystem">
+      <UniqueIdentifier>{697642b7-ca54-4b1e-8c8a-6a4b0ebf24ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderPasses">
+      <UniqueIdentifier>{c72af0b6-ddb5-42d3-816e-bde6587f31aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -294,9 +300,6 @@
     <ClCompile Include="D3D11RenderContext.cpp">
       <Filter>Graphics\Implementations\D3D11/Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Layer.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -317,6 +320,15 @@
     </ClCompile>
     <ClCompile Include="D3D11InputLayout.cpp">
       <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="PerspectiveCamera.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="OrthogonalCamera.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraRegistry.cpp">
+      <Filter>CameraSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -593,9 +605,6 @@
     <ClInclude Include="Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Events</Filter>
     </ClInclude>
@@ -634,6 +643,27 @@
     </ClInclude>
     <ClInclude Include="Topology.h">
       <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ISamplerState.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraRegistry.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PerspectiveCamera.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="OrthogonalCamera.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="VanillaPass.h">
+      <Filter>RenderPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMapPass.h">
+      <Filter>RenderPasses</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureDesc.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

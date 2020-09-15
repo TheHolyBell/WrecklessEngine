@@ -27,7 +27,7 @@ namespace Profiling
 		GlobalClock(GlobalClock&& rhs) = delete;
 		GlobalClock& operator=(GlobalClock&& rhs) = delete;
 
-		static float GetDelta();
+		static float DeltaTime();
 		static float TotalTime();
 
 		static float GetTimeScale();

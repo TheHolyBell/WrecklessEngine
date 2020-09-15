@@ -19,12 +19,8 @@ namespace Graphics
 
 	struct RendererAPICapabilities
 	{
-		std::string Vendor;
-		std::string Renderer;
-		std::string Version;
-
-		int MaxSamples = 0;
-		float MaxAnisotropy = 0.0f;
+		std::string GPU_Name;
+		unsigned long long Memory_Size;
 	};
 
 	class Renderer

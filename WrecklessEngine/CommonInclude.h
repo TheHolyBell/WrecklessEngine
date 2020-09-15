@@ -5,19 +5,42 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <Windows.h>
 #include <cassert>
 #include <functional>
+
+#include "Timer.h"
 
 #define BIND_MEM_FN( fn ) std::bind(&fn, this);
 #define STRINGIFY_( s ) #s
 #define STRINGIFY( s ) STRINGIFY_( s )
 
-#define WRECK_DEBUGBREAK() __debugbreak()
-#define WRECK_ASSERT( x, msg ) assert( (x) && msg )
-#define WRECK_PROFILE_SCOPE(name) Profiling::ScopedTimer _profiler##name(name)
-#define WRECK_PROFILE_FUNCTION() WRECK_PROFILE_SCOPE(__func__)
-#define WRECK_HR( x ) if( FAILED(x) ) assert(false)
+#define PROFILING
+
+#ifdef PROFILING
+	#define WRECK_PROFILE_SCOPE(name) Profiling::ScopedTimer _profiler##__LINE__(name)
+	#define WRECK_PROFILE_FUNCTION() WRECK_PROFILE_SCOPE(__FUNCSIG__)
+#else
+	#define WRECK_PROFILE_SCOPE(name)
+	#define WRECK_PROFILE_FUNCTION()
+#endif
+
+
+#ifdef _DEBUG
+
+	#define WRECK_DEBUGBREAK() __debugbreak()
+	#define WRECK_ASSERT( x, msg ) assert( (x) && msg )
+	
+	#define WRECK_HR( x ) if( FAILED(x) ) assert(false)
+
+#else
+
+	#define WRECK_DEBUGBREAK()
+	#define WRECK_ASSERT( x, msg ) assert( (x) && msg )
+	#define WRECK_HR( x ) if( FAILED(x) ) assert(false)
+
+#endif
 
 #define WRECK_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 #define BIT(x) (1 << x)

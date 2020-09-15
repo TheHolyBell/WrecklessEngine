@@ -15,26 +15,38 @@ namespace Graphics
 		virtual TEX_FORMAT GetFormat() const override;
 		virtual void* GetNativePointer() const override;
 
+		virtual unsigned GetWidth() const override;
+		virtual unsigned GetHeight() const override;
+
 		virtual ~D3D11Texture() = default;
 	private:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pView;
 		TEX_FORMAT m_Format;
+		unsigned m_Width = 0;
+		unsigned m_Height = 0;
 	};
 
 	class D3D11RenderTarget : public IRenderTarget
 	{
 	public:
-		D3D11RenderTarget(Microsoft::WRL::ComPtr<ID3D11RenderTargetView> RTV);
+		D3D11RenderTarget(Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  pRTV);
 
 		virtual TEX_FORMAT GetFormat() const override;
 
 		virtual void* GetNativePointer() const override;
 
-		virtual ~D3D11RenderTarget() = default;
+		virtual unsigned GetWidth() const override;
+		virtual unsigned GetHeight() const override;
+
+		unsigned long Reset();
+
+		virtual ~D3D11RenderTarget();
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_RTV;
 		TEX_FORMAT m_Format;
+		unsigned m_Width = 0;
+		unsigned m_Height = 0;
 	};
 
 	class D3D11DepthStencilView : public IDepthStencilView
@@ -46,10 +58,17 @@ namespace Graphics
 
 		virtual void* GetNativePointer() const override;
 
-		virtual ~D3D11DepthStencilView() = default;
+		virtual unsigned GetWidth() const override;
+		virtual unsigned GetHeight() const override;
+
+		unsigned long Reset();
+
+		virtual ~D3D11DepthStencilView();
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_DSV;
 		TEX_FORMAT m_Format;
+		unsigned m_Width = 0;
+		unsigned m_Height = 0;
 	};
 }
