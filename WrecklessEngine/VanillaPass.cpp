@@ -3,6 +3,9 @@
 #include <wrl/client.h>
 
 #include "D3D11Texture.h"
+#include "SceneManager.h"
+#include "Components.h"
+#include <entt.hpp>
 
 namespace Graphics
 {
@@ -19,11 +22,11 @@ namespace Graphics
 
 	void VanillaPass::Resize(unsigned width, unsigned height)
 	{
-		m_DepthStencilSRV.reset();
+		/*m_DepthStencilSRV.reset();
 		m_DepthStencil.reset();
 
 		m_RenderTargetSRV.reset();
-		m_RenderTarget.reset();
+		m_RenderTarget.reset();*/
 
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _ColorTex;
@@ -39,7 +42,7 @@ namespace Graphics
 		ID3D11DeviceContext* _pDeviceContext = reinterpret_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext()->GetNativePointer());
 
 		D3D11_TEXTURE2D_DESC _colorDesc = {};
-		_colorDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;;
+		_colorDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;;
 		_colorDesc.Width = width;
 		_colorDesc.Height = height;
 		_colorDesc.MipLevels = 1;
@@ -70,14 +73,14 @@ namespace Graphics
 		
 		WRECK_HR(_pDevice->CreateTexture2D(&_depthDesc, nullptr, &_DepthTex));
 
-		D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+		D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
 		dsvDesc.Flags = 0;
 		dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		dsvDesc.Texture2D.MipSlice = 0;
 		WRECK_HR(_pDevice->CreateDepthStencilView(_DepthTex.Get(), &dsvDesc, &_DepthDSV));
 
-		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = 1;
@@ -91,11 +94,19 @@ namespace Graphics
 		m_RenderTarget = std::make_shared<D3D11RenderTarget>(_ColorRTV);
 	}
 
-	void VanillaPass::Begin(float* color)
+	/*void VanillaPass::Begin(float* color)
 	{
 		Renderer::GetRenderContext()->ClearRenderTarget(m_RenderTarget, color);
 		Renderer::GetRenderContext()->ClearDepthStencilView(m_DepthStencil, 1.0f);
 		Renderer::GetRenderContext()->SetOutputTargets(m_RenderTarget, m_DepthStencil);
+
+		Viewport vp = {};
+		vp.Width = m_RenderTarget->GetWidth();
+		vp.Height = m_RenderTarget->GetHeight();
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+
+		Renderer::GetRenderContext()->BindViewport(vp);
 	}
 
 	void VanillaPass::End()
@@ -103,6 +114,34 @@ namespace Graphics
 		ID3D11DeviceContext* _pContext = reinterpret_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext()->GetNativePointer());
 		ID3D11RenderTargetView* rtv = nullptr;
 		_pContext->OMSetRenderTargets(1, &rtv, nullptr);
+	}*/
+
+	void VanillaPass::Execute()
+	{
+		float color[] = { 0,0,0,1 };
+		Renderer::GetRenderContext()->ClearRenderTarget(m_RenderTarget, color);
+		Renderer::GetRenderContext()->ClearDepthStencilView(m_DepthStencil, 1.0f);
+		Renderer::GetRenderContext()->SetOutputTargets(m_RenderTarget, m_DepthStencil);
+
+		Viewport vp = {};
+		vp.Width = m_RenderTarget->GetWidth();
+		vp.Height = m_RenderTarget->GetHeight();
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+
+		Renderer::GetRenderContext()->BindViewport(vp);
+
+		auto pActiveScene = ECS::SceneManager::GetActiveScene();
+
+		if (pActiveScene != nullptr)
+		{
+			auto view = pActiveScene->QueryElementsByComponent<ECS::MeshComponent>();
+			for (const auto& m : view)
+			{
+				ECS::MeshComponent& ent = view.get<ECS::MeshComponent>(m);
+				ent.pMesh->Draw();
+			}
+		}
 	}
 
 	Ref<ITexture> VanillaPass::GetRenderTargetSRV()

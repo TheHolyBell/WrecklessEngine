@@ -11,6 +11,8 @@
 
 #include "TestCube.h"
 #include "PerspectiveCamera.h"
+#include "Scene.h"
+#include "ScriptDomain.h"
 
 namespace Wreckless
 {
@@ -47,7 +49,10 @@ namespace Wreckless
 		Ref<Graphics::ITexture> m_pTexture;
 
 		CameraSystem::PerspectiveCamera m_Camera;
-		Ref<Misc::TestCube> m_pCube;
+
+		Ref<ECS::Scene> m_pScene;
+		Scripting::ScriptDomain m_Domain;
+
 		Graphics::Viewport m_Viewport = {};
 	};
 }

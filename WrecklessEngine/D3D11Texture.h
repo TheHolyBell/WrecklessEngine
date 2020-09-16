@@ -18,7 +18,7 @@ namespace Graphics
 		virtual unsigned GetWidth() const override;
 		virtual unsigned GetHeight() const override;
 
-		virtual ~D3D11Texture() = default;
+		virtual ~D3D11Texture();
 	private:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pView;
 		TEX_FORMAT m_Format;

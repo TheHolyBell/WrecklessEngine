@@ -4,9 +4,9 @@
 
 using namespace Bindable;
 
-namespace Misc
+namespace Drawables
 {
-	void Drawable::Draw() const noxnd
+	void Drawable::Draw()
 	{
 		for (auto& b : m_Binds)
 		{
@@ -26,4 +26,8 @@ namespace Misc
 		}
 		m_Binds.push_back(std::move(bind));
 	}
+	void Drawables::Drawable::Update()
+	{
+	}
 }
+

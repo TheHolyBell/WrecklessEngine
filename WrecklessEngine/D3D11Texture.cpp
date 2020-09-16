@@ -40,6 +40,10 @@ namespace Graphics
 	{
 		return m_Height;
 	}
+	D3D11Texture::~D3D11Texture()
+	{
+		IO::cout << "D3D11Texture() - " << m_pView.Reset() << IO::endl;
+	}
 	D3D11RenderTarget::D3D11RenderTarget(Microsoft::WRL::ComPtr<ID3D11RenderTargetView> RTV)
 		: m_RTV(std::move(RTV))
 	{
@@ -81,6 +85,7 @@ namespace Graphics
 	}
 	D3D11RenderTarget::~D3D11RenderTarget()
 	{
+		IO::cout << "D3D11RenderTarget() - " << m_RTV.Reset() << IO::endl;
 	}
 	D3D11DepthStencilView::D3D11DepthStencilView(Microsoft::WRL::ComPtr<ID3D11DepthStencilView> DSV)
 		: m_DSV(DSV)
@@ -123,5 +128,6 @@ namespace Graphics
 	}
 	D3D11DepthStencilView::~D3D11DepthStencilView()
 	{
+		IO::cout << "D3D11DepthStencilView() - " << m_DSV.Reset() << IO::endl;
 	}
 }

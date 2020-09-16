@@ -36,7 +36,7 @@ namespace ECS
 	}
 	void Scene::OnUpdate()
 	{
-		auto view = m_Registry.view<ScriptComponent>();
+		auto view = QueryElementsByComponent<ScriptComponent>();
 		for (const auto& sc : view)
 		{
 			ScriptComponent& ent = view.get<ScriptComponent>(sc);

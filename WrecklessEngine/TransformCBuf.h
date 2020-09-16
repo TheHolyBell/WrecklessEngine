@@ -14,7 +14,7 @@ namespace Bindable
 			DirectX::XMMATRIX modelViewProjection;
 		};
 	public:
-		TransformCBuf(UINT slot = 0);
+		TransformCBuf(UINT entID, UINT slot = 0);
 		virtual void Bind() noxnd override;
 
 		virtual std::string GetUID() const noexcept override;
@@ -23,5 +23,6 @@ namespace Bindable
 		Transforms GetTransforms() noexcept;
 	private:
 		static RefUnique<VertexConstantBuffer<Transforms>> s_pVCBuf;
+		UINT m_entID;
 	};
 }

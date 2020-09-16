@@ -5,6 +5,7 @@
 
 #include "ScriptObject.h"
 #include "ScriptClass.h"
+#include "IMesh.h"
 
 namespace ECS
 {
@@ -57,8 +58,11 @@ namespace ECS
 		Scripting::ScriptObject m_Object;
 	};
 
-	struct CameraComponent
+	struct MeshComponent
 	{
-		
+		Ref<Drawables::IMesh> pMesh;
+		MeshComponent() = default;
+		MeshComponent(Ref<Drawables::IMesh> mesh)
+			: pMesh(mesh){}
 	};
 }

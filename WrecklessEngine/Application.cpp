@@ -6,7 +6,20 @@
 #include "Manipulators.h"
 #include "FileDialog.h"
 #include "SceneCamera.h"
-#include "VanillaPass.h"
+#include "Pipeline.h"
+#include "SceneManager.h"
+#include "Entity.h"
+#include "Components.h"
+#include "ScriptingEngine.h"
+
+#include "GamePadCSharp.h"
+#include "MouseCSharp.h"
+#include "KeyboardCSharp.h"
+#include "DebugConsoleCSharp.h"
+#include "TimeCSharp.h"
+#include "EntityCSharp.h"
+#include "NoiseCSharp.h"
+#include "ComponentsCSharp.h"
 
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
@@ -15,7 +28,9 @@ static Wreckless::Application* g_AppInstance = nullptr;
 namespace Wreckless
 {
 	Application::Application(const std::string& windowName, int width, int height)
+		: m_Domain("Sandbox.dll")
 	{
+
 		WRECK_ASSERT(g_AppInstance == nullptr, "Application already has been created");
 		g_AppInstance = this;
 
@@ -23,6 +38,15 @@ namespace Wreckless
 		m_pWindow->SetEventCallback(BIND_EVENT_FN(OnEvent));
 	
 		Graphics::Renderer::Initialize(Graphics::RendereringAPI::DirectX11, *m_pWindow);
+
+		Scripting::Debug::Bind();
+		Scripting::GamePadCSharp::Bind();
+		Scripting::MouseCSharp::Bind();
+		Scripting::KeyboardCSharp::Bind();
+		Scripting::TimeCSharp::Bind();
+		Scripting::NoiseCSharp::Bind();
+		Scripting::ComponentsCSharp::Bind();
+		Scripting::EntityCSharp::Bind();
 
 		m_ImGuiLayer = new ImGuiLayer("ImGui");
 		PushOverlay(m_ImGuiLayer);
@@ -33,9 +57,7 @@ namespace Wreckless
 		m_Camera.LookAt(DirectX::XMFLOAT3{ 10.0f, 5.0f, -20.0f }, DirectX::XMFLOAT3{0,0,0},
 			DirectX::XMFLOAT3{ 0,1,0 });
 		m_Camera.UpdateViewMatrix();
-		CameraSystem::SceneCamera::SetView(m_Camera.GetView());
-		CameraSystem::SceneCamera::SetProjection(m_Camera.GetProjection());
-
+		
 		m_Viewport.Width = width;
 		m_Viewport.Height = height;
 		m_Viewport.MinDepth = 0.0f;
@@ -43,9 +65,17 @@ namespace Wreckless
 
 		Graphics::Renderer::GetRenderContext()->BindViewport(m_Viewport);
 
-		m_pCube = std::make_shared<Misc::TestCube>(5);
+		m_pScene = std::make_shared<ECS::Scene>("main");
+		ECS::SceneManager::AddScene(m_pScene);
 
-		Graphics::VanillaPass::Initialize(width, height);
+		
+
+		auto ent = m_pScene->CreateEntity();
+		ent.AddComponent<ECS::ScriptComponent>(ent.GetID(), m_Domain.GetClass( "Sandbox", "Actor"));
+		ent.AddComponent<ECS::TransformComponent>(DirectX::XMMatrixTranslation(5.0, 2.0f, 10.0f));
+		ent.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::TestCube>(ent.GetID() ,10));
+
+		Graphics::Pipeline::Initialize(width, height);
 	}
 	void Application::Run()
 	{
@@ -63,11 +93,16 @@ namespace Wreckless
 			{
 				if (!m_Minimized)
 				{
+					CameraSystem::SceneCamera::SetView(m_Camera.GetView());
+					CameraSystem::SceneCamera::SetProjection(m_Camera.GetProjection());
 					Profiling::GlobalClock::Update();
+					Input::GamePad::Get().UpdateState();
+					ECS::SceneManager::GetActiveScene()->OnUpdate();
+
 					float color[] = { 0.2f, 0.6, 0.8, 1.0f };
-					Graphics::VanillaPass::Begin(color);
-					m_pCube->Draw();
-					Graphics::VanillaPass::End();
+
+					Graphics::Pipeline::Execute();
+
 					auto backBuffer = Graphics::Renderer::GetSwapChain()->GetBackBuffer();
 					auto depthBuffer = Graphics::Renderer::GetSwapChain()->GetDepthStencilView();
 
@@ -148,9 +183,11 @@ namespace Wreckless
 		vp.Height = height;
 		vp.MinDepth = 0.0f;
 		vp.MaxDepth = 1.0f;
-		Graphics::Renderer::GetRenderContext()->BindViewport(vp);
+		//Graphics::Renderer::GetRenderContext()->BindViewport(vp);
 		Graphics::Renderer::GetSwapChain()->ResizeBuffers(width, height);
 	
+		Graphics::Pipeline::ResizeBuffers(width, height);
+		m_Camera.SetFrustumProperties(3.1459 / 2, (float)width / (float)height, 0.1f, 100.0f);
 		return false;
 	}
 	bool Application::OnWindowClose(WindowCloseEvent& e)

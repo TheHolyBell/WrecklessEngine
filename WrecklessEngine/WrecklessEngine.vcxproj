@@ -156,6 +156,7 @@
     <ClCompile Include="Noise.cpp" />
     <ClCompile Include="NoiseCSharp.cpp" />
     <ClCompile Include="Parameters.cpp" />
+    <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="EditorLayer.h" />
     <ClInclude Include="FinalApplication.h" />
+    <ClInclude Include="IMesh.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />
@@ -275,6 +277,7 @@
     <ClInclude Include="Noise.h" />
     <ClInclude Include="NoiseCSharp.h" />
     <ClInclude Include="Parameters.h" />
+    <ClInclude Include="Pipeline.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Renderer.h" />

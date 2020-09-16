@@ -18,6 +18,7 @@ namespace Scripting
 	class ScriptDomain
 	{
 	public:
+		ScriptDomain() = default;
 		ScriptDomain(const char* filename);
 		// @ Optional since .DLL files doesn't have that method
 		void ExecuteMain(int argc, char** argv);
@@ -26,9 +27,9 @@ namespace Scripting
 
 		~ScriptDomain();
 	private:
-		MonoDomain* m_pDomain;
-		MonoAssembly* m_pAssembly;
-		MonoImage* m_pImage;
+		MonoDomain* m_pDomain = nullptr;
+		MonoAssembly* m_pAssembly = nullptr;
+		MonoImage* m_pImage = nullptr;
 		std::unordered_map<size_t, std::shared_ptr<ScriptClass>> m_Classes;
 	};
 }

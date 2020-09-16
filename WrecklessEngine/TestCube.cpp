@@ -9,9 +9,10 @@
 #include "InputLayout.h"
 #include "TransformCBuf.h"
 
-namespace Misc
+using namespace Misc;
+namespace Drawables
 {
-	TestCube::TestCube(float size)
+	TestCube::TestCube(unsigned entID, float size)
 	{
 		using namespace Bindable;
 
@@ -33,16 +34,12 @@ namespace Misc
 		AddBind(PixelShader::Resolve("DickPS.cso"));
 
 		AddBind(Topology::Resolve());
-		AddBind(std::make_shared<TransformCBuf>());
+		AddBind(std::make_shared<TransformCBuf>(entID));
 	}
 	void TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept
 	{
 	}
 	void TestCube::SetRotation(float roll, float pitch, float yaw) noexcept
 	{
-	}
-	DirectX::XMMATRIX TestCube::GetTransformXM() const noexcept
-	{
-		return DirectX::XMMatrixIdentity();
 	}
 }

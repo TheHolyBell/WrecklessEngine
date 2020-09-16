@@ -41,6 +41,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	using namespace Input;
 	using namespace IO;
 	Console::Initialize();
+	Scripting::ScriptingEngine::Initialize();
+	
 
 	/*std::hash<std::string> hasher;
 	
@@ -79,17 +81,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	pWindow->SetIcon("D:\\VisualStudio\\C++\\Hardware3D\\chili.ico");
 
 	
-	Scripting::ScriptingEngine::Initialize();
-	Scripting::ScriptDomain domain = Scripting::ScriptingEngine::GetDomain("Sandbox.dll");
-
-	Scripting::Debug::Bind();
-	Scripting::GamePadCSharp::Bind();
-	Scripting::MouseCSharp::Bind();
-	Scripting::KeyboardCSharp::Bind();
-	Scripting::TimeCSharp::Bind();
-	Scripting::NoiseCSharp::Bind();
-	Scripting::ComponentsCSharp::Bind();
-	Scripting::EntityCSharp::Bind();
 
 
 	auto klass = domain.GetClass("Sandbox", "Sandbox");

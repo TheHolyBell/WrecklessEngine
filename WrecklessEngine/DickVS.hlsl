@@ -1,6 +1,15 @@
 #include "Transform.hlsli"
 
-float4 main(float3 pos : POSITION) : SV_POSITION
+struct VS_OUT
 {
-	return mul(float4(pos, 1.0f), modelViewProjection);
+	float3 PosW : POSITION;
+	float4 PosH : SV_POSITION;
+};
+
+VS_OUT main(float3 pos : POSITION)
+{
+	VS_OUT vso;
+	vso.PosW = pos;
+	vso.PosH = mul(float4(pos, 1.0f), modelViewProjection);
+	return vso;
 }

@@ -10,8 +10,10 @@ namespace Graphics
 	public:
 		static void Initialize(unsigned width, unsigned height);
 		static void Resize(unsigned width, unsigned height);
-		static void Begin(float* color);
-		static void End();
+		//static void Begin(float* color);
+		//static void End();
+
+		static void Execute();
 
 		static Ref<ITexture> GetRenderTargetSRV();
 		static Ref<ITexture> GetDepthStencilSRV();

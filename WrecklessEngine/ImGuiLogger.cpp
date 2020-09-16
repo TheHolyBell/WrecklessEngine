@@ -8,7 +8,7 @@ namespace IO
 
 	void ImGuiOutput::Draw()
 	{
-		if (ImGui::Begin("ImGui Output Console"))
+		if (ImGui::Begin("Output Console"))
 		{
 			for (const auto& msg : m_Messages)
 				ImGui::Text(msg.c_str());

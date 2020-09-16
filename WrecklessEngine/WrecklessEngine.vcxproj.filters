@@ -106,6 +106,9 @@
     <Filter Include="Shaders\Headers">
       <UniqueIdentifier>{e7de32ec-d245-444f-9045-f1c6b720a9f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Drawables">
+      <UniqueIdentifier>{42e8a95a-0214-4a4b-af31-2e769c5dde82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -363,12 +366,6 @@
     <ClCompile Include="TransformCBuf.cpp">
       <Filter>Bindable</Filter>
     </ClCompile>
-    <ClCompile Include="Drawable.cpp">
-      <Filter>Miscellanious</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCube.cpp">
-      <Filter>Miscellanious</Filter>
-    </ClCompile>
     <ClCompile Include="EditorLayer.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -380,6 +377,15 @@
     </ClCompile>
     <ClCompile Include="VanillaPass.cpp">
       <Filter>RenderPasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipeline.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCube.cpp">
+      <Filter>Drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -746,12 +752,6 @@
     <ClInclude Include="SceneCamera.h">
       <Filter>CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Drawable.h">
-      <Filter>Miscellanious</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCube.h">
-      <Filter>Miscellanious</Filter>
-    </ClInclude>
     <ClInclude Include="EditorLayer.h">
       <Filter>Application</Filter>
     </ClInclude>
@@ -760,6 +760,18 @@
     </ClInclude>
     <ClInclude Include="FinalApplication.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipeline.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IMesh.h">
+      <Filter>Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCube.h">
+      <Filter>Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

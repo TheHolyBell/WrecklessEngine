@@ -68,6 +68,44 @@ namespace WrecklessScript.Core.Math
             return result;
         }
 
+        public static Matrix4 RotationX(float angle)
+        {
+            Matrix4 result = new Matrix4(1.0f);
+
+            result.D22 = (float)System.Math.Cos(angle);
+            result.D23 = (float)System.Math.Sin(angle);
+            result.D32 = -(float)System.Math.Sin(angle);
+            result.D33 = (float)System.Math.Cos(angle);
+
+            return result;
+        }
+
+        public static Matrix4 RotationY(float angle)
+        {
+            Matrix4 result = new Matrix4(1.0f);
+
+            result.D11 = (float)System.Math.Cos(angle);
+            result.D13 = -(float)System.Math.Sin(angle);
+
+            result.D31 = (float)System.Math.Sin(angle);
+            result.D33 = (float)System.Math.Cos(angle);
+
+            return result;
+        }
+
+        public static Matrix4 RotationZ(float angle)
+        {
+            Matrix4 result = new Matrix4(1.0f);
+
+            result.D11 = (float)System.Math.Cos(angle);
+            result.D12 = (float)System.Math.Sin(angle);
+
+            result.D21 = -(float)System.Math.Sin(angle);
+            result.D22 = -(float)System.Math.Cos(angle);
+
+            return result;
+        }
+
         public void DebugPrint()
         {
             Debug.Log($"{D11}, {D12}, {D13}, {D14}");

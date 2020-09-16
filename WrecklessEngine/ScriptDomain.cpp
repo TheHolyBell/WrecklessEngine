@@ -47,6 +47,7 @@ namespace Scripting
 	}
 	ScriptDomain::~ScriptDomain()
 	{
-		mono_jit_cleanup(m_pDomain);
+		if(m_pDomain != nullptr)
+			mono_jit_cleanup(m_pDomain);
 	}
 }

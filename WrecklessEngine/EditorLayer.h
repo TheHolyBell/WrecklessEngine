@@ -7,6 +7,8 @@
 #include "MouseEvent.h"
 #include "PerspectiveCamera.h"
 
+#include "TestCube.h"
+
 namespace Wreckless
 {
 	class EditorLayer : public Layer
@@ -32,6 +34,8 @@ namespace Wreckless
 		bool m_ViewportPanelFocused = false;
 
 		int m_GizmoType = -1;
+
+		DirectX::XMFLOAT2 m_ViewportSize = {};
 
 		CameraSystem::PerspectiveCamera m_EditorCamera;
 	};

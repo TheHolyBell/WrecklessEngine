@@ -77,6 +77,7 @@ namespace Wreckless
 	void EditorLayer::OnUpdate()
 	{
 	}
+
 	void EditorLayer::OnImGuiRender()
 	{
 		WRECK_PROFILE_FUNCTION();
@@ -108,7 +109,7 @@ namespace Wreckless
 		//	window_flags |= ImGuiWindowFlags_NoBackground;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", &p_open, window_flags);
+		ImGui::Begin("DockSpace", &p_open, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -166,14 +167,25 @@ namespace Wreckless
 			ImGui::Text("Image dimensions: %dx%d", m_CheckerboardTex->GetWidth(), m_CheckerboardTex->GetHeight());
 			ImGui::Image((ImTextureID)m_CheckerboardTex->NativePointer(), ImVec2(m_CheckerboardTex->GetWidth(), m_CheckerboardTex->GetHeight()));
 			ImGui::Image((ImTextureID)m_PlayButtonTex->NativePointer(), ImVec2(m_PlayButtonTex->GetWidth(), m_PlayButtonTex->GetHeight()));
-			ImGui::Image((ImTextureID)VanillaPass::GetRenderTargetSRV()->GetNativePointer(), ImVec2(400, 200));
 			ImGui::Image((ImTextureID)VanillaPass::GetDepthStencilSRV()->GetNativePointer(), ImVec2(400, 200));
 		}
 		ImGui::End();
 		IO::ImGuiOutput::Draw();
 
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{});
+		ImGui::Begin("Viewport");
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		ImGui::Image((ImTextureID)VanillaPass::GetRenderTargetSRV()->GetNativePointer(), viewportPanelSize);
+		ImGui::End();
+		ImGui::PopStyleVar();
+
 		ImGui::End();
 
+		if ((m_ViewportSize.x != viewportPanelSize.x) || (viewportPanelSize.y != m_ViewportSize.y))
+		{
+			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+			VanillaPass::Resize(m_ViewportSize.x, m_ViewportSize.y);
+		}
 	}
 	void EditorLayer::OnEvent(Event& e)
 	{

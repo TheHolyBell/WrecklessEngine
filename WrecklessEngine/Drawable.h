@@ -1,6 +1,7 @@
 #pragma once
 #include "CommonInclude.h"
 #include "Renderer.h"
+#include "IMesh.h"
 
 namespace Bindable
 {
@@ -8,15 +9,16 @@ namespace Bindable
 	class IndexBuffer;
 }
 
-namespace Misc
+namespace Drawables
 {
-	class Drawable
+	class Drawable : public IMesh
 	{
 	public:
 		Drawable() = default;
 		Drawable(const Drawable&) = delete;
-		virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
-		void Draw() const noxnd;
+
+		virtual void Update() override;
+		virtual void Draw() override final;
 		virtual ~Drawable() = default;
 		template<class T>
 		T* QueryBindable() noexcept

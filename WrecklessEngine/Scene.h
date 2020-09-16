@@ -20,6 +20,12 @@ namespace ECS
 		Entity GetEntityByIndex(entt::entity handle);
 		bool EntityExists(entt::entity handle) const;
 
+		template<typename... Args>
+		decltype(auto) QueryElementsByComponent()
+		{
+			return m_Registry.view<Args...>();
+		}
+
 		void OnUpdate();
 	private:
 		entt::registry m_Registry;
