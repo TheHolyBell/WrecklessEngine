@@ -8,18 +8,7 @@
 #include "SceneCamera.h"
 #include "Pipeline.h"
 #include "SceneManager.h"
-#include "Entity.h"
-#include "Components.h"
-#include "ScriptingEngine.h"
-
-#include "GamePadCSharp.h"
-#include "MouseCSharp.h"
-#include "KeyboardCSharp.h"
-#include "DebugConsoleCSharp.h"
-#include "TimeCSharp.h"
-#include "EntityCSharp.h"
-#include "NoiseCSharp.h"
-#include "ComponentsCSharp.h"
+#include "GamePad.h"
 
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
@@ -28,7 +17,6 @@ static Wreckless::Application* g_AppInstance = nullptr;
 namespace Wreckless
 {
 	Application::Application(const std::string& windowName, int width, int height)
-		: m_Domain("Sandbox.dll")
 	{
 
 		WRECK_ASSERT(g_AppInstance == nullptr, "Application already has been created");
@@ -39,19 +27,9 @@ namespace Wreckless
 	
 		Graphics::Renderer::Initialize(Graphics::RendereringAPI::DirectX11, *m_pWindow);
 
-		Scripting::Debug::Bind();
-		Scripting::GamePadCSharp::Bind();
-		Scripting::MouseCSharp::Bind();
-		Scripting::KeyboardCSharp::Bind();
-		Scripting::TimeCSharp::Bind();
-		Scripting::NoiseCSharp::Bind();
-		Scripting::ComponentsCSharp::Bind();
-		Scripting::EntityCSharp::Bind();
-
 		m_ImGuiLayer = new ImGuiLayer("ImGui");
 		PushOverlay(m_ImGuiLayer);
-
-		m_pTexture = Graphics::Renderer::GetDevice()->CreateTexture2D("D:\\Downloads\\image.png");
+		
 		m_Camera.SetFrustumProperties(3.14159 / 2, (float)width  / (float)height, 0.1f, 100);
 
 		m_Camera.LookAt(DirectX::XMFLOAT3{ 10.0f, 5.0f, -20.0f }, DirectX::XMFLOAT3{0,0,0},
@@ -64,16 +42,6 @@ namespace Wreckless
 		m_Viewport.MaxDepth = 1.0f;
 
 		Graphics::Renderer::GetRenderContext()->BindViewport(m_Viewport);
-
-		m_pScene = std::make_shared<ECS::Scene>("main");
-		ECS::SceneManager::AddScene(m_pScene);
-
-		
-
-		auto ent = m_pScene->CreateEntity();
-		ent.AddComponent<ECS::ScriptComponent>(ent.GetID(), m_Domain.GetClass( "Sandbox", "Actor"));
-		ent.AddComponent<ECS::TransformComponent>(DirectX::XMMatrixTranslation(5.0, 2.0f, 10.0f));
-		ent.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::TestCube>(ent.GetID() ,10));
 
 		Graphics::Pipeline::Initialize(width, height);
 	}

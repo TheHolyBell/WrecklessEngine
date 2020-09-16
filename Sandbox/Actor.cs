@@ -80,7 +80,6 @@ namespace Sandbox
                 tr.D41--;
             }
             GetComponent<TransformComponent>().Transform = tr;
-            //Debug.Log("Privetiki:)");
         }
     }
 }

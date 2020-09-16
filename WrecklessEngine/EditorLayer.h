@@ -8,6 +8,8 @@
 #include "PerspectiveCamera.h"
 
 #include "TestCube.h"
+#include "Scene.h"
+#include "ScriptDomain.h"
 
 namespace Wreckless
 {
@@ -29,6 +31,11 @@ namespace Wreckless
 	private:
 		Ref<Bindable::Texture2D> m_CheckerboardTex;
 		Ref<Bindable::Texture2D> m_PlayButtonTex;
+
+		Ref<Bindable::Texture2D> m_pTexture;
+
+		Ref<ECS::Scene> m_pScene;
+		Scripting::ScriptDomain m_Domain;
 
 		bool m_ViewportPanelMouseOver = false;
 		bool m_ViewportPanelFocused = false;

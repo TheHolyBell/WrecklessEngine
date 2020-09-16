@@ -46,12 +46,7 @@ namespace Wreckless
 		bool m_Running = true, m_Minimized = false;
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;
-		Ref<Graphics::ITexture> m_pTexture;
-
 		CameraSystem::PerspectiveCamera m_Camera;
-
-		Ref<ECS::Scene> m_pScene;
-		Scripting::ScriptDomain m_Domain;
 
 		Graphics::Viewport m_Viewport = {};
 	};

@@ -10,13 +10,44 @@
 #include "Application.h"
 
 #include "VanillaPass.h"
+#include "SceneManager.h"
+#include "Entity.h"
+#include "Components.h"
+
+#include "GamePadCSharp.h"
+#include "MouseCSharp.h"
+#include "KeyboardCSharp.h"
+#include "DebugConsoleCSharp.h"
+#include "TimeCSharp.h"
+#include "EntityCSharp.h"
+#include "NoiseCSharp.h"
+#include "ComponentsCSharp.h"
 
 using namespace Input;
 
 namespace Wreckless
 {
 	EditorLayer::EditorLayer()
+		: m_Domain("Sandbox.dll")
 	{
+		m_pTexture = Bindable::Texture2D::Resolve("D:\\Downloads\\image.png");
+
+		m_pScene = std::make_shared<ECS::Scene>("main");
+		ECS::SceneManager::AddScene(m_pScene);
+
+		Scripting::Debug::Bind();
+		Scripting::GamePadCSharp::Bind();
+		Scripting::MouseCSharp::Bind();
+		Scripting::KeyboardCSharp::Bind();
+		Scripting::TimeCSharp::Bind();
+		Scripting::NoiseCSharp::Bind();
+		Scripting::ComponentsCSharp::Bind();
+		Scripting::EntityCSharp::Bind();
+
+		auto ent = m_pScene->CreateEntity();
+		ent.AddComponent<ECS::ScriptComponent>(ent.GetID(), m_Domain.GetClass("Sandbox", "Actor"));
+		ent.AddComponent<ECS::TransformComponent>(DirectX::XMMatrixTranslation(5.0, 2.0f, 10.0f));
+		ent.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::TestCube>(ent.GetID(), 10));
 	}
 	EditorLayer::~EditorLayer()
 	{

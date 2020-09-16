@@ -149,7 +149,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	return 0;*/
 	Profiling::Profiler::GetInstance().BeginSession("Wreckless");
-	cout << FileSystem::FileHelper::GetFileExtension("D:\\VisualStudio\\C++\\WrecklessEngine\\WrecklessEngine\\WrecklessScript.Core.dll") << IO::endl;
+	//cout << FileSystem::FileHelper::GetFileExtension("D:\\VisualStudio\\C++\\WrecklessEngine\\WrecklessEngine\\WrecklessScript.Core.dll") << IO::endl;
 	Wreckless::Application* app = new Wreckless::FinalApplication("Dickie", 1600, 900);
 	app->Run();
 	delete app;
