@@ -109,6 +109,12 @@
     <Filter Include="Drawables">
       <UniqueIdentifier>{42e8a95a-0214-4a4b-af31-2e769c5dde82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Editor">
+      <UniqueIdentifier>{29991319-e051-4f1e-8fb2-504a07fa4ee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Editor\Panels">
+      <UniqueIdentifier>{e5727ace-de18-4f12-9b82-4b5e31b76a68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -366,14 +372,8 @@
     <ClCompile Include="TransformCBuf.cpp">
       <Filter>Bindable</Filter>
     </ClCompile>
-    <ClCompile Include="EditorLayer.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="Texture2D.cpp">
       <Filter>Bindable</Filter>
-    </ClCompile>
-    <ClCompile Include="FinalApplication.cpp">
-      <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="VanillaPass.cpp">
       <Filter>RenderPasses</Filter>
@@ -386,6 +386,15 @@
     </ClCompile>
     <ClCompile Include="TestCube.cpp">
       <Filter>Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="FinalApplication.cpp">
+      <Filter>Application\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorLayer.cpp">
+      <Filter>Application\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneHierarchyPanel.cpp">
+      <Filter>Application\Editor\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -752,14 +761,8 @@
     <ClInclude Include="SceneCamera.h">
       <Filter>CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="EditorLayer.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Bindable</Filter>
-    </ClInclude>
-    <ClInclude Include="FinalApplication.h">
-      <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Pipeline.h">
       <Filter>Graphics</Filter>
@@ -772,6 +775,15 @@
     </ClInclude>
     <ClInclude Include="TestCube.h">
       <Filter>Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="FinalApplication.h">
+      <Filter>Application\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorLayer.h">
+      <Filter>Application\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneHierarchyPanel.h">
+      <Filter>Application\Editor\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

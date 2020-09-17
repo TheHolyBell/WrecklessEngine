@@ -35,6 +35,8 @@ namespace Wreckless
 		m_pScene = std::make_shared<ECS::Scene>("main");
 		ECS::SceneManager::AddScene(m_pScene);
 
+		m_pSceneHierarchyPanel = std::make_shared<SceneHierarchyPanel>(m_pScene);
+
 		Scripting::Debug::Bind();
 		Scripting::GamePadCSharp::Bind();
 		Scripting::MouseCSharp::Bind();
@@ -45,6 +47,7 @@ namespace Wreckless
 		Scripting::EntityCSharp::Bind();
 
 		auto ent = m_pScene->CreateEntity();
+		ent.AddComponent<ECS::TagComponent>("Boxie");
 		ent.AddComponent<ECS::ScriptComponent>(ent.GetID(), m_Domain.GetClass("Sandbox", "Actor"));
 		ent.AddComponent<ECS::TransformComponent>(DirectX::XMMatrixTranslation(5.0, 2.0f, 10.0f));
 		ent.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::TestCube>(ent.GetID(), 10));
@@ -202,6 +205,8 @@ namespace Wreckless
 		}
 		ImGui::End();
 		IO::ImGuiOutput::Draw();
+
+		m_pSceneHierarchyPanel->OnImGuiRender();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{});
 		ImGui::Begin("Viewport");

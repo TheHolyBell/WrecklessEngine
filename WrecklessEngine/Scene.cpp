@@ -22,7 +22,7 @@ namespace ECS
 	{
 		Entity entity(m_Registry.create(), this);
 		//entity.AddComponent<TransformComponent>();
-		auto& tag = entity.AddComponent<TagComponent>("Dickson");
+		//auto& tag = entity.AddComponent<TagComponent>("Dickson");
 		return entity;
 	}
 	Entity Scene::GetEntityByIndex(entt::entity handle)

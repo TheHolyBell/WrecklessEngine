@@ -166,6 +166,7 @@
     <ClCompile Include="Manipulators.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneCamera.cpp" />
+    <ClCompile Include="SceneHierarchyPanel.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScriptClass.cpp" />
     <ClCompile Include="ScriptDomain.cpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="ITexture.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneCamera.h" />
+    <ClInclude Include="SceneHierarchyPanel.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScriptClass.h" />
     <ClInclude Include="ScriptDomain.h" />

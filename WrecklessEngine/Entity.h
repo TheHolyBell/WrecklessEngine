@@ -53,7 +53,7 @@ namespace ECS
 
 		bool operator!=(const Entity& rhs) const
 		{
-			return !this->operator==(rhs);
+			return !((*this)==rhs);
 		}
 	private:
 		entt::entity m_Entity = entt::null;

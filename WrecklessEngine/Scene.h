@@ -2,6 +2,10 @@
 
 #include <entt.hpp>
 
+namespace Wreckless
+{
+	class SceneHierarchyPanel;
+}
 
 namespace ECS
 {
@@ -31,5 +35,6 @@ namespace ECS
 		entt::registry m_Registry;
 		std::string m_Name;
 		friend class Entity;
+		friend Wreckless::SceneHierarchyPanel;
 	};
 }

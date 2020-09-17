@@ -10,6 +10,7 @@
 #include "TestCube.h"
 #include "Scene.h"
 #include "ScriptDomain.h"
+#include "SceneHierarchyPanel.h"
 
 namespace Wreckless
 {
@@ -43,6 +44,8 @@ namespace Wreckless
 		int m_GizmoType = -1;
 
 		DirectX::XMFLOAT2 m_ViewportSize = {};
+
+		Ref<SceneHierarchyPanel> m_pSceneHierarchyPanel;
 
 		CameraSystem::PerspectiveCamera m_EditorCamera;
 	};
