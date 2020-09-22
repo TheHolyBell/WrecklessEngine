@@ -10,7 +10,7 @@ namespace Bindable
 	RefUnique<VertexConstantBuffer<TransformCBuf::Transforms>> TransformCBuf::s_pVCBuf;
 
 	TransformCBuf::TransformCBuf(UINT entID, UINT slot)
-		: m_entID(entID)
+		: m_EntID(entID)
 	{
 		if (s_pVCBuf == nullptr)
 			s_pVCBuf = std::make_unique<VertexConstantBuffer<Transforms>>(slot);
@@ -29,15 +29,19 @@ namespace Bindable
 
 	TransformCBuf::Transforms TransformCBuf::GetTransforms() noexcept
 	{
-		auto& tfComponent = ECS::SceneManager::GetActiveScene()->GetEntityByIndex((entt::entity)m_entID).GetComponent<ECS::TransformComponent>();
+		ECS::Entity entity = ECS::SceneManager::GetActiveScene()->GetEntityByIndex((entt::entity)m_EntID);
+
+		auto model = DirectX::XMMatrixIdentity();
+
+		if(entity.HasComponent<ECS::TransformComponent>())
+			model = DirectX::XMLoadFloat4x4(&entity.GetComponent<ECS::TransformComponent>().Transform);
 		
-		auto model = DirectX::XMLoadFloat4x4(&tfComponent.Transform);
 		auto view = CameraSystem::SceneCamera::GetView();
 		auto projection = CameraSystem::SceneCamera::GetProjection();
 		Transforms tf = {};
 		tf.model = DirectX::XMMatrixTranspose(model);
-		tf.modelViewProjection = DirectX::XMMatrixTranspose(model *
-			view * projection);
+		tf.view = DirectX::XMMatrixTranspose(view);
+		tf.projection = DirectX::XMMatrixTranspose(projection);
 
 		return tf;
 	}

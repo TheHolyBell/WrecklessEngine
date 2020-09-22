@@ -30,7 +30,7 @@ namespace Wreckless
 		m_ImGuiLayer = new ImGuiLayer("ImGui");
 		PushOverlay(m_ImGuiLayer);
 		
-		m_Camera.SetFrustumProperties(3.14159 / 2, (float)width  / (float)height, 0.1f, 100);
+		m_Camera.SetFrustumProperties(3.14159 / 2, (float)width  / (float)height, 0.1f, 1000);
 
 		m_Camera.LookAt(DirectX::XMFLOAT3{ 10.0f, 5.0f, -20.0f }, DirectX::XMFLOAT3{0,0,0},
 			DirectX::XMFLOAT3{ 0,1,0 });
@@ -65,7 +65,6 @@ namespace Wreckless
 					CameraSystem::SceneCamera::SetProjection(m_Camera.GetProjection());
 					Profiling::GlobalClock::Update();
 					Input::GamePad::Get().UpdateState();
-					ECS::SceneManager::GetActiveScene()->OnUpdate();
 
 					float color[] = { 0.2f, 0.6, 0.8, 1.0f };
 
@@ -155,7 +154,7 @@ namespace Wreckless
 		Graphics::Renderer::GetSwapChain()->ResizeBuffers(width, height);
 	
 		Graphics::Pipeline::ResizeBuffers(width, height);
-		m_Camera.SetFrustumProperties(3.1459 / 2, (float)width / (float)height, 0.1f, 100.0f);
+		m_Camera.SetFrustumProperties(3.1459 / 2, (float)width / (float)height, 0.1f, 1000.0f);
 		return false;
 	}
 	bool Application::OnWindowClose(WindowCloseEvent& e)

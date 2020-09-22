@@ -19,6 +19,12 @@ namespace Graphics
 		virtual Ref<ITexture> CreateTexture2D(const std::string& path) override;
 		virtual Ref<ITexture> CreateTexture2D(TEXTURE2D_DESC texture_desc) override;
 
+		virtual Ref<ITexture> CreateTexture3D(const std::string& path) override;
+
+		virtual Ref<IRasterizer> CreateRasterizer(RASTERIZER_DESC rasterizer_desc) override;
+		virtual Ref<ISamplerState> CreateSamplerState(SAMPLER_DESC sampler_desc) override;
+		virtual Ref<IDepthStencilState> CreateDepthStencilState(DEPTH_STENCIL_DESC depth_stencil_desc) override;
+
 		virtual Ref<IVertexShader> CreateVertexShader(const std::string& path) override;
 		virtual Ref<IPixelShader> CreatePixelShader(const std::string& path) override;
 

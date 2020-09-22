@@ -103,6 +103,11 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="CameraRegistry.cpp" />
+    <ClCompile Include="Cubemap.cpp" />
+    <ClCompile Include="D3D11DepthStencilState.cpp" />
+    <ClCompile Include="D3D11Rasterizer.cpp" />
+    <ClCompile Include="D3D11SamplerState.cpp" />
+    <ClCompile Include="DepthStencil.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="EditorLayer.cpp" />
     <ClCompile Include="FinalApplication.cpp" />
@@ -159,11 +164,13 @@
     <ClCompile Include="Pipeline.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Profiler.cpp" />
+    <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="InputOutputStream.cpp" />
     <ClCompile Include="LayoutCodex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Manipulators.cpp" />
+    <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneCamera.cpp" />
     <ClCompile Include="SceneHierarchyPanel.cpp" />
@@ -182,6 +189,7 @@
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="TestCube.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TimeCSharp.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Topology.cpp" />
@@ -202,13 +210,20 @@
     <ClInclude Include="Buttons.h" />
     <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cubemap.h" />
+    <ClInclude Include="D3D11DepthStencilState.h" />
+    <ClInclude Include="D3D11Rasterizer.h" />
+    <ClInclude Include="D3D11SamplerState.h" />
+    <ClInclude Include="DepthStencil.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="EditorLayer.h" />
     <ClInclude Include="FinalApplication.h" />
+    <ClInclude Include="IDepthStencilState.h" />
     <ClInclude Include="IMesh.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />
+    <ClInclude Include="IRasterizer.h" />
     <ClInclude Include="OrthogonalCamera.h" />
     <ClInclude Include="PerspectiveCamera.h" />
     <ClInclude Include="CameraRegistry.h" />
@@ -281,6 +296,7 @@
     <ClInclude Include="Pipeline.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Profiler.h" />
+    <ClInclude Include="Rasterizer.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="IDevice.h" />
     <ClInclude Include="InputOutputStream.h" />
@@ -290,6 +306,7 @@
     <ClInclude Include="LayoutCodex.h" />
     <ClInclude Include="Manipulators.h" />
     <ClInclude Include="ITexture.h" />
+    <ClInclude Include="Sampler.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneCamera.h" />
     <ClInclude Include="SceneHierarchyPanel.h" />
@@ -309,6 +326,7 @@
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="TestCube.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureDesc.h" />
     <ClInclude Include="TimeCSharp.h" />
     <ClInclude Include="Timer.h" />
@@ -332,6 +350,14 @@
     <None Include="Transform.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="CubeMapPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="CubeMapVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="DickVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

@@ -28,6 +28,8 @@ namespace Graphics
 		virtual void BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot) override;
 		virtual void BindInputLayout(Ref<IInputLayout> input_layout) override;
 		virtual void BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot) override;
+		virtual void BindRasterizerState(Ref<IRasterizer> rasterizer_state) override;
+		virtual void BindDepthStencilState(Ref<IDepthStencilState> depth_stencil_state) override;
 		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) override;
 		virtual void BindTexture2D(Ref<ITexture> texture, SHADER_TYPE stage, unsigned slot) override;
 

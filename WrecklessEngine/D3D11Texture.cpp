@@ -1,6 +1,4 @@
 #include "D3D11Texture.h"
-#include "InputOutputStream.h"
-#include "Manipulators.h"
 
 namespace Graphics
 {

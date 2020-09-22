@@ -8,19 +8,19 @@ namespace WrecklessScript.Core.Input
 {
 	public enum Button
 	{
-		GAMEPAD_ARROW_UP = 0x0001,
-		GAMEPAD_ARROW_DOWN = 0x0002,
-		GAMEPAD_ARROW_LEFT = 0x0004,
-		GAMEPAD_ARROW_RIGHT = 0x0008,
-		GAMEPAD_START = 0x0010,
-		GAMEPAD_BACK = 0x0020,
-		GAMEPAD_LEFT_THUMB = 0x0040,
-		GAMEPAD_RIGHT_THUMB = 0x0080,
-		GAMEPAD_LEFT_SHOULDER = 0x0100,
-		GAMEPAD_RIGHT_SHOULDER = 0x0200,
-		GAMEPAD_A = 0x1000,
-		GAMEPAD_B = 0x2000,
-		GAMEPAD_X = 0x4000,
-		GAMEPAD_Y = 0x8000
+		ArrowUp = 0x0001,
+		ArrowDown = 0x0002,
+		ArrowLeft = 0x0004,
+		ArrowRight = 0x0008,
+		StartButton = 0x0010,
+		BackButton = 0x0020,
+		LThumb = 0x0040,
+		RThumb = 0x0080,
+		LShoulder = 0x0100,
+		RShoudler = 0x0200,
+		A = 0x1000,
+		B = 0x2000,
+		X = 0x4000,
+		Y = 0x8000
 	};
 }

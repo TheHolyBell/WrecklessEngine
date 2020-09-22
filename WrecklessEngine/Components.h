@@ -39,23 +39,25 @@ namespace ECS
 	class ScriptComponent
 	{
 	public:
-		ScriptComponent(uint32_t id, Scripting::ScriptClass klass)
+		ScriptComponent(Scripting::ScriptClass klass)
 			: m_Object(klass.CreateInstance())
 		{
-			m_Object.GetProperty("ID").Set(id);
-			m_Object.Invoke("Start");
 		}
 		void Update()
 		{
 			m_Object.Invoke("Update");
 		}
-
-		Scripting::ScriptObject& Object()
+	private:
+		void OnCreate(uint32_t handle)
 		{
-			return m_Object; 
+			m_Object.GetProperty("ID").Set(handle);
+			m_Object.Invoke("Start");
+			m_bCreated = true;
 		}
 	private:
+		bool m_bCreated = false;
 		Scripting::ScriptObject m_Object;
+		friend class Scene;
 	};
 
 	struct MeshComponent

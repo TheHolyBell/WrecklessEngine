@@ -20,6 +20,7 @@ namespace Wreckless
 		void OnImGuiRender();
 	private:
 		void DrawEntityNode(ECS::Entity entity);
+		void DrawComponents(ECS::Entity entity);
 	private:
 		Ref<ECS::Scene> m_Context;
 		ECS::Entity m_SelectionContext;

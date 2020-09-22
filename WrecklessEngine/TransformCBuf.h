@@ -2,6 +2,7 @@
 #include "Bindable.h"
 #include <DirectXMath.h>
 #include "ConstantBuffers.h"
+#include "Entity.h"
 
 namespace Bindable
 {
@@ -11,7 +12,8 @@ namespace Bindable
 		struct Transforms
 		{
 			DirectX::XMMATRIX model;
-			DirectX::XMMATRIX modelViewProjection;
+			DirectX::XMMATRIX view;
+			DirectX::XMMATRIX projection;
 		};
 	public:
 		TransformCBuf(UINT entID, UINT slot = 0);
@@ -23,6 +25,6 @@ namespace Bindable
 		Transforms GetTransforms() noexcept;
 	private:
 		static RefUnique<VertexConstantBuffer<Transforms>> s_pVCBuf;
-		UINT m_entID;
+		unsigned m_EntID;
 	};
 }

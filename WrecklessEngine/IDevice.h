@@ -6,8 +6,11 @@
 #include "IBuffer.h"
 #include "Vertex.h"
 #include "IInputLayout.h"
+#include "IRasterizer.h"
 #include "DynamicConstant.h"
 #include "TextureDesc.h"
+#include "ISamplerState.h"
+#include "IDepthStencilState.h"
 
 namespace Graphics
 {
@@ -30,8 +33,14 @@ namespace Graphics
 		virtual Ref<ITexture> CreateTexture2D(const std::string& path) PURE;
 		virtual Ref<ITexture> CreateTexture2D(TEXTURE2D_DESC texture_desc) PURE;
 
+		virtual Ref<ITexture> CreateTexture3D(const std::string& path) PURE;
+
 		virtual Ref<IVertexShader> CreateVertexShader(const std::string& path) PURE;
 		virtual Ref<IPixelShader> CreatePixelShader(const std::string& path) PURE;
+
+		virtual Ref<IRasterizer> CreateRasterizer(RASTERIZER_DESC rasterizer_desc) PURE;
+		virtual Ref<ISamplerState> CreateSamplerState(SAMPLER_DESC sampler_desc) PURE;
+		virtual Ref<IDepthStencilState> CreateDepthStencilState(DEPTH_STENCIL_DESC depth_stencil_desc) PURE;
 
 		virtual Ref<IVertexBuffer> CreateVertexBuffer(const Dynamic::VertexBuffer& buffer) PURE;
 		virtual Ref<IIndexBuffer> CreateIndexBuffer(const std::vector<unsigned int>& buffer) PURE;

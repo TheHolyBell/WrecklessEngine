@@ -37,10 +37,12 @@ namespace ECS
 	void Scene::OnUpdate()
 	{
 		auto view = QueryElementsByComponent<ScriptComponent>();
-		for (const auto& sc : view)
+		for (const auto& ent : view)
 		{
-			ScriptComponent& ent = view.get<ScriptComponent>(sc);
-			ent.Update();
+			ScriptComponent& sc = view.get<ScriptComponent>(ent);
+			if (sc.m_bCreated == false)
+				sc.OnCreate((uint32_t)ent);
+			sc.Update();
 		}
 	}
 }

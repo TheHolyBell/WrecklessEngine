@@ -95,6 +95,16 @@ namespace Graphics
 		ID3D11SamplerState* _pSamplerState = reinterpret_cast<ID3D11SamplerState*>(sampler_state->GetNativePointer());
 		m_pDeviceContext->PSSetSamplers(slot, 1, &_pSamplerState);
 	}
+	void D3D11RenderContext::BindRasterizerState(Ref<IRasterizer> rasterizer_state)
+	{
+		ID3D11RasterizerState* _pRasterizerState = reinterpret_cast<ID3D11RasterizerState*>(rasterizer_state->GetNativePointer());
+		m_pDeviceContext->RSSetState(_pRasterizerState);
+	}
+	void D3D11RenderContext::BindDepthStencilState(Ref<IDepthStencilState> depth_stencil_state)
+	{
+		ID3D11DepthStencilState* _pDepthStencilState = reinterpret_cast<ID3D11DepthStencilState*>(depth_stencil_state->GetNativePointer());
+		m_pDeviceContext->OMSetDepthStencilState(_pDepthStencilState, 0);
+	}
 	void D3D11RenderContext::BindTopology(PRIMITIVE_TOPOLOGY topology)
 	{
 		m_pDeviceContext->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)topology);

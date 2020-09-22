@@ -10,6 +10,8 @@ namespace IO
 	{
 		if (ImGui::Begin("Output Console"))
 		{
+			if (ImGui::Button("Clear"))
+				Clear();
 			for (const auto& msg : m_Messages)
 				ImGui::Text(msg.c_str());
 		}
@@ -91,5 +93,11 @@ namespace IO
 		m_Oss.clear();
 		m_Oss.str("");
 		return *this;
+	}
+	void ImGuiOutput::Clear()
+	{
+		m_Oss.clear();
+		m_Oss.str("");
+		m_Messages.clear();
 	}
 }

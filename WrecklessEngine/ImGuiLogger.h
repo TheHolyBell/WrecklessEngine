@@ -28,6 +28,7 @@ namespace IO
 		virtual IOutput& operator<<(const char* str) override;
 		virtual IOutput& operator<<(const std::string& str) override;
 		virtual IOutput& operator<<(IManipulator& manip)  override;
+		static void Clear();
 
 		virtual ~ImGuiOutput() = default;
 

@@ -63,23 +63,26 @@ namespace Sandbox
             tr.D32 = rotMat.D32;
             tr.D33 = rotMat.D33;
 
-            if (GamePad.IsPressed(Button.GAMEPAD_ARROW_UP))
+            if (GamePad.IsPressed(Button.ArrowUp))
             {
                 tr.D42++;
             }
-            else if (GamePad.IsPressed(Button.GAMEPAD_ARROW_DOWN))
+            else if (GamePad.IsPressed(Button.ArrowDown))
             {
                 tr.D42--;
             }
-            else if (GamePad.IsPressed(Button.GAMEPAD_ARROW_RIGHT))
+            else if (GamePad.IsPressed(Button.ArrowRight))
             {
                 tr.D41++;
             }
-            else if (GamePad.IsPressed(Button.GAMEPAD_ARROW_LEFT))
+            else if (GamePad.IsPressed(Button.ArrowLeft))
             {
                 tr.D41--;
             }
             GetComponent<TransformComponent>().Transform = tr;
+
+            if (GamePad.IsPressed(Button.LShoulder))
+                Debug.Log("LS pressed");
         }
     }
 }

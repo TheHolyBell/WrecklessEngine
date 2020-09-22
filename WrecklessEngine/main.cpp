@@ -35,6 +35,7 @@
 #include "Application.h"
 #include "FinalApplication.h"
 
+#include <crtdbg.h>
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int)
 {
@@ -148,6 +149,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//IO::cin.Get();
 
 	return 0;*/
+
+#if defined(DEBUG) | defined(_DEBUG)
+_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
 	Profiling::Profiler::GetInstance().BeginSession("Wreckless");
 	//cout << FileSystem::FileHelper::GetFileExtension("D:\\VisualStudio\\C++\\WrecklessEngine\\WrecklessEngine\\WrecklessScript.Core.dll") << IO::endl;
 	Wreckless::Application* app = new Wreckless::FinalApplication("Dickie", 1600, 900);

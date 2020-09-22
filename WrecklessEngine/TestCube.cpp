@@ -8,6 +8,8 @@
 #include "ShaderReflector.h"
 #include "InputLayout.h"
 #include "TransformCBuf.h"
+#include "DepthStencil.h"
+#include "Rasterizer.h"
 
 using namespace Misc;
 namespace Drawables
@@ -33,13 +35,10 @@ namespace Drawables
 
 		AddBind(PixelShader::Resolve("DickPS.cso"));
 
+		AddBind(Rasterizer::Resolve(false));
+		AddBind(DepthStencil::Resolve());
+
 		AddBind(Topology::Resolve());
 		AddBind(std::make_shared<TransformCBuf>(entID));
-	}
-	void TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept
-	{
-	}
-	void TestCube::SetRotation(float roll, float pitch, float yaw) noexcept
-	{
 	}
 }

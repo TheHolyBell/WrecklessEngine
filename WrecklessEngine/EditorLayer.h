@@ -2,6 +2,7 @@
 #include "CommonInclude.h"
 #include "Layer.h"
 #include "Texture2D.h"
+#include "Texture3D.h"
 #include "ApplicationEvent.h"
 #include "KeyEvent.h"
 #include "MouseEvent.h"
@@ -32,14 +33,23 @@ namespace Wreckless
 	private:
 		Ref<Bindable::Texture2D> m_CheckerboardTex;
 		Ref<Bindable::Texture2D> m_PlayButtonTex;
+		Ref<Bindable::Texture2D> m_PauseButtonTex;
 
 		Ref<Bindable::Texture2D> m_pTexture;
+		Ref<Bindable::Texture3D> m_pCubemap;
 
 		Ref<ECS::Scene> m_pScene;
 		Scripting::ScriptDomain m_Domain;
 
 		bool m_ViewportPanelMouseOver = false;
 		bool m_ViewportPanelFocused = false;
+
+		enum class SceneState
+		{
+			Edit = 0, Play = 1, Pause = 2
+		};
+
+		SceneState m_SceneState = SceneState::Edit;
 
 		int m_GizmoType = -1;
 

@@ -396,6 +396,30 @@
     <ClCompile Include="SceneHierarchyPanel.cpp">
       <Filter>Application\Editor\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Texture3D.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Cubemap.cpp">
+      <Filter>Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11Rasterizer.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11SamplerState.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11DepthStencilState.cpp">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencil.cpp">
+      <Filter>Bindable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReflector.h">
@@ -785,6 +809,36 @@
     <ClInclude Include="SceneHierarchyPanel.h">
       <Filter>Application\Editor\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Texture3D.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Cubemap.h">
+      <Filter>Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="IRasterizer.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11Rasterizer.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11SamplerState.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampler.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="IDepthStencilState.h">
+      <Filter>Graphics\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11DepthStencilState.h">
+      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencil.h">
+      <Filter>Bindable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -806,6 +860,12 @@
     </FxCompile>
     <FxCompile Include="DickVS.hlsl">
       <Filter>Shaders\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapVS.hlsl">
+      <Filter>Shaders\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapPS.hlsl">
+      <Filter>Shaders\PS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

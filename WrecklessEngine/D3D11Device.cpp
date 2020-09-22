@@ -14,6 +14,9 @@
 #include "D3D11Buffer.h"
 #include "D3D11InputLayout.h"
 #include "D3D11Shader.h"
+#include "D3D11Rasterizer.h"
+#include "D3D11SamplerState.h"
+#include "D3D11DepthStencilState.h"
 
 namespace Graphics
 {
@@ -50,8 +53,36 @@ namespace Graphics
 
 		WRECK_HR(m_pDevice->CreateTexture2D(reinterpret_cast<D3D11_TEXTURE2D_DESC*>(&texture_desc), nullptr, &_pTexture));
 		WRECK_HR(m_pDevice->CreateShaderResourceView(_pTexture.Get(), nullptr, &_pSrv));
-
+		
 		return std::make_shared<D3D11Texture>(_pSrv);
+	}
+	Ref<ITexture> D3D11Device::CreateTexture3D(const std::string& path)
+	{
+		return CreateTexture2D(path);
+	}
+	Ref<IRasterizer> D3D11Device::CreateRasterizer(RASTERIZER_DESC rasterizer_desc)
+	{
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _pRasterizer;
+
+		WRECK_HR(m_pDevice->CreateRasterizerState(reinterpret_cast<D3D11_RASTERIZER_DESC*>(&rasterizer_desc), &_pRasterizer));
+
+		return std::make_shared<D3D11Rasterizer>(_pRasterizer);
+	}
+	Ref<ISamplerState> D3D11Device::CreateSamplerState(SAMPLER_DESC sampler_desc)
+	{
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> _pSamplerState;
+
+		WRECK_HR(m_pDevice->CreateSamplerState(reinterpret_cast<D3D11_SAMPLER_DESC*>(&sampler_desc), &_pSamplerState));
+
+		return std::make_shared<D3D11SamplerState>(_pSamplerState);
+	}
+	Ref<IDepthStencilState> D3D11Device::CreateDepthStencilState(DEPTH_STENCIL_DESC depth_stencil_desc)
+	{
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _pDepthStencilState;
+
+		WRECK_HR(m_pDevice->CreateDepthStencilState(reinterpret_cast<D3D11_DEPTH_STENCIL_DESC*>(&depth_stencil_desc), &_pDepthStencilState));
+
+		return std::make_shared<D3D11DepthStencilState>(_pDepthStencilState);
 	}
 	Ref<IVertexShader> D3D11Device::CreateVertexShader(const std::string& path)
 	{

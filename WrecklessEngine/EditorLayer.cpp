@@ -22,6 +22,7 @@
 #include "EntityCSharp.h"
 #include "NoiseCSharp.h"
 #include "ComponentsCSharp.h"
+#include "Cubemap.h"
 
 using namespace Input;
 
@@ -31,6 +32,7 @@ namespace Wreckless
 		: m_Domain("Sandbox.dll")
 	{
 		m_pTexture = Bindable::Texture2D::Resolve("D:\\Downloads\\image.png");
+		m_pCubemap = Bindable::Texture3D::Resolve("assets/Environment/desertcube1024.dds");
 
 		m_pScene = std::make_shared<ECS::Scene>("main");
 		ECS::SceneManager::AddScene(m_pScene);
@@ -48,9 +50,16 @@ namespace Wreckless
 
 		auto ent = m_pScene->CreateEntity();
 		ent.AddComponent<ECS::TagComponent>("Boxie");
-		ent.AddComponent<ECS::ScriptComponent>(ent.GetID(), m_Domain.GetClass("Sandbox", "Actor"));
+		ent.AddComponent<ECS::ScriptComponent>( m_Domain.GetClass("Sandbox", "Actor"));
 		ent.AddComponent<ECS::TransformComponent>(DirectX::XMMatrixTranslation(5.0, 2.0f, 10.0f));
 		ent.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::TestCube>(ent.GetID(), 10));
+
+
+
+		auto cubeMap = m_pScene->CreateEntity();
+		cubeMap.AddComponent<ECS::TagComponent>("Cubemap");
+		cubeMap.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Cubemap>(cubeMap.GetID(), "assets/Environment/grasscube1024.dds"));
+
 	}
 	EditorLayer::~EditorLayer()
 	{
@@ -104,12 +113,15 @@ namespace Wreckless
 	
 		m_CheckerboardTex = Bindable::Texture2D::Resolve("assets/Textures/Checkerboard.png");
 		m_PlayButtonTex = Bindable::Texture2D::Resolve("assets/Textures/PlayButton.png");
+		m_PauseButtonTex = Bindable::Texture2D::Resolve("assets/Textures/PauseButton.png");
 	}
 	void EditorLayer::OnDetach()
 	{
 	}
 	void EditorLayer::OnUpdate()
 	{
+		if(m_SceneState == SceneState::Play)
+			ECS::SceneManager::GetActiveScene()->OnUpdate();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -157,7 +169,6 @@ namespace Wreckless
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
 		}
 
-		static bool vsync = false;
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -179,6 +190,7 @@ namespace Wreckless
 				ImGui::EndMenu();
 			}
 
+			static bool vsync = false;
 			if (ImGui::BeginMenu("Renderer Settings"))
 			{
 				if (ImGui::MenuItem("VSync", nullptr, &vsync))
@@ -189,6 +201,7 @@ namespace Wreckless
 			ImGui::EndMenuBar();
 		}
 
+		
 		using namespace Graphics;
 		if (ImGui::Begin("Renderer"))
 		{
@@ -207,6 +220,45 @@ namespace Wreckless
 		IO::ImGuiOutput::Draw();
 
 		m_pSceneHierarchyPanel->OnImGuiRender();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(12, 0));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12, 4));
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemInnerSpacing, ImVec2(0, 0));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8f, 0.8f, 0.8f, 0.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0, 0, 0, 0));
+		ImGui::Begin("Toolbar");
+
+		switch (m_SceneState)
+		{
+		case SceneState::Edit:
+			if (ImGui::ImageButton((ImTextureID)(m_PlayButtonTex->NativePointer()), ImVec2(32, 32), ImVec2(0, 0), ImVec2(1, 1), -1, ImVec4(0, 0, 0, 0), ImVec4(0.9f, 0.9f, 0.9f, 1.0f)))
+			{
+				m_SceneState = SceneState::Play;
+				IO::cout << "Play" << IO::endl;
+			}
+			break;
+		case SceneState::Play:
+			if (ImGui::ImageButton((ImTextureID)(m_PauseButtonTex->NativePointer()), ImVec2(m_PauseButtonTex->GetWidth(), m_PauseButtonTex->GetHeight()), ImVec2(0, 0), ImVec2(1, 1), -1, ImVec4(0, 0, 0, 0), ImVec4(0.9f, 0.9f, 0.9f, 1.0f)))
+			{
+				m_SceneState = SceneState::Edit;
+				IO::cout << "Edit" << IO::endl;
+			}
+			break;
+		}
+		ImGui::SameLine();
+		if (ImGui::ImageButton((ImTextureID)(m_PlayButtonTex->NativePointer()), ImVec2(32, 32), ImVec2(0, 0), ImVec2(1, 1), -1, ImVec4(0, 0, 0, 0), ImVec4(1.0f, 1.0f, 1.0f, 0.6f)))
+		{
+			IO::cout << "Play" << IO::endl;
+		}
+
+		ImGui::End();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
+		ImGui::PopStyleVar();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{});
 		ImGui::Begin("Viewport");

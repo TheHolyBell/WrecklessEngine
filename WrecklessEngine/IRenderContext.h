@@ -7,6 +7,8 @@
 #include "IInputLayout.h"
 #include "TopologyTypes.h"
 #include "ISamplerState.h"
+#include "IRasterizer.h"
+#include "IDepthStencilState.h"
 
 namespace Graphics
 {
@@ -40,6 +42,8 @@ namespace Graphics
 		virtual void BindConstantBuffer(Ref<IConstantBuffer> constant_buffer, SHADER_TYPE stage, int slot) PURE;
 		virtual void BindInputLayout(Ref<IInputLayout> input_layout) PURE;
 		virtual void BindSamplerState(Ref<ISamplerState> sampler_state, unsigned slot) PURE;
+		virtual void BindRasterizerState(Ref<IRasterizer> rasterizer_state) PURE;
+		virtual void BindDepthStencilState(Ref<IDepthStencilState> depth_stencil_state) PURE;
 		virtual void BindTopology(PRIMITIVE_TOPOLOGY topology) PURE;
 		virtual void BindTexture2D(Ref<ITexture> texture, SHADER_TYPE stage, unsigned slot) PURE;
 

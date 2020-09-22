@@ -1,5 +1,6 @@
 cbuffer Transforms : register(b0)
 {
 	matrix model;
-	matrix modelViewProjection;
+	matrix view;
+	matrix projection;
 }
