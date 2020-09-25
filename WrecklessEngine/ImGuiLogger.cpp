@@ -6,7 +6,7 @@ namespace IO
 	std::vector<std::string> ImGuiOutput::m_Messages;
 	std::ostringstream ImGuiOutput::m_Oss;
 
-	void ImGuiOutput::Draw()
+	void ImGuiOutput::Draw(bool app_is_running)
 	{
 		if (ImGui::Begin("Output Console"))
 		{
@@ -14,6 +14,9 @@ namespace IO
 				Clear();
 			for (const auto& msg : m_Messages)
 				ImGui::Text(msg.c_str());
+
+			if(app_is_running)
+				ImGui::SetScrollHere(0.999f);
 		}
 		ImGui::End();
 	}

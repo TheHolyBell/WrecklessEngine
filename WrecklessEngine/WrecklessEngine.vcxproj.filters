@@ -46,9 +46,6 @@
     <Filter Include="Exception">
       <UniqueIdentifier>{0f1e5666-7bfb-48f1-bc80-2a691dd0279f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\Implementations\D3D11/Windows">
-      <UniqueIdentifier>{9a050646-28b7-4b94-ae39-26822dbc9136}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Profiling/Time">
       <UniqueIdentifier>{c16cb057-90b3-43ed-b5cd-d9d65bcdbc9a}</UniqueIdentifier>
     </Filter>
@@ -115,6 +112,18 @@
     <Filter Include="Application\Editor\Panels">
       <UniqueIdentifier>{e5727ace-de18-4f12-9b82-4b5e31b76a68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\Implementations\Windows">
+      <UniqueIdentifier>{e41413e4-ae70-4db2-a2e8-4fc008d90d6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Implementations\D3D11">
+      <UniqueIdentifier>{9a050646-28b7-4b94-ae39-26822dbc9136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\HS">
+      <UniqueIdentifier>{872a65af-42f2-4e92-a460-36812782e210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\DS">
+      <UniqueIdentifier>{647a8e50-c66e-4b1a-bd9d-71ae587e06a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ShaderReflector.cpp">
@@ -167,9 +176,6 @@
     </ClCompile>
     <ClCompile Include="Bindable.cpp">
       <Filter>Bindable</Filter>
-    </ClCompile>
-    <ClCompile Include="Win32Window.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Profiling/Time</Filter>
@@ -301,22 +307,22 @@
       <Filter>Graphics\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="D3D11Texture.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="D3D11Device.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="StringHelper.cpp">
       <Filter>Miscellanious</Filter>
     </ClCompile>
     <ClCompile Include="D3D11Shader.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="D3D11SwapChain.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="D3D11RenderContext.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="Layer.cpp">
       <Filter>Application</Filter>
@@ -334,10 +340,10 @@
       <Filter>LogRelatedStuff</Filter>
     </ClCompile>
     <ClCompile Include="D3D11Buffer.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="D3D11InputLayout.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="PerspectiveCamera.cpp">
       <Filter>CameraSystem</Filter>
@@ -403,22 +409,28 @@
       <Filter>Drawables</Filter>
     </ClCompile>
     <ClCompile Include="D3D11Rasterizer.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Bindable</Filter>
     </ClCompile>
     <ClCompile Include="D3D11SamplerState.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="Sampler.cpp">
       <Filter>Bindable</Filter>
     </ClCompile>
     <ClCompile Include="D3D11DepthStencilState.cpp">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
     <ClCompile Include="DepthStencil.cpp">
       <Filter>Bindable</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32Window.cpp">
+      <Filter>Graphics\Implementations\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -513,19 +525,16 @@
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="D3D11Texture.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="D3D11Device.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="D3D11RenderContext.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="D3D11Shader.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="Win32Window.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsFormats.h">
       <Filter>Graphics</Filter>
@@ -687,7 +696,7 @@
       <Filter>Miscellanious</Filter>
     </ClInclude>
     <ClInclude Include="D3D11SwapChain.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="Viewport.h">
       <Filter>Graphics\Interfaces</Filter>
@@ -723,13 +732,13 @@
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="D3D11Buffer.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="IInputLayout.h">
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="D3D11InputLayout.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="ISamplerState.h">
       <Filter>Graphics\Interfaces</Filter>
@@ -819,13 +828,13 @@
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="D3D11Rasterizer.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer.h">
       <Filter>Bindable</Filter>
     </ClInclude>
     <ClInclude Include="D3D11SamplerState.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>Bindable</Filter>
@@ -834,10 +843,16 @@
       <Filter>Graphics\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="D3D11DepthStencilState.h">
-      <Filter>Graphics\Implementations\D3D11/Windows</Filter>
+      <Filter>Graphics\Implementations\D3D11</Filter>
     </ClInclude>
     <ClInclude Include="DepthStencil.h">
       <Filter>Bindable</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32Window.h">
+      <Filter>Graphics\Implementations\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -866,6 +881,18 @@
     </FxCompile>
     <FxCompile Include="CubeMapPS.hlsl">
       <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="TerrainPS.hlsl">
+      <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="TerrainVS.hlsl">
+      <Filter>Shaders\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="TerrainHS.hlsl">
+      <Filter>Shaders\HS</Filter>
+    </FxCompile>
+    <FxCompile Include="TerrainDS.hlsl">
+      <Filter>Shaders\DS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

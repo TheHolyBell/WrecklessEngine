@@ -61,6 +61,7 @@ namespace Wreckless
 			{
 				if (!m_Minimized)
 				{
+					CameraSystem::SceneCamera::SetPosition(m_Camera.GetPosition3f());
 					CameraSystem::SceneCamera::SetView(m_Camera.GetView());
 					CameraSystem::SceneCamera::SetProjection(m_Camera.GetProjection());
 					Profiling::GlobalClock::Update();

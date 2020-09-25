@@ -30,6 +30,8 @@ namespace Profiling
 		static float DeltaTime();
 		static float TotalTime();
 
+		static void Reset();
+
 		static float GetTimeScale();
 		static void SetTimeScale(float timeScale);
 

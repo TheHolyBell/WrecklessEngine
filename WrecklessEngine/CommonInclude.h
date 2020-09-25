@@ -9,6 +9,7 @@
 #include <Windows.h>
 #include <cassert>
 #include <functional>
+#include "HrException.h"
 
 #include "Timer.h"
 
@@ -32,7 +33,7 @@
 	#define WRECK_DEBUGBREAK() __debugbreak()
 	#define WRECK_ASSERT( x, msg ) assert( (x) && msg )
 	
-	#define WRECK_HR( x ) if( FAILED(x) ) assert(false)
+	#define WRECK_HR( x ) if( FAILED(x) ) throw Exceptions::HrException(__FILE__, __LINE__, (x) );
 
 #else
 

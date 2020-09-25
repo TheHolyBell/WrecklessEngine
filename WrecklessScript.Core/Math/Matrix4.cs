@@ -106,6 +106,33 @@ namespace WrecklessScript.Core.Math
             return result;
         }
 
+        public static Matrix4 operator*(Matrix4 lhs, Matrix4 rhs)
+        {
+            Matrix4 result = default;
+
+            result.D11 = lhs.D11 * rhs.D11 + lhs.D12 * rhs.D21 + lhs.D13 * rhs.D31 + lhs.D14 * rhs.D41;
+            result.D12 = lhs.D11 * rhs.D12 + lhs.D12 * rhs.D22 + lhs.D13 * rhs.D32 + lhs.D14 * rhs.D42;
+            result.D13 = lhs.D11 * rhs.D13 + lhs.D12 * rhs.D23 + lhs.D13 * rhs.D33 + lhs.D14 * rhs.D43;
+            result.D14 = lhs.D11 * rhs.D14 + lhs.D12 * rhs.D24 + lhs.D13 * rhs.D34 + lhs.D14 * rhs.D44;
+
+            result.D21 = lhs.D21 * rhs.D11 + lhs.D22 * rhs.D21 + lhs.D23 * rhs.D31 + lhs.D24 * rhs.D41;
+            result.D22 = lhs.D21 * rhs.D12 + lhs.D22 * rhs.D22 + lhs.D23 * rhs.D32 + lhs.D24 * rhs.D42;
+            result.D23 = lhs.D21 * rhs.D13 + lhs.D22 * rhs.D23 + lhs.D23 * rhs.D33 + lhs.D24 * rhs.D43;
+            result.D24 = lhs.D21 * rhs.D14 + lhs.D22 * rhs.D24 + lhs.D23 * rhs.D34 + lhs.D24 * rhs.D44;
+
+            result.D31 = lhs.D31 * rhs.D11 + lhs.D32 * rhs.D21 + lhs.D33 * rhs.D31 + lhs.D34 * rhs.D41;
+            result.D32 = lhs.D31 * rhs.D12 + lhs.D32 * rhs.D22 + lhs.D33 * rhs.D32 + lhs.D34 * rhs.D42;
+            result.D33 = lhs.D31 * rhs.D13 + lhs.D32 * rhs.D23 + lhs.D33 * rhs.D33 + lhs.D34 * rhs.D43;
+            result.D34 = lhs.D31 * rhs.D14 + lhs.D32 * rhs.D24 + lhs.D33 * rhs.D34 + lhs.D34 * rhs.D44;
+
+            result.D41 = lhs.D41 * rhs.D11 + lhs.D42 * rhs.D21 + lhs.D43 * rhs.D31 + lhs.D44 * rhs.D41;
+            result.D42 = lhs.D41 * rhs.D12 + lhs.D42 * rhs.D22 + lhs.D43 * rhs.D32 + lhs.D44 * rhs.D42;
+            result.D43 = lhs.D41 * rhs.D13 + lhs.D42 * rhs.D23 + lhs.D43 * rhs.D33 + lhs.D44 * rhs.D43;
+            result.D44 = lhs.D41 * rhs.D14 + lhs.D42 * rhs.D24 + lhs.D43 * rhs.D34 + lhs.D44 * rhs.D44;
+
+            return result;
+        }
+
         public void DebugPrint()
         {
             Debug.Log($"{D11}, {D12}, {D13}, {D14}");

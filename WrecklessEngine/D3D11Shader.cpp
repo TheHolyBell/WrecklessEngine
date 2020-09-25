@@ -14,6 +14,10 @@ namespace Graphics
 	{
 		return m_pCompiledShader.Get();
 	}
+	unsigned D3D11VertexShader::GetByteCodeLength()
+	{
+		return m_pCompiledShader->GetBufferSize();
+	}
 	void* D3D11VertexShader::GetNativePointer()
 	{
 		return m_pVertexShader.Get();
@@ -31,6 +35,10 @@ namespace Graphics
 	void* D3D11PixelShader::GetByteCode()
 	{
 		return m_pCompiledShader.Get();
+	}
+	unsigned D3D11PixelShader::GetByteCodeLength()
+	{
+		return m_pCompiledShader->GetBufferSize();
 	}
 	void* D3D11PixelShader::GetNativePointer()
 	{

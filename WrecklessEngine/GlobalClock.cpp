@@ -15,6 +15,11 @@ namespace Profiling
 	{
 		return std::chrono::duration<float>(GetInstance().m_CurrentFrameTime - GetInstance().m_StartTime).count();
 	}
+	void GlobalClock::Reset()
+	{
+		auto& _Instance = GetInstance();
+		_Instance.m_CurrentFrameTime = _Instance.m_LastFrameTime = _Instance.m_StartTime = std::chrono::high_resolution_clock::now();
+	}
 	float GlobalClock::GetTimeScale()
 	{
 		return GetInstance().m_TimeScale;

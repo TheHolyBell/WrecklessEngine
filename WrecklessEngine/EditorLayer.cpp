@@ -24,6 +24,11 @@
 #include "ComponentsCSharp.h"
 #include "Cubemap.h"
 
+#include "Terrain.h"
+#include "SceneCamera.h"
+
+#include "Keyboard.h"
+
 using namespace Input;
 
 namespace Wreckless
@@ -54,6 +59,10 @@ namespace Wreckless
 		ent.AddComponent<ECS::TransformComponent>(DirectX::XMMatrixTranslation(5.0, 2.0f, 10.0f));
 		ent.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::TestCube>(ent.GetID(), 10));
 
+		auto terrain = m_pScene->CreateEntity();
+		terrain.AddComponent<ECS::TagComponent>("Terrain");
+		terrain.AddComponent<ECS::TransformComponent>();
+		terrain.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Terrain>(terrain.GetID()));
 
 
 		auto cubeMap = m_pScene->CreateEntity();
@@ -217,7 +226,7 @@ namespace Wreckless
 			ImGui::Image((ImTextureID)VanillaPass::GetDepthStencilSRV()->GetNativePointer(), ImVec2(400, 200));
 		}
 		ImGui::End();
-		IO::ImGuiOutput::Draw();
+		IO::ImGuiOutput::Draw(m_SceneState == SceneState::Play);
 
 		m_pSceneHierarchyPanel->OnImGuiRender();
 
@@ -236,6 +245,8 @@ namespace Wreckless
 			{
 				m_SceneState = SceneState::Play;
 				IO::cout << "Play" << IO::endl;
+				Profiling::GlobalClock::Reset();
+				IO::ImGuiOutput::Clear();
 			}
 			break;
 		case SceneState::Play:
@@ -261,9 +272,52 @@ namespace Wreckless
 		ImGui::PopStyleVar();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{});
-		ImGui::Begin("Viewport");
+		ImGui::Begin("Viewport", nullptr, ImGuiWindowFlags_NoTitleBar);
+		
+		m_ViewportPanelMouseOver = ImGui::IsWindowHovered();
+		m_ViewportPanelFocused = ImGui::IsWindowFocused();
+		
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		ImGui::Image((ImTextureID)VanillaPass::GetRenderTargetSRV()->GetNativePointer(), viewportPanelSize);
+		
+		if (m_GizmoType != -1 && m_pSceneHierarchyPanel->HasSelectedEntity())
+		{
+			ECS::Entity selectedEntity = m_pSceneHierarchyPanel->GetSelectedEntity();
+
+			if (selectedEntity.HasComponent<ECS::TransformComponent>())
+			{
+				DirectX::XMFLOAT4X4 view;
+				DirectX::XMFLOAT4X4 projection;
+				DirectX::XMStoreFloat4x4(&view, CameraSystem::SceneCamera::GetView());
+				DirectX::XMStoreFloat4x4(&projection, CameraSystem::SceneCamera::GetProjection());
+
+				float width = ImGui::GetWindowWidth();
+				float height = ImGui::GetWindowHeight();
+				ImGuizmo::SetOrthographic(false);
+				ImGuizmo::SetDrawlist();
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, width, height);
+
+				bool snap = Input::Keyboard::IsKeyDown(Input::KeyCode::LControl);
+
+				auto& entityTransform = selectedEntity.GetComponent<ECS::TransformComponent>().Transform;
+				float snapValue = GetSnapValue();
+				float snapValues[3] = { snapValue, snapValue, snapValue };
+
+				ImGuizmo::Manipulate(reinterpret_cast<const float*>(&view),
+					reinterpret_cast<const float*>(&projection),
+					(ImGuizmo::OPERATION)m_GizmoType,
+					(ImGuizmo::MODE)m_GizmoTransformationType,
+					reinterpret_cast<float*>(&entityTransform),
+					nullptr,
+					snap ? snapValues : nullptr);
+			}
+		}
+		
+		ImGui::End();
+		ImGui::PopStyleVar();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{});
+		ImGui::Begin("StatusBar", nullptr, ImGuiWindowFlags_NoTitleBar);
 		ImGui::End();
 		ImGui::PopStyleVar();
 
@@ -290,14 +344,20 @@ namespace Wreckless
 			case KeyCode::Q:
 				m_GizmoType = -1;
 				break;
-			case KeyCode::W:
+			case KeyCode::T:
 				m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
 				break;
-			case KeyCode::E:
+			case KeyCode::R:
 				m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 				break;
-			case KeyCode::R:
+			case KeyCode::S:
 				m_GizmoType = ImGuizmo::OPERATION::SCALE;
+				break;
+			case KeyCode::L:
+				m_GizmoTransformationType = ImGuizmo::LOCAL;
+				break;
+			case KeyCode::W:
+				m_GizmoTransformationType = ImGuizmo::WORLD;
 				break;
 			}
 		}
@@ -307,5 +367,18 @@ namespace Wreckless
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
 		return false;
+	}
+	float EditorLayer::GetSnapValue()
+	{
+		switch (m_GizmoType)
+		{
+		case ImGuizmo::OPERATION::TRANSLATE:
+			return 0.5f;
+		case ImGuizmo::OPERATION::ROTATE:
+			return 45.0f;
+		case ImGuizmo::OPERATION::SCALE: 
+			return 0.5f;
+		}
+		return 0.0f;
 	}
 }

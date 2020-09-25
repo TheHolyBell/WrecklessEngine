@@ -31,6 +31,9 @@ namespace Wreckless
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
 	private:
+		float GetSnapValue();
+
+	private:
 		Ref<Bindable::Texture2D> m_CheckerboardTex;
 		Ref<Bindable::Texture2D> m_PlayButtonTex;
 		Ref<Bindable::Texture2D> m_PauseButtonTex;
@@ -52,6 +55,7 @@ namespace Wreckless
 		SceneState m_SceneState = SceneState::Edit;
 
 		int m_GizmoType = -1;
+		int m_GizmoTransformationType = 0;
 
 		DirectX::XMFLOAT2 m_ViewportSize = {};
 

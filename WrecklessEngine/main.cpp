@@ -156,9 +156,18 @@ _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	Profiling::Profiler::GetInstance().BeginSession("Wreckless");
 	//cout << FileSystem::FileHelper::GetFileExtension("D:\\VisualStudio\\C++\\WrecklessEngine\\WrecklessEngine\\WrecklessScript.Core.dll") << IO::endl;
-	Wreckless::Application* app = new Wreckless::FinalApplication("Dickie", 1600, 900);
-	app->Run();
-	delete app;
+	try
+	{
+		Wreckless::Application* app = new Wreckless::FinalApplication("Dickie", 1600, 900);
+		app->Run();
+		delete app;
+	}
+	catch (std::exception& exc)
+	{
+		IO::cout << exc.what() << IO::endl;
+		IO::cin.Get();
+		return 0;
+	}
 	Profiling::Profiler::GetInstance().EndSession();
 	return 0;
 }

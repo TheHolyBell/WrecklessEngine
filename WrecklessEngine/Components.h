@@ -22,7 +22,8 @@ namespace ECS
 	{
 		DirectX::XMFLOAT4X4 Transform = {};
 
-		TransformComponent() = default;
+		TransformComponent() : TransformComponent(DirectX::XMMatrixIdentity())
+		{}
 		TransformComponent(const TransformComponent&) = default;
 		TransformComponent(const DirectX::XMFLOAT4X4& transform)
 			: Transform(transform) {}

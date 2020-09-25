@@ -48,41 +48,36 @@ namespace Sandbox
                 //Debug.Log("Hey guys!!! I have transform component");
             */
 
-            var tr = GetComponent<TransformComponent>().Transform;
-
+            var translation = GetComponent<TransformComponent>().Transform.Translation;
+  
             var rotMat = Matrix4.RotationY(Time.TotalTime);
-            tr.D11 = rotMat.D11;
-            tr.D12 = rotMat.D12;
-            tr.D13 = rotMat.D13;
-
-            tr.D21 = rotMat.D21;
-            tr.D22 = rotMat.D22;
-            tr.D23 = rotMat.D23;
-
-            tr.D31 = rotMat.D31;
-            tr.D32 = rotMat.D32;
-            tr.D33 = rotMat.D33;
+            
 
             if (GamePad.IsPressed(Button.ArrowUp))
             {
-                tr.D42++;
+                translation.Y++;
             }
             else if (GamePad.IsPressed(Button.ArrowDown))
             {
-                tr.D42--;
+                translation.Y--;
             }
             else if (GamePad.IsPressed(Button.ArrowRight))
             {
-                tr.D41++;
+                translation.X++;
             }
             else if (GamePad.IsPressed(Button.ArrowLeft))
             {
-                tr.D41--;
+                translation.X--;
             }
-            GetComponent<TransformComponent>().Transform = tr;
+
+            rotMat.D41 = translation.X;
+            rotMat.D42 = translation.Y;
+            rotMat.D43 = translation.Z;
+            GetComponent<TransformComponent>().Transform = rotMat;
 
             if (GamePad.IsPressed(Button.LShoulder))
                 Debug.Log("LS pressed");
+            Debug.Log("Dickson " + Time.TotalTime);
         }
     }
 }

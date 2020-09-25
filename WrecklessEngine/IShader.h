@@ -29,6 +29,7 @@ namespace Graphics
 
 		// @ Currently available for DirectX11
 		virtual void* GetByteCode() PURE;
+		virtual unsigned GetByteCodeLength() PURE;
 		virtual void* GetNativePointer() PURE;
 
 		// @ Check whether variable exists
@@ -55,5 +56,17 @@ namespace Graphics
 	{
 	public:
 		virtual ~IPixelShader() = default;
+	};
+
+	class IHullShader : public IShader
+	{
+	public:
+		virtual ~IHullShader() = default;
+	};
+
+	class IDomainShader : public IShader
+	{
+	public:
+		virtual ~IDomainShader() = default;
 	};
 }

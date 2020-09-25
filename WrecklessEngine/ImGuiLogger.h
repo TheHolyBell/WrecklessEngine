@@ -32,7 +32,7 @@ namespace IO
 
 		virtual ~ImGuiOutput() = default;
 
-		static void Draw();
+		static void Draw(bool app_is_running = false);
 	private:
 		static std::vector<std::string> m_Messages;
 		static std::ostringstream m_Oss;

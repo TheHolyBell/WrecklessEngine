@@ -33,6 +33,14 @@ namespace Wreckless
 			DrawComponents(m_SelectionContext);
 		ImGui::End();
 	}
+	bool SceneHierarchyPanel::HasSelectedEntity() const
+	{
+		return (bool)m_SelectionContext;
+	}
+	ECS::Entity SceneHierarchyPanel::GetSelectedEntity() const
+	{
+		return m_SelectionContext;
+	}
 	void SceneHierarchyPanel::DrawEntityNode(ECS::Entity entity)
 	{
 		auto& tag = entity.GetComponent<ECS::TagComponent>().Tag;
@@ -67,7 +75,7 @@ namespace Wreckless
 			if(ImGui::TreeNodeEx((void*)typeid(ECS::TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
 			{
 				auto& transform = entity.GetComponent<ECS::TransformComponent>().Transform;
-				ImGui::DragFloat3("Position", &transform._41, 1, -100, 100);
+				ImGui::DragFloat3("Position", &transform._41, 1, -FLT_MAX, FLT_MAX);
 				ImGui::TreePop();
 			}
 		}

@@ -16,6 +16,7 @@ namespace Graphics
 		IInputLayout& operator=(IInputLayout&& rhs) = delete;
 
 		virtual void* GetNativePointer() PURE;
+		virtual unsigned GetElementCount() PURE;
 
 		virtual ~IInputLayout() = default;
 	};

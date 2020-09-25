@@ -14,6 +14,7 @@ namespace Graphics
 
 		// @ Currently available for DirectX11
 		virtual void* GetByteCode() override;
+		virtual unsigned GetByteCodeLength() override;
 		virtual void* GetNativePointer() override;
 
 		virtual ~D3D11VertexShader() = default;
@@ -32,6 +33,7 @@ namespace Graphics
 
 		// @ Currently available for DirectX11
 		virtual void* GetByteCode() override;
+		virtual unsigned GetByteCodeLength() override;
 		virtual void* GetNativePointer() override;
 
 		virtual ~D3D11PixelShader() = default;
