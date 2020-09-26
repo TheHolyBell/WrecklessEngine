@@ -29,7 +29,6 @@ namespace Graphics
 
 		// @ Currently available for DirectX11
 		virtual void* GetByteCode() PURE;
-		virtual unsigned GetByteCodeLength() PURE;
 		virtual void* GetNativePointer() PURE;
 
 		// @ Check whether variable exists

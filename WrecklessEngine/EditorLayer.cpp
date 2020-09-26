@@ -27,6 +27,8 @@
 #include "Terrain.h"
 #include "SceneCamera.h"
 
+#include "Model.h"
+
 #include "Keyboard.h"
 
 using namespace Input;
@@ -64,6 +66,10 @@ namespace Wreckless
 		terrain.AddComponent<ECS::TransformComponent>();
 		terrain.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Terrain>(terrain.GetID()));
 
+		auto model = m_pScene->CreateEntity();
+		model.AddComponent<ECS::TagComponent>("Cerberus");
+		model.AddComponent<ECS::TransformComponent>();
+		model.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Model>(model.GetID(), "assets/Meshes/cerberus/CerberusMaterials.fbx"));
 
 		auto cubeMap = m_pScene->CreateEntity();
 		cubeMap.AddComponent<ECS::TagComponent>("Cubemap");

@@ -24,7 +24,7 @@ namespace Wreckless
 			});
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			m_SelectionContext = {};
+			m_SelectionContext = { entt::null, nullptr };
 
 		ImGui::End();
 

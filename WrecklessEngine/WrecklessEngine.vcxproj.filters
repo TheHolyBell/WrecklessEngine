@@ -432,6 +432,9 @@
     <ClCompile Include="Terrain.cpp">
       <Filter>Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Drawables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderReflector.h">
@@ -854,6 +857,9 @@
     <ClInclude Include="Terrain.h">
       <Filter>Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Drawables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -893,6 +899,12 @@
     </FxCompile>
     <FxCompile Include="TerrainDS.hlsl">
       <Filter>Shaders\DS</Filter>
+    </FxCompile>
+    <FxCompile Include="DefaultVS.hlsl">
+      <Filter>Shaders\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="DefaultPS.hlsl">
+      <Filter>Shaders\PS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

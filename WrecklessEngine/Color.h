@@ -7,3 +7,11 @@ struct BGRAColor
 	unsigned char g;
 	unsigned char b;
 };
+
+struct UINT4
+{
+	unsigned int x;
+	unsigned int y;
+	unsigned int z;
+	unsigned int w;
+};

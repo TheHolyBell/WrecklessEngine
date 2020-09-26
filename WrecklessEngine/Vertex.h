@@ -22,6 +22,8 @@
 	X( Float3Color ) \
 	X( Float4Color ) \
 	X( BGRAColor ) \
+	X( UINT4 ) \
+	X( BoneWeights ) \
 	X( Count )
 
 namespace Dynamic
@@ -107,6 +109,22 @@ namespace Dynamic
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 			static constexpr const char* semantic = "Color";
 			static constexpr const char* code = "C8";
+			DVTX_ELEMENT_AI_EXTRACTOR(mColors[0])
+		};
+		template<> struct Map<UINT4>
+		{
+			using SysType = ::UINT4;
+			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32A32_UINT;
+			static constexpr const char* semantic = "BONEINDICES";
+			static constexpr const char* code = "BI4";
+			DVTX_ELEMENT_AI_EXTRACTOR(mColors[0])
+		};
+		template<> struct Map<BoneWeights>
+		{
+			using SysType = DirectX::XMFLOAT4;;
+			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			static constexpr const char* semantic = "BONEWEIGHTS";
+			static constexpr const char* code = "BW";
 			DVTX_ELEMENT_AI_EXTRACTOR(mColors[0])
 		};
 		template<> struct Map<Count>

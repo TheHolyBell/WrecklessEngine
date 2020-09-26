@@ -139,6 +139,7 @@ namespace Graphics
 			for (const auto& m : view)
 			{
 				ECS::MeshComponent& ent = view.get<ECS::MeshComponent>(m);
+				ent.pMesh->Update();
 				ent.pMesh->Draw();
 			}
 		}
