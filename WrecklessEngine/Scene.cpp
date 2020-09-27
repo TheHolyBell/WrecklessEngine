@@ -34,6 +34,7 @@ namespace ECS
 	{
 		return m_Registry.valid(handle);
 	}
+
 	void Scene::OnUpdate()
 	{
 		auto view = QueryElementsByComponent<ScriptComponent>();

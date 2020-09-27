@@ -2,6 +2,8 @@
 #include "ImGui/imgui.h"
 #include "Components.h"
 #include "Entity.h"
+#include "FileDialog.h"
+#include "FileHelper.h"
 
 namespace Wreckless
 {
@@ -66,9 +68,9 @@ namespace Wreckless
 			strcpy(buffer, tag.c_str());
 			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 				tag = buffer;
+			ImGui::Separator();
 		}
 
-		ImGui::Separator();
 
 		if (entity.HasComponent<ECS::TransformComponent>())
 		{
@@ -78,7 +80,23 @@ namespace Wreckless
 				ImGui::DragFloat3("Position", &transform._41, 1, -FLT_MAX, FLT_MAX);
 				ImGui::TreePop();
 			}
+			ImGui::Separator();
 		}
 
+		if (entity.HasComponent<ECS::CubemapComponent>())
+		{
+			auto& cubemap = entity.GetComponent<ECS::CubemapComponent>();
+			
+			if (ImGui::Button("Reload"))
+			{
+				auto file_path = FileSystem::FileDialog::OpenFile();
+				if (file_path.has_value())
+				{
+					entity.RemoveComponent<ECS::CubemapComponent>();
+					ECS::CubemapComponent& cc = entity.AddComponent<ECS::CubemapComponent>( std::make_shared<Drawables::Cubemap>(entity.GetID(), file_path.value()));
+					entity.GetComponent<ECS::TagComponent>().Tag = FileSystem::FileHelper::GetFileNameFromPath(file_path.value());
+				}
+			}
+		}
 	}
 }

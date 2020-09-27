@@ -135,13 +135,24 @@ namespace Graphics
 
 		if (pActiveScene != nullptr)
 		{
+			auto cubemapView = pActiveScene->QueryElementsByComponent<ECS::CubemapComponent>();
+			if (cubemapView.size() > 1)
+				WRECK_ASSERT(false, "Attached more than 1 cubemap");
+			for (const auto& cm : cubemapView)
+			{
+				ECS::CubemapComponent& cc = cubemapView.get<ECS::CubemapComponent>(cm);
+				if(cc.pCubemap != nullptr)
+					cc.pCubemap->Draw();
+			}
+
 			auto view = pActiveScene->QueryElementsByComponent<ECS::MeshComponent>();
 			for (const auto& m : view)
 			{
-				ECS::MeshComponent& ent = view.get<ECS::MeshComponent>(m);
-				ent.pMesh->Update();
-				ent.pMesh->Draw();
+				ECS::MeshComponent& mc = view.get<ECS::MeshComponent>(m);
+				mc.pMesh->Update();
+				mc.pMesh->Draw();
 			}
+
 		}
 	}
 

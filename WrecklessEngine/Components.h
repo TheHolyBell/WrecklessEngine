@@ -6,6 +6,7 @@
 #include "ScriptObject.h"
 #include "ScriptClass.h"
 #include "IMesh.h"
+#include "Cubemap.h"
 
 namespace ECS
 {
@@ -67,5 +68,13 @@ namespace ECS
 		MeshComponent() = default;
 		MeshComponent(Ref<Drawables::IMesh> mesh)
 			: pMesh(mesh){}
+	};
+
+	struct CubemapComponent
+	{
+		Ref<Drawables::Cubemap> pCubemap;
+		CubemapComponent() = default;
+		CubemapComponent(Ref<Drawables::Cubemap> cubemap)
+			 : pCubemap(cubemap) {}
 	};
 }

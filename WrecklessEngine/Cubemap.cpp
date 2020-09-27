@@ -16,6 +16,7 @@
 namespace Drawables
 {
 	Cubemap::Cubemap(unsigned entID, const std::string& path)
+		: m_Path(path)
 	{
 		using namespace Bindable;
 
@@ -66,5 +67,9 @@ namespace Drawables
 		AddBind(Topology::Resolve());
 		AddBind(std::make_shared<TransformCBuf>(entID));
 		*/
+	}
+	std::string Cubemap::GetPath() const
+	{
+		return m_Path;
 	}
 }

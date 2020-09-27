@@ -906,5 +906,11 @@
     <FxCompile Include="DefaultPS.hlsl">
       <Filter>Shaders\PS</Filter>
     </FxCompile>
+    <FxCompile Include="AnimatedVS.hlsl">
+      <Filter>Shaders\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="AnimatedPS.hlsl">
+      <Filter>Shaders\PS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

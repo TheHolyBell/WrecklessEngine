@@ -592,7 +592,7 @@ namespace Drawables
 	Terrain::Terrain(unsigned entID)
 		: mEntID(entID)
 	{
-		mInfo.HeightMapFilename = L"assets/Textures/terrain.raw";
+		mInfo.HeightMapFilename = L"assets/Textures/terrain2.raw";
 		mInfo.LayerMapFilename0 = L"assets/Textures/grass.dds";
 		mInfo.LayerMapFilename1 = L"assets/Textures/darkdirt.dds";
 		mInfo.LayerMapFilename2 = L"assets/Textures/stone.dds";

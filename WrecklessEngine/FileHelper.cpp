@@ -75,6 +75,6 @@ namespace FileSystem
 			return std::filesystem::path(path).extension().string();
 		}
 
-		throw FileException(__FILE__, __LINE__, path + " - is not a filename");
+		throw FileException(__FILE__, __LINE__, path + " - is not a file path");
 	}
 }

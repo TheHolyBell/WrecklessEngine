@@ -1,6 +1,7 @@
 #pragma once
 
 #include <entt.hpp>
+#include "Cubemap.h"
 
 namespace Wreckless
 {

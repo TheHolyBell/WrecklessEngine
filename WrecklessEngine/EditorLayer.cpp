@@ -4,6 +4,7 @@
 #include "ImGui/ImGuizmo.h"
 #include "Renderer.h"
 #include "FileDialog.h"
+#include "FileHelper.h"
 #include "GlobalClock.h"
 #include "ImGuiLogger.h"
 #include "Manipulators.h"
@@ -66,15 +67,14 @@ namespace Wreckless
 		terrain.AddComponent<ECS::TransformComponent>();
 		terrain.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Terrain>(terrain.GetID()));
 
-		auto model = m_pScene->CreateEntity();
-		model.AddComponent<ECS::TagComponent>("Cerberus");
+		/*auto model = m_pScene->CreateEntity();
+		model.AddComponent<ECS::TagComponent>("Wolf");
 		model.AddComponent<ECS::TransformComponent>();
-		model.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Model>(model.GetID(), "assets/Meshes/cerberus/CerberusMaterials.fbx"));
+		model.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Model>(model.GetID(), "assets/Models/Wolf/Wolf.fbx"));*/
 
-		auto cubeMap = m_pScene->CreateEntity();
-		cubeMap.AddComponent<ECS::TagComponent>("Cubemap");
-		cubeMap.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Cubemap>(cubeMap.GetID(), "assets/Environment/grasscube1024.dds"));
-
+		/*auto cubemap = m_pScene->CreateEntity();
+		cubemap.AddComponent<ECS::TagComponent>("Cubemap");
+		cubemap.AddComponent<ECS::CubemapComponent>(std::make_shared<Drawables::Cubemap>(cubemap.GetID(), "assets/Textures/sunsetcube1024.dds"));*/
 	}
 	EditorLayer::~EditorLayer()
 	{
@@ -202,6 +202,32 @@ namespace Wreckless
 			{
 				if (ImGui::MenuItem("Clear World"))
 					IO::cout << "Clear World command has been issued" << IO::endl;
+
+				if (ImGui::MenuItem("Load Mesh"))
+				{
+					auto file_path = FileSystem::FileDialog::OpenFile();
+					if (file_path)
+					{
+						auto model = m_pScene->CreateEntity();
+						auto file_name = FileSystem::FileHelper::GetFileNameFromPath(*file_path);
+						model.AddComponent<ECS::TagComponent>(file_name);
+						model.AddComponent<ECS::TransformComponent>();
+						model.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Model>(model.GetID(), *file_path));
+					}
+				}
+
+				if (ImGui::MenuItem("Load Cubemap"))
+				{
+					auto file_path = FileSystem::FileDialog::OpenFile();
+					if (file_path)
+					{
+						auto cubemap = m_pScene->CreateEntity();
+						auto file_name = FileSystem::FileHelper::GetFileNameFromPath(*file_path);
+						cubemap.AddComponent<ECS::TagComponent>(file_name);
+						cubemap.AddComponent<ECS::CubemapComponent>(std::make_shared<Drawables::Cubemap>(cubemap.GetID(), *file_path));
+					}
+				}
+
 				ImGui::EndMenu();
 			}
 

@@ -20,9 +20,14 @@ namespace FileSystem
 		ofn.lpstrInitialDir = nullptr;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
-		if (GetOpenFileNameA(&ofn) == TRUE)
-			return std::string(ofn.lpstrFile);
+		std::string cwd = std::filesystem::current_path().string();
 
+		if (GetOpenFileNameA(&ofn) == TRUE)
+		{
+			std::filesystem::current_path(cwd);
+			return std::string(ofn.lpstrFile);
+		}
+		std::filesystem::current_path(cwd);
 		return std::nullopt;
 	}
 

@@ -180,7 +180,9 @@ namespace Drawables
 
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_VertexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_IndexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_ConstantBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer> m_DefaultCBuffer;
+
+		Microsoft::WRL::ComPtr<ID3D11Buffer> m_AnimationCBuffer;
 
 		std::vector<Vertex> m_StaticVertices;
 		std::vector<AnimatedVertex> m_AnimatedVertices;

@@ -49,6 +49,11 @@ struct DEFAULT_CB
 	DirectX::XMMATRIX projection;
 };
 
+struct ANIMATION_CB
+{
+	DirectX::XMMATRIX BoneTransforms[100];
+};
+
 namespace Drawables
 {
 	Model::Model(unsigned int entID, const std::string& file_path)
@@ -65,12 +70,19 @@ namespace Drawables
 		m_Scene = scene;
 
 		m_IsAnimated = scene->mAnimations != nullptr;
-		m_VertexShader = Renderer::GetDevice()->CreateVertexShader("Shaders/Bin/DefaultVS.cso");
-		m_PixelShader = Renderer::GetDevice()->CreatePixelShader("Shaders/Bin/DefaultPS.cso");
-
+		if (m_IsAnimated)
+		{
+			m_VertexShader = Renderer::GetDevice()->CreateVertexShader("Shaders/Bin/AnimatedVS.cso");
+			m_PixelShader = Renderer::GetDevice()->CreatePixelShader("Shaders/Bin/AnimatedPS.cso");
+		}
+		else
+		{
+			m_VertexShader = Renderer::GetDevice()->CreateVertexShader("Shaders/Bin/DefaultVS.cso");
+			m_PixelShader = Renderer::GetDevice()->CreatePixelShader("Shaders/Bin/DefaultPS.cso");
+		}
 		Dynamic::VertexLayout _Layout{};
 
-
+		
 		if (m_IsAnimated)
 		{
 			_Layout.Append(Dynamic::VertexLayout::ElementType::Position3D);
@@ -91,7 +103,7 @@ namespace Drawables
 		}
 		m_InputLayout = Renderer::GetDevice()->CreateInputLayout(_Layout, m_VertexShader->GetByteCode());
 
-		auto transform = XMLoadFloat4x4((XMFLOAT4X4*)&(scene->mRootNode->mTransformation.a1));
+		auto transform = DirectX::XMMatrixTranspose(DirectX::XMMATRIX(&scene->mRootNode->mTransformation.a1));
 		XMStoreFloat4x4(&m_InverseTransform, XMMatrixInverse(&XMMatrixDeterminant(transform), transform));
 
 		uint32_t vertexCount = 0;
@@ -192,7 +204,7 @@ namespace Drawables
 						m_BoneCount++;
 						BoneInfo bi;
 						m_BoneInfo.push_back(bi);
-						m_BoneInfo[boneIndex].BoneOffset = *reinterpret_cast<XMFLOAT4X4*>(&bone->mOffsetMatrix.a1);
+						DirectX::XMStoreFloat4x4(&m_BoneInfo[boneIndex].BoneOffset,DirectX::XMMatrixTranspose(XMMATRIX(&bone->mOffsetMatrix.a1)));
 						m_BoneMapping[boneName] = boneIndex;
 					}
 					else
@@ -268,7 +280,15 @@ namespace Drawables
 		cbDesc.ByteWidth = CalcConstantBufferByteSize(sizeof(DEFAULT_CB));
 		cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-		WRECK_HR(_device->CreateBuffer(&cbDesc, nullptr, &m_ConstantBuffer));
+		WRECK_HR(_device->CreateBuffer(&cbDesc, nullptr, &m_DefaultCBuffer));
+
+		D3D11_BUFFER_DESC animCbDesc = {};
+		animCbDesc.Usage = D3D11_USAGE_DYNAMIC;
+		animCbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		animCbDesc.ByteWidth = CalcConstantBufferByteSize(sizeof(ANIMATION_CB));
+		animCbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+		WRECK_HR(_device->CreateBuffer(&animCbDesc, nullptr, &m_AnimationCBuffer));
 	}
 	Model::~Model()
 	{
@@ -288,6 +308,16 @@ namespace Drawables
 			}
 
 			BoneTransform(m_AnimationTime);
+
+			ANIMATION_CB animationCB;
+			for (int i = 0; i < m_BoneTransforms.size(); ++i)
+			{
+				animationCB.BoneTransforms[i] = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&m_BoneTransforms[i]));
+			}
+
+			using namespace Graphics;
+			ID3D11DeviceContext* deviceContext = reinterpret_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext()->GetNativePointer());
+			UpdateBufferData(deviceContext, m_AnimationCBuffer.Get(), animationCB);
 		}
 	}
 	void Model::Draw()
@@ -303,7 +333,8 @@ namespace Drawables
 		UINT offset = 0;
 		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
 		deviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		deviceContext->VSSetConstantBuffers(0, 1, m_ConstantBuffer.GetAddressOf());
+		deviceContext->VSSetConstantBuffers(0, 1, m_DefaultCBuffer.GetAddressOf());
+		deviceContext->VSSetConstantBuffers(1, 1, m_AnimationCBuffer.GetAddressOf());
 
 		deviceContext->RSSetState(nullptr);
 		deviceContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
@@ -322,7 +353,7 @@ namespace Drawables
 				cbData.view = DirectX::XMMatrixTranspose(CameraSystem::SceneCamera::GetView());
 				cbData.projection = DirectX::XMMatrixTranspose(CameraSystem::SceneCamera::GetProjection());
 				
-				UpdateBufferData(deviceContext, m_ConstantBuffer.Get(), cbData);
+				UpdateBufferData(deviceContext, m_DefaultCBuffer.Get(), cbData);
 				if(m_Textures[subMesh.MaterialIndex] != nullptr)
 					m_Textures[subMesh.MaterialIndex]->Bind();
 			}
@@ -338,31 +369,34 @@ namespace Drawables
 	}
 	void Model::ReadNodeHierarchy(float AnimationTime, const aiNode* pNode, const DirectX::XMMATRIX& ParentTransform)
 	{
+		using namespace DirectX;
 		std::string name(pNode->mName.data);
 		const aiAnimation* animation = m_Scene->mAnimations[0];
-		DirectX::XMMATRIX nodeTransform = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4((DirectX::XMFLOAT4X4*)&pNode->mTransformation.a1));
+		DirectX::XMMATRIX nodeTransform(DirectX::XMMatrixTranspose(DirectX::XMMATRIX(&pNode->mTransformation.a1)));
+		//DirectX::XMMATRIX nodeTransform(DirectX::XMMATRIX(&pNode->mTransformation.a1));
+
 		const aiNodeAnim* nodeAnim = FindNodeAnim(animation, name);
 
 		if (nodeAnim)
 		{
-			DirectX::XMFLOAT3 translation = InterpolateTranslation(AnimationTime, nodeAnim);
-			DirectX::XMMATRIX translationMatrix = DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
+			XMFLOAT3 translation = InterpolateTranslation(AnimationTime, nodeAnim);
+			XMMATRIX translationMatrix = DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
 
 			Quat rotation = InterpolateRotation(AnimationTime, nodeAnim);
-			DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&rotation));
+			XMMATRIX rotationMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&rotation));
 
-			DirectX::XMFLOAT3 scale = InterpolateScale(AnimationTime, nodeAnim);
-			DirectX::XMMATRIX scaleMatrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+			XMFLOAT3 scale = InterpolateScale(AnimationTime, nodeAnim);
+			XMMATRIX scaleMatrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 
-			nodeTransform = scaleMatrix * rotationMatrix * translationMatrix;
+			nodeTransform = translationMatrix * rotationMatrix * scaleMatrix;
 		}
 
-		DirectX::XMMATRIX transform = nodeTransform * ParentTransform;
+		XMMATRIX transform = nodeTransform * ParentTransform;
 
 		if (m_BoneMapping.find(name) != m_BoneMapping.end())
 		{
 			uint32_t BoneIndex = m_BoneMapping[name];
-			DirectX::XMStoreFloat4x4(&m_BoneInfo[BoneIndex].FinalTransform, DirectX::XMLoadFloat4x4(&m_BoneInfo[BoneIndex].BoneOffset) * transform * DirectX::XMLoadFloat4x4(&m_InverseTransform));
+			DirectX::XMStoreFloat4x4(&m_BoneInfo[BoneIndex].FinalTransform,DirectX::XMLoadFloat4x4(&m_BoneInfo[BoneIndex].BoneOffset) * transform * DirectX::XMLoadFloat4x4(&m_InverseTransform));
 		}
 
 		for (uint32_t i = 0; i < pNode->mNumChildren; i++)
