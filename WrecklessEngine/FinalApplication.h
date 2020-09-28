@@ -9,5 +9,8 @@ namespace Wreckless
 	public:
 		FinalApplication(const std::string& windowName, int width, int height);
 		virtual void OnInit() override;
+	private:
+		int m_Width = 0;
+		int m_Height = 0;
 	};
 }

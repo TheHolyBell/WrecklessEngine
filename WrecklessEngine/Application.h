@@ -46,7 +46,6 @@ namespace Wreckless
 		bool m_Running = true, m_Minimized = false;
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;
-		CameraSystem::PerspectiveCamera m_Camera;
 
 		Graphics::Viewport m_Viewport = {};
 	};

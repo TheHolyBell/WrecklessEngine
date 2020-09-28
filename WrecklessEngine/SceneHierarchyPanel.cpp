@@ -43,6 +43,14 @@ namespace Wreckless
 	{
 		return m_SelectionContext;
 	}
+	void SceneHierarchyPanel::SetFocus(ECS::Entity entity)
+	{
+		m_SelectionContext = entity;
+	}
+	void SceneHierarchyPanel::ResetFocus()
+	{
+		m_SelectionContext = {entt::null, nullptr};
+	}
 	void SceneHierarchyPanel::DrawEntityNode(ECS::Entity entity)
 	{
 		auto& tag = entity.GetComponent<ECS::TagComponent>().Tag;

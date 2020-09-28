@@ -20,22 +20,14 @@
 #include "Entity.h"
 #include "Components.h"
 
-static const uint32_t s_MeshImportFlags =
-aiProcess_CalcTangentSpace |        // Create binormals/tangents just in case
-aiProcess_Triangulate |             // Make sure we're triangles
-aiProcess_GenNormals |              // Make sure we have legit normals
-aiProcess_GenUVCoords |             // Convert UVs if required 
-aiProcess_OptimizeMeshes |          // Batch draws where possible
-aiProcess_ConvertToLeftHanded;
+#include "ShaderReflector.h"
 
-template<typename C>
-static void UpdateBufferData(ID3D11DeviceContext* context, ID3D11Buffer* buffer, C data)
-{
-	D3D11_MAPPED_SUBRESOURCE mappedSub = {};
-	context->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedSub);
-	memcpy(mappedSub.pData, &data, sizeof(C));
-	context->Unmap(buffer, 0);
-}
+static const uint32_t s_MeshImportFlags =
+	aiProcess_Triangulate |
+	aiProcess_ConvertToLeftHanded |
+	aiProcess_GenNormals |
+	aiProcess_CalcTangentSpace |
+	aiProcess_GenUVCoords;
 
 static UINT CalcConstantBufferByteSize(UINT byteSize)
 {
@@ -64,44 +56,26 @@ namespace Drawables
 		m_pImporter = std::make_unique<Assimp::Importer>();
 
 		const aiScene* scene = m_pImporter->ReadFile(file_path, s_MeshImportFlags);
-		if (!scene || !scene->HasMeshes())
+		if (scene == nullptr || !scene->HasMeshes())
 			WRECK_ASSERT(false, "Failed to load mesh file");
 
 		m_Scene = scene;
 
 		m_IsAnimated = scene->mAnimations != nullptr;
+		ShaderConfig config;
 		if (m_IsAnimated)
 		{
-			m_VertexShader = Renderer::GetDevice()->CreateVertexShader("Shaders/Bin/AnimatedVS.cso");
-			m_PixelShader = Renderer::GetDevice()->CreatePixelShader("Shaders/Bin/AnimatedPS.cso");
+			config.vs_path = "Shaders/Bin/AnimatedVS.cso";
+			config.ps_path = "Shaders/Bin/AnimatedPS.cso";
 		}
 		else
 		{
-			m_VertexShader = Renderer::GetDevice()->CreateVertexShader("Shaders/Bin/DefaultVS.cso");
-			m_PixelShader = Renderer::GetDevice()->CreatePixelShader("Shaders/Bin/DefaultPS.cso");
+			config.vs_path = "Shaders/Bin/DefaultVS.cso";
+			config.ps_path = "Shaders/Bin/DefaultPS.cso";
 		}
-		Dynamic::VertexLayout _Layout{};
-
 		
-		if (m_IsAnimated)
-		{
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Position3D);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Normal);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Tangent);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Bitangent);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Texture2D);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::UINT4);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::BoneWeights);
-		}
-		else
-		{
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Position3D);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Normal);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Tangent);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Bitangent);
-			_Layout.Append(Dynamic::VertexLayout::ElementType::Texture2D);
-		}
-		m_InputLayout = Renderer::GetDevice()->CreateInputLayout(_Layout, m_VertexShader->GetByteCode());
+		SetShaders(config);
+		
 
 		auto transform = DirectX::XMMatrixTranspose(DirectX::XMMATRIX(&scene->mRootNode->mTransformation.a1));
 		XMStoreFloat4x4(&m_InverseTransform, XMMatrixInverse(&XMMatrixDeterminant(transform), transform));
@@ -174,7 +148,9 @@ namespace Drawables
 			{
 				WRECK_ASSERT(mesh->mFaces[i].mNumIndices == 3, "Must have 3 indices.");
 				Index index = { mesh->mFaces[i].mIndices[0], mesh->mFaces[i].mIndices[1], mesh->mFaces[i].mIndices[2] };
-				m_Indices.push_back(index);
+				m_Indices.push_back(index.V1);
+				m_Indices.push_back(index.V2);
+				m_Indices.push_back(index.V3);
 
 				if (!m_IsAnimated)
 					m_TriangleCache[m].emplace_back(m_StaticVertices[index.V1 + submesh.BaseVertex], m_StaticVertices[index.V2 + submesh.BaseVertex], m_StaticVertices[index.V3 + submesh.BaseVertex]);
@@ -204,7 +180,7 @@ namespace Drawables
 						m_BoneCount++;
 						BoneInfo bi;
 						m_BoneInfo.push_back(bi);
-						DirectX::XMStoreFloat4x4(&m_BoneInfo[boneIndex].BoneOffset,DirectX::XMMatrixTranspose(XMMATRIX(&bone->mOffsetMatrix.a1)));
+						DirectX::XMStoreFloat4x4(&m_BoneInfo[boneIndex].BoneOffset, DirectX::XMMatrixTranspose(XMMATRIX(&bone->mOffsetMatrix.a1)));
 						m_BoneMapping[boneName] = boneIndex;
 					}
 					else
@@ -229,7 +205,7 @@ namespace Drawables
 			for (int i = 0; i < scene->mNumMaterials; ++i)
 			{
 				auto aiMaterial = scene->mMaterials[i];
-				
+
 				aiString aiTexPath;
 				uint32_t textureCount = aiMaterial->GetTextureCount(aiTextureType_DIFFUSE);
 				bool hasAlbedoMap = aiMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &aiTexPath) == AI_SUCCESS;
@@ -239,56 +215,37 @@ namespace Drawables
 					auto parentPath = path.parent_path();
 					parentPath /= std::string(aiTexPath.data);
 					std::string texturePath = parentPath.string();
-					
+
 					m_Textures[i] = Bindable::Texture2D::Resolve(texturePath);
 				}
 			}
 		}
 
-		D3D11_BUFFER_DESC vbDesc = {};
-		D3D11_SUBRESOURCE_DATA vinitData = {};
-		vbDesc.Usage = D3D11_USAGE_DEFAULT;
-		vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 		if (m_IsAnimated)
 		{
-			vbDesc.ByteWidth = sizeof(AnimatedVertex) * m_AnimatedVertices.size();
-			vinitData.pSysMem = m_AnimatedVertices.data();
+			m_VertexBuffer = Renderer::GetDevice()->CreateVertexBuffer(m_AnimatedVertices.data(), sizeof(AnimatedVertex) * m_AnimatedVertices.size());
 		}
 		else
 		{
-			vbDesc.ByteWidth = sizeof(Vertex) * m_StaticVertices.size();
-			vinitData.pSysMem = m_StaticVertices.data();
+			m_VertexBuffer = Renderer::GetDevice()->CreateVertexBuffer(m_StaticVertices.data(), m_StaticVertices.size() * sizeof(Vertex));
 		}
 
-		ID3D11Device* _device = reinterpret_cast<ID3D11Device*>(Renderer::GetDevice()->GetNativePointer());
-		WRECK_HR(_device->CreateBuffer(&vbDesc, &vinitData, &m_VertexBuffer));
+		m_IndexBuffer = Renderer::GetDevice()->CreateIndexBuffer(m_Indices);
 
-		D3D11_BUFFER_DESC ibDesc = {};
-		ibDesc.Usage = D3D11_USAGE_DEFAULT;
-		ibDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		ibDesc.ByteWidth = sizeof(unsigned int) * 3 * m_Indices.size();
 
-		D3D11_SUBRESOURCE_DATA iinitData = {};
-		iinitData.pSysMem = m_Indices.data();
+		m_DefaultCBuffer = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(DEFAULT_CB)));
+		m_AnimationCBuffer = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(ANIMATION_CB)));
 
-		WRECK_HR(_device->CreateBuffer(&ibDesc, &iinitData, &m_IndexBuffer));
 
-		D3D11_BUFFER_DESC cbDesc = {};
-		cbDesc.Usage = D3D11_USAGE_DYNAMIC;
-		cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbDesc.ByteWidth = CalcConstantBufferByteSize(sizeof(DEFAULT_CB));
-		cbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-		WRECK_HR(_device->CreateBuffer(&cbDesc, nullptr, &m_DefaultCBuffer));
-
-		D3D11_BUFFER_DESC animCbDesc = {};
-		animCbDesc.Usage = D3D11_USAGE_DYNAMIC;
-		animCbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		animCbDesc.ByteWidth = CalcConstantBufferByteSize(sizeof(ANIMATION_CB));
-		animCbDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-		WRECK_HR(_device->CreateBuffer(&animCbDesc, nullptr, &m_AnimationCBuffer));
+		SAMPLER_DESC sampDesc = {};
+		sampDesc.AddressU = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressV = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressW = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_WRAP;
+		sampDesc.Filter = SAMPLE_FILTER::ANISOTROPIC;
+		sampDesc.MaxAnisotropy = 16;
+		sampDesc.MaxLOD = FLT_MAX;
+		m_AnisotropicSampler = Renderer::GetDevice()->CreateSamplerState(sampDesc);
 	}
 	Model::~Model()
 	{
@@ -310,14 +267,13 @@ namespace Drawables
 			BoneTransform(m_AnimationTime);
 
 			ANIMATION_CB animationCB;
-			for (int i = 0; i < m_BoneTransforms.size(); ++i)
+			for (int i = 0; i < m_BoneCount; ++i)
 			{
 				animationCB.BoneTransforms[i] = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(&m_BoneTransforms[i]));
 			}
 
 			using namespace Graphics;
-			ID3D11DeviceContext* deviceContext = reinterpret_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext()->GetNativePointer());
-			UpdateBufferData(deviceContext, m_AnimationCBuffer.Get(), animationCB);
+			Renderer::GetRenderContext()->MapDataToBuffer(m_AnimationCBuffer, &animationCB, sizeof(animationCB));
 		}
 	}
 	void Model::Draw()
@@ -325,16 +281,17 @@ namespace Drawables
 		using namespace Graphics;
 		ID3D11DeviceContext* deviceContext = reinterpret_cast<ID3D11DeviceContext*>(Renderer::GetRenderContext()->GetNativePointer());
 
-		Renderer::GetRenderContext()->BindInputLayout(m_InputLayout);
 		Renderer::GetRenderContext()->BindVertexShader(m_VertexShader);
 		Renderer::GetRenderContext()->BindPixelShader(m_PixelShader);
+		Renderer::GetRenderContext()->BindInputLayout(m_InputLayout);
 
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		deviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
-		deviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-		deviceContext->VSSetConstantBuffers(0, 1, m_DefaultCBuffer.GetAddressOf());
-		deviceContext->VSSetConstantBuffers(1, 1, m_AnimationCBuffer.GetAddressOf());
+		Renderer::GetRenderContext()->BindVertexBuffer(m_VertexBuffer, m_IsAnimated ? sizeof(AnimatedVertex) : sizeof(Vertex), 0);
+		Renderer::GetRenderContext()->BindIndexBuffer(m_IndexBuffer, 0);
+
+		Renderer::GetRenderContext()->BindConstantBuffer(m_DefaultCBuffer, SHADER_TYPE::Vertex, 0);
+		Renderer::GetRenderContext()->BindConstantBuffer(m_AnimationCBuffer, SHADER_TYPE::Vertex, 1);
+
+		Renderer::GetRenderContext()->BindSamplerState(m_AnisotropicSampler, 0);
 
 		deviceContext->RSSetState(nullptr);
 		deviceContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
@@ -352,13 +309,23 @@ namespace Drawables
 
 				cbData.view = DirectX::XMMatrixTranspose(CameraSystem::SceneCamera::GetView());
 				cbData.projection = DirectX::XMMatrixTranspose(CameraSystem::SceneCamera::GetProjection());
-				
-				UpdateBufferData(deviceContext, m_DefaultCBuffer.Get(), cbData);
-				if(m_Textures[subMesh.MaterialIndex] != nullptr)
+
+				Renderer::GetRenderContext()->MapDataToBuffer(m_DefaultCBuffer, &cbData, sizeof(DEFAULT_CB));
+
+				if (m_Textures[subMesh.MaterialIndex] != nullptr)
 					m_Textures[subMesh.MaterialIndex]->Bind();
 			}
-			deviceContext->DrawIndexed(subMesh.IndexCount, subMesh.BaseIndex, subMesh.BaseVertex);
+			Renderer::GetRenderContext()->DrawIndexed(subMesh.IndexCount, subMesh.BaseIndex, subMesh.BaseVertex);
 		}
+	}
+	void Model::SetShaders(ShaderConfig config)
+	{
+		using namespace Graphics;
+
+		m_VertexShader = Renderer::GetDevice()->CreateVertexShader(config.vs_path);
+		m_PixelShader = Renderer::GetDevice()->CreatePixelShader(config.ps_path);
+
+		m_InputLayout = Renderer::GetDevice()->CreateInputLayout(ShaderReflector::GetLayoutFromShader((ID3DBlob*)m_VertexShader->GetByteCode()), m_VertexShader->GetByteCode());
 	}
 	void Model::BoneTransform(float time)
 	{
@@ -372,23 +339,22 @@ namespace Drawables
 		using namespace DirectX;
 		std::string name(pNode->mName.data);
 		const aiAnimation* animation = m_Scene->mAnimations[0];
-		DirectX::XMMATRIX nodeTransform(DirectX::XMMatrixTranspose(DirectX::XMMATRIX(&pNode->mTransformation.a1)));
-		//DirectX::XMMATRIX nodeTransform(DirectX::XMMATRIX(&pNode->mTransformation.a1));
+		XMMATRIX nodeTransform(DirectX::XMMatrixTranspose(XMMATRIX(&pNode->mTransformation.a1)));
 
 		const aiNodeAnim* nodeAnim = FindNodeAnim(animation, name);
 
 		if (nodeAnim)
 		{
-			XMFLOAT3 translation = InterpolateTranslation(AnimationTime, nodeAnim);
-			XMMATRIX translationMatrix = DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
+			XMFLOAT3 scale = InterpolateScale(AnimationTime, nodeAnim);
+			XMMATRIX scaleMatrix = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 			Quat rotation = InterpolateRotation(AnimationTime, nodeAnim);
-			XMMATRIX rotationMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMLoadFloat4(&rotation));
+			XMMATRIX rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&rotation));
 
-			XMFLOAT3 scale = InterpolateScale(AnimationTime, nodeAnim);
-			XMMATRIX scaleMatrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+			XMFLOAT3 translation = InterpolateTranslation(AnimationTime, nodeAnim);
+			XMMATRIX translationMatrix = XMMatrixTranslation(translation.x, translation.y, translation.z);
 
-			nodeTransform = translationMatrix * rotationMatrix * scaleMatrix;
+			nodeTransform = scaleMatrix * rotationMatrix * translationMatrix;
 		}
 
 		XMMATRIX transform = nodeTransform * ParentTransform;
@@ -396,7 +362,7 @@ namespace Drawables
 		if (m_BoneMapping.find(name) != m_BoneMapping.end())
 		{
 			uint32_t BoneIndex = m_BoneMapping[name];
-			DirectX::XMStoreFloat4x4(&m_BoneInfo[BoneIndex].FinalTransform,DirectX::XMLoadFloat4x4(&m_BoneInfo[BoneIndex].BoneOffset) * transform * DirectX::XMLoadFloat4x4(&m_InverseTransform));
+			XMStoreFloat4x4(&m_BoneInfo[BoneIndex].FinalTransform, XMLoadFloat4x4(&m_BoneInfo[BoneIndex].BoneOffset) * transform * XMLoadFloat4x4(&m_InverseTransform));
 		}
 
 		for (uint32_t i = 0; i < pNode->mNumChildren; i++)
@@ -405,15 +371,15 @@ namespace Drawables
 	void Model::TraverseNodes(aiNode* node, const DirectX::XMMATRIX& parentTransform, uint32_t level)
 	{
 		using namespace DirectX;
-		//auto transform = DirectX::XMLoadFloat4x4((DirectX::XMFLOAT4X4*)&node->mTransformation.a1) * parentTransform;
-		XMMATRIX transform = XMMatrixTranspose(XMMATRIX(&node->mTransformation.a1)) * parentTransform;
+		XMMATRIX transform = DirectX::XMMatrixTranspose(XMMATRIX(&node->mTransformation.a1)) * parentTransform;
 		for (uint32_t i = 0; i < node->mNumMeshes; i++)
 		{
 			uint32_t mesh = node->mMeshes[i];
 			auto& submesh = m_Submeshes[mesh];
 			submesh.NodeName = node->mName.C_Str();
-			DirectX::XMStoreFloat4x4(&submesh.Transform, transform);
+			XMStoreFloat4x4(&submesh.Transform,transform);
 		}
+
 
 		for (uint32_t i = 0; i < node->mNumChildren; i++)
 			TraverseNodes(node->mChildren[i], transform, level + 1);
@@ -440,7 +406,7 @@ namespace Drawables
 	}
 	uint32_t Model::FindRotation(float AnimationTime, const aiNodeAnim* pNodeAnim)
 	{
-		WRECK_ASSERT(pNodeAnim->mRotationKeys > 0, "");
+		WRECK_ASSERT(pNodeAnim->mRotationKeys > 0, "Rotation keys are less or equal zero");
 
 		for (uint32_t i = 0; i < pNodeAnim->mNumRotationKeys - 1; i++)
 		{
@@ -490,7 +456,7 @@ namespace Drawables
 		{
 			// No interpolation necessary for single value
 			auto v = nodeAnim->mRotationKeys[0].mValue;
-			return { v.x, v.y, v.z, v.w};
+			return { v.x, v.y, v.z, v.w };
 		}
 
 		uint32_t RotationIndex = FindRotation(animationTime, nodeAnim);
@@ -500,12 +466,24 @@ namespace Drawables
 		float Factor = (animationTime - (float)nodeAnim->mRotationKeys[RotationIndex].mTime) / DeltaTime;
 		WRECK_ASSERT(Factor <= 1.0f, "Factor must be below 1.0f");
 		Factor = std::clamp(Factor, 0.0f, 1.0f);
-		const aiQuaternion& StartRotationQ = nodeAnim->mRotationKeys[RotationIndex].mValue;
+		
+		/*const aiQuaternion& StartRotationQ = nodeAnim->mRotationKeys[RotationIndex].mValue;
 		const aiQuaternion& EndRotationQ = nodeAnim->mRotationKeys[NextRotationIndex].mValue;
 		auto q = aiQuaternion();
 		aiQuaternion::Interpolate(q, StartRotationQ, EndRotationQ, Factor);
-		q = q.Normalize();
-		return { q.x, q.y, q.z, q.w };
+		q = q.Normalize();*/
+
+		using namespace DirectX;
+		const aiQuaternion& aStartRotationQ = nodeAnim->mRotationKeys[RotationIndex].mValue;
+		const aiQuaternion& aEndRotationQ = nodeAnim->mRotationKeys[NextRotationIndex].mValue;
+		
+		XMVECTOR StartRotationQ = XMVectorSet(aStartRotationQ.x, aStartRotationQ.y, aStartRotationQ.z, aStartRotationQ.w);
+		XMVECTOR EndRotationQ = XMVectorSet(aEndRotationQ.x, aEndRotationQ.y, aEndRotationQ.z, aEndRotationQ.w);
+
+		XMFLOAT4 q;
+		XMStoreFloat4(&q, DirectX::XMQuaternionSlerp(StartRotationQ, EndRotationQ, Factor));
+
+		return q;
 	}
 	DirectX::XMFLOAT3 Model::InterpolateScale(float animationTime, const aiNodeAnim* nodeAnim)
 	{

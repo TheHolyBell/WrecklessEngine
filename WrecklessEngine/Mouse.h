@@ -18,5 +18,6 @@ namespace Input
 
 		static bool IsLeftMouseDown();
 		static bool IsRightMouseDown();
+		static bool IsMiddleMouseDown();
 	};
 }

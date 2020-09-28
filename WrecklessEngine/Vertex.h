@@ -22,7 +22,7 @@
 	X( Float3Color ) \
 	X( Float4Color ) \
 	X( BGRAColor ) \
-	X( UINT4 ) \
+	X( BoneIndices ) \
 	X( BoneWeights ) \
 	X( Count )
 
@@ -111,7 +111,7 @@ namespace Dynamic
 			static constexpr const char* code = "C8";
 			DVTX_ELEMENT_AI_EXTRACTOR(mColors[0])
 		};
-		template<> struct Map<UINT4>
+		template<> struct Map<BoneIndices>
 		{
 			using SysType = ::UINT4;
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32A32_UINT;

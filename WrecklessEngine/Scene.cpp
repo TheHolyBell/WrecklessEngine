@@ -35,6 +35,12 @@ namespace ECS
 		return m_Registry.valid(handle);
 	}
 
+	void Scene::DestroyEntity(const Entity& entity)
+	{
+		if(m_Registry.valid(entity.m_Entity))
+			m_Registry.destroy(entity.m_Entity);
+	}
+
 	void Scene::OnUpdate()
 	{
 		auto view = QueryElementsByComponent<ScriptComponent>();

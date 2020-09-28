@@ -121,6 +121,22 @@ namespace Graphics
 
 		return std::make_shared<D3D11VertexBuffer>(_pBuffer);
 	}
+	Ref<IVertexBuffer> D3D11Device::CreateVertexBuffer(const void* data, unsigned size_in_bytes)
+	{
+		Microsoft::WRL::ComPtr<ID3D11Buffer> _pBuffer;
+
+		D3D11_BUFFER_DESC _vbDesc = {};
+		_vbDesc.ByteWidth = size_in_bytes;
+		_vbDesc.Usage = D3D11_USAGE_DEFAULT;
+		_vbDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+		D3D11_SUBRESOURCE_DATA _vinitData = {};
+		_vinitData.pSysMem = data;
+
+		WRECK_HR(m_pDevice->CreateBuffer(&_vbDesc, &_vinitData, &_pBuffer));
+
+		return std::make_shared<D3D11VertexBuffer>(_pBuffer);
+	}
 	Ref<IIndexBuffer> D3D11Device::CreateIndexBuffer(const std::vector<unsigned int>& buffer)
 	{
 		Microsoft::WRL::ComPtr<ID3D11Buffer> _pBuffer;

@@ -14,6 +14,7 @@ namespace Wreckless
 		virtual void OnAttach() {};
 		virtual void OnDetach() {};
 		virtual void OnUpdate() {};
+		virtual void OnResize(int width, int height) {}
 		virtual void OnImGuiRender() {};
 		virtual void OnEvent(Event& event) {};
 

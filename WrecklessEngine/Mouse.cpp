@@ -36,4 +36,9 @@ namespace Input
 		return (GetKeyState(VK_RBUTTON) & 0x8000) != 0;
 	}
 
+	bool Mouse::IsMiddleMouseDown()
+	{
+		return (GetKeyState(VK_MBUTTON) & 0x8000) != 0;
+	}
+
 }

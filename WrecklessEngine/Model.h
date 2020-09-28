@@ -9,6 +9,7 @@
 #include "IBuffer.h"
 #include "IInputLayout.h"
 #include "IShader.h"
+#include "ISamplerState.h"
 
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -137,16 +138,23 @@ namespace Drawables
 
 	using Quat = DirectX::XMFLOAT4;
 
+	struct ShaderConfig
+	{
+		std::string vs_path;
+		std::string ps_path;
+	};
+
 	class Model : public IMesh
 	{
 	public:
-		Model(unsigned int entID,const std::string& file_path);
+		Model(unsigned int entID, const std::string& file_path);
 		~Model();
 
 		virtual void Update() override;
 		virtual void Draw() override;
 
-		//const std::vector<Ref<Graphics::ITexture>>& GetTextures() const { return m_Textures; }
+		void SetShaders(ShaderConfig config);
+
 		const std::string& GetFilePath() const { return m_FilePath; }
 	private:
 		void BoneTransform(float time);
@@ -166,33 +174,33 @@ namespace Drawables
 		std::unique_ptr<Assimp::Importer> m_pImporter;
 
 		DirectX::XMFLOAT4X4 m_InverseTransform;
-		
+
 		uint32_t m_BoneCount = 0;
 		std::vector<BoneInfo> m_BoneInfo;
 
 		Ref<Graphics::IVertexShader> m_VertexShader;
 		Ref<Graphics::IPixelShader> m_PixelShader;
 		Ref<Graphics::IInputLayout> m_InputLayout;
-		
+		Ref<Graphics::ISamplerState> m_AnisotropicSampler;
+
 		/*Ref<Graphics::IVertexBuffer> m_VertexBuffer;
 		Ref<Graphics::IIndexBuffer> m_IndexBuffer;
 		Ref<Graphics::IConstantBuffer> m_ConstantBuffer;*/
 
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_VertexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_IndexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_DefaultCBuffer;
-
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_AnimationCBuffer;
+		Ref<Graphics::IVertexBuffer> m_VertexBuffer;
+		Ref<Graphics::IIndexBuffer> m_IndexBuffer;
+		Ref<Graphics::IConstantBuffer> m_DefaultCBuffer;
+		Ref<Graphics::IConstantBuffer> m_AnimationCBuffer;
 
 		std::vector<Vertex> m_StaticVertices;
 		std::vector<AnimatedVertex> m_AnimatedVertices;
-		std::vector<Index> m_Indices;
+		std::vector<unsigned int> m_Indices;
 		std::unordered_map<std::string, uint32_t> m_BoneMapping;
 		std::vector<DirectX::XMFLOAT4X4> m_BoneTransforms;
 		const aiScene* m_Scene;
 
 		std::unordered_map<unsigned int, Ref<Bindable::Texture2D>> m_Textures;
-		std::vector<Ref<Graphics::ITexture>> m_NormalMaps;
+		std::unordered_map<unsigned int, Ref<Bindable::Texture2D>> m_NormalMaps;
 
 		std::unordered_map<uint32_t, std::vector<Triangle>> m_TriangleCache;
 

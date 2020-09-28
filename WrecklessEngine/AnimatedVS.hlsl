@@ -1,4 +1,4 @@
-#define  MAX_BONES 100
+#define MAX_BONES 100
 cbuffer Buff : register(b0)
 {
 	matrix model;
@@ -34,7 +34,7 @@ struct VertexOutput
 
 VertexOutput main(VertexInput vin)
 {
-	VertexOutput vout;
+	/*VertexOutput vout;
 
 	matrix boneTransform = mul(vin.BoneWeights[0], g_BoneTransforms[vin.BoneIndices[0]]);
 
@@ -46,6 +46,35 @@ VertexOutput main(VertexInput vin)
 
 	matrix modelViewProjection = mul(model, mul(view, projection));
 
+	vout.PosH = mul(localPosition, modelViewProjection);
+	vout.PosW = mul(localPosition, model).xyz;
+	vout.Normal = vin.Normal;
+	vout.Tangent = vin.Tangent;
+	vout.Binormal = vin.Binormal;
+	vout.TexCoords = vin.TexCoords;
+
+	return vout;*/
+
+	float weights[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	weights[0] = vin.BoneWeights.x;
+	weights[1] = vin.BoneWeights.y;
+	weights[2] = vin.BoneWeights.z;
+	weights[3] = 1.0f - weights[0] - weights[1] - weights[2];
+
+	float4 localPosition = float4(0.0f, 0.0f, 0.0f, 1.0f);
+	float3 normalL = float3(0.0f, 0.0f, 0.0f);
+	float3 tangentL = float3(0.0f, 0.0f, 0.0f);
+	for (int i = 0; i < 4; ++i)
+	{
+		// Assume no nonuniform scaling when transforming normals, so 
+		// that we do not have to use the inverse-transpose.
+
+		localPosition += weights[i] * mul(float4(vin.PosL, 1.0f), g_BoneTransforms[vin.BoneIndices[i]]);
+	}
+
+	matrix modelViewProjection = mul(model, mul(view, projection));
+
+	VertexOutput vout;
 	vout.PosH = mul(localPosition, modelViewProjection);
 	vout.PosW = mul(localPosition, model).xyz;
 	vout.Normal = vin.Normal;

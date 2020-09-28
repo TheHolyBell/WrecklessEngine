@@ -56,6 +56,9 @@ namespace Wreckless
 		Scripting::ComponentsCSharp::Bind();
 		Scripting::EntityCSharp::Bind();
 
+		m_EditorCamera.LookAt(DirectX::XMFLOAT3{ 10.0f, 5.0f, -20.0f }, DirectX::XMFLOAT3{ 0,0,0 },
+			DirectX::XMFLOAT3{ 0,1,0 });
+
 		auto ent = m_pScene->CreateEntity();
 		ent.AddComponent<ECS::TagComponent>("Boxie");
 		ent.AddComponent<ECS::ScriptComponent>( m_Domain.GetClass("Sandbox", "Actor"));
@@ -137,6 +140,55 @@ namespace Wreckless
 	{
 		if(m_SceneState == SceneState::Play)
 			ECS::SceneManager::GetActiveScene()->OnUpdate();
+
+		using namespace Input;
+		using namespace DirectX;
+
+		auto mouseCoords = Mouse::GetPosition();
+		static auto lastPos = mouseCoords;
+
+		auto checker = [this](int mouseX, int mouseY)
+		{
+			if (mouseX >= m_ViewportDimensions.Left && mouseX <= m_ViewportDimensions.Right && mouseY >= m_ViewportDimensions.Top && mouseY <= m_ViewportDimensions.Bottom)
+				return true;
+			return false;
+		};
+
+		if (Mouse::IsMiddleMouseDown() && checker(mouseCoords.X, mouseCoords.Y))
+		{
+			// Make each pixel correspond to a quarter of a degree.
+			float dx = XMConvertToRadians(0.25f * static_cast<float>(mouseCoords.X - lastPos.X));
+			float dy = XMConvertToRadians(0.25f * static_cast<float>(mouseCoords.Y - lastPos.Y));
+
+			m_EditorCamera.Pitch(dy);
+			m_EditorCamera.Yaw(dx);
+
+			float delta = Profiling::GlobalClock::DeltaTime() * m_CameraSpeed;
+
+			if (Keyboard::IsKeyDown(KeyCode::W))
+				m_EditorCamera.Walk(delta);
+			if (Keyboard::IsKeyDown(KeyCode::S))
+				m_EditorCamera.Walk(-delta);
+
+			if (Keyboard::IsKeyDown(KeyCode::D))
+				m_EditorCamera.Strafe(delta);
+			if (Keyboard::IsKeyDown(KeyCode::A))
+				m_EditorCamera.Strafe(-delta);
+
+			m_EditorCamera.UpdateViewMatrix();
+		}
+
+		lastPos = mouseCoords;
+
+		CameraSystem::SceneCamera::SetPosition(m_EditorCamera.GetPosition3f());
+		CameraSystem::SceneCamera::SetView(m_EditorCamera.GetView());
+		CameraSystem::SceneCamera::SetProjection(m_EditorCamera.GetProjection());
+	}
+
+	void EditorLayer::OnResize(int width, int height)
+	{
+		m_EditorCamera.SetFrustumProperties(3.14159 / 2, (float)width / (float)height, 0.1f, 1000);
+		m_EditorCamera.UpdateViewMatrix();
 	}
 
 	void EditorLayer::OnImGuiRender()
@@ -198,6 +250,13 @@ namespace Wreckless
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Camera"))
+			{
+					if(ImGui::MenuItem("Spawn"))
+					{ }
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Data"))
 			{
 				if (ImGui::MenuItem("Clear World"))
@@ -213,8 +272,11 @@ namespace Wreckless
 						model.AddComponent<ECS::TagComponent>(file_name);
 						model.AddComponent<ECS::TransformComponent>();
 						model.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::Model>(model.GetID(), *file_path));
+						m_pSceneHierarchyPanel->SetFocus(model);
 					}
 				}
+
+
 
 				if (ImGui::MenuItem("Load Cubemap"))
 				{
@@ -225,6 +287,7 @@ namespace Wreckless
 						auto file_name = FileSystem::FileHelper::GetFileNameFromPath(*file_path);
 						cubemap.AddComponent<ECS::TagComponent>(file_name);
 						cubemap.AddComponent<ECS::CubemapComponent>(std::make_shared<Drawables::Cubemap>(cubemap.GetID(), *file_path));
+						m_pSceneHierarchyPanel->SetFocus(cubemap);
 					}
 				}
 
@@ -312,6 +375,11 @@ namespace Wreckless
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		ImGui::Image((ImTextureID)VanillaPass::GetRenderTargetSRV()->GetNativePointer(), viewportPanelSize);
 		
+		m_ViewportDimensions.Left = ImGui::GetWindowPos().x;
+		m_ViewportDimensions.Top = ImGui::GetWindowPos().y;
+		m_ViewportDimensions.Right = ImGui::GetWindowWidth() + m_ViewportDimensions.Left;
+		m_ViewportDimensions.Bottom = ImGui::GetWindowHeight() + m_ViewportDimensions.Top;
+
 		if (m_GizmoType != -1 && m_pSceneHierarchyPanel->HasSelectedEntity())
 		{
 			ECS::Entity selectedEntity = m_pSceneHierarchyPanel->GetSelectedEntity();
@@ -394,6 +462,15 @@ namespace Wreckless
 			}
 		}
 
+		if (e.GetKeyCode() == KeyCode::Delete)
+		{
+			if (m_pSceneHierarchyPanel->HasSelectedEntity())
+			{
+				auto entity = m_pSceneHierarchyPanel->GetSelectedEntity();
+				m_pScene->DestroyEntity(entity);
+				m_pSceneHierarchyPanel->ResetFocus();
+			}
+		}
 		return false;
 	}
 	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)

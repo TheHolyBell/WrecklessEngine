@@ -9,18 +9,10 @@ struct VertexOutput
 };
 
 Texture2D g_Albedo : register(t0);
-
-SamplerState samLinear
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-
-	AddressU = WRAP;
-	AddressV = WRAP;
-	AddressW = WRAP;
-};
+SamplerState g_SamplerState : register(s0);
 
 
 float4 main(VertexOutput pin) : SV_TARGET
 {
-	return g_Albedo.Sample(samLinear, pin.TexCoords);
+	return g_Albedo.Sample(g_SamplerState, pin.TexCoords);
 }

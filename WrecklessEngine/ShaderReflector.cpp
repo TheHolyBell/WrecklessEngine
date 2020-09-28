@@ -103,6 +103,17 @@ Dynamic::VertexLayout ShaderReflector::GetLayoutFromShader(ID3DBlob* shaderByteC
             if (Format == DXGI_FORMAT_R32G32B32_FLOAT)
                 _vertexLayout.Append(VertexLayout::Tangent);
         }
+
+        else if (icompare(_SemanticName, "BONEINDICES"))
+        {
+            if (Format == DXGI_FORMAT_R32G32B32A32_UINT)
+                _vertexLayout.Append(VertexLayout::BoneIndices);
+        }
+        else if (icompare(_SemanticName, "BONEWEIGHTS"))
+        {
+            if (Format == DXGI_FORMAT_R32G32B32A32_FLOAT)
+                _vertexLayout.Append(VertexLayout::BoneWeights);
+        }
 	}
 
 	return _vertexLayout;

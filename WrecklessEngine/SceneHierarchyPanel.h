@@ -21,6 +21,8 @@ namespace Wreckless
 
 		bool HasSelectedEntity() const;
 		ECS::Entity GetSelectedEntity() const;
+		void SetFocus(ECS::Entity entity);
+		void ResetFocus();
 
 	private:
 		void DrawEntityNode(ECS::Entity entity);

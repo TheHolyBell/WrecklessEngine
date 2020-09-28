@@ -58,5 +58,7 @@ namespace ECS
 	private:
 		entt::entity m_Entity = entt::null;
 		Scene* m_pScene = nullptr;
+
+		friend Scene;
 	};
 }

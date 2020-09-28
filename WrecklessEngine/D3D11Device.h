@@ -29,6 +29,7 @@ namespace Graphics
 		virtual Ref<IPixelShader> CreatePixelShader(const std::string& path) override;
 
 		virtual Ref<IVertexBuffer> CreateVertexBuffer(const Dynamic::VertexBuffer& buffer) override;
+		virtual Ref<IVertexBuffer> CreateVertexBuffer(const void* data, unsigned size_in_bytes) override;
 		virtual Ref<IIndexBuffer> CreateIndexBuffer(const std::vector<unsigned int>& buffer) override;
 		
 		virtual Ref<IConstantBuffer> CreateConstantBuffer(unsigned int size, BUFFER_USAGE usage = USAGE_DYNAMIC) override;

@@ -25,6 +25,8 @@ namespace Wreckless
 		virtual void OnDetach() override;
 		virtual void OnUpdate() override;
 
+		virtual void OnResize(int width, int height) override;
+
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event& e) override;
 		bool OnKeyPressedEvent(KeyPressedEvent& e);
@@ -52,6 +54,17 @@ namespace Wreckless
 			Edit = 0, Play = 1, Pause = 2
 		};
 
+		struct ViewportSize
+		{
+			float Left = 0;
+			float Top = 0;
+
+			float Right = 0;
+			float Bottom = 0;
+		};
+
+		ViewportSize m_ViewportDimensions = {};
+
 		SceneState m_SceneState = SceneState::Edit;
 
 		int m_GizmoType = -1;
@@ -62,5 +75,6 @@ namespace Wreckless
 		Ref<SceneHierarchyPanel> m_pSceneHierarchyPanel;
 
 		CameraSystem::PerspectiveCamera m_EditorCamera;
+		float m_CameraSpeed = 80;
 	};
 }

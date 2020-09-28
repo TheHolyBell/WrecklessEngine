@@ -43,6 +43,7 @@ namespace Graphics
 		virtual Ref<IDepthStencilState> CreateDepthStencilState(DEPTH_STENCIL_DESC depth_stencil_desc) PURE;
 
 		virtual Ref<IVertexBuffer> CreateVertexBuffer(const Dynamic::VertexBuffer& buffer) PURE;
+		virtual Ref<IVertexBuffer> CreateVertexBuffer(const void* data, unsigned size_in_bytes) PURE;
 		virtual Ref<IIndexBuffer> CreateIndexBuffer(const std::vector<unsigned int>& buffer) PURE;
 
 		virtual Ref<IConstantBuffer> CreateConstantBuffer(unsigned int size, BUFFER_USAGE usage = USAGE_DYNAMIC) PURE;
