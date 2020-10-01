@@ -23,7 +23,8 @@ namespace Scripting
 		// @ Optional since .DLL files doesn't have that method
 		void ExecuteMain(int argc, char** argv);
 
-		ScriptClass& GetClass(const std::string& name_space, const std::string& name);
+		ScriptClass& GetClass(const std::string& full_class_name);
+		bool IsClassExists(const std::string& full_class_name);
 
 		~ScriptDomain();
 	private:

@@ -26,6 +26,7 @@ namespace ECS
 		bool EntityExists(entt::entity handle) const;
 
 		void DestroyEntity(const Entity& entity);
+		void Clear();
 
 		template<typename... Args>
 		decltype(auto) QueryElementsByComponent()

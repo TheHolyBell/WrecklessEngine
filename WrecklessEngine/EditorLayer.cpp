@@ -11,6 +11,7 @@
 #include "Application.h"
 
 #include "VanillaPass.h"
+#include "ShadowPass.h"
 #include "SceneManager.h"
 #include "Entity.h"
 #include "Components.h"
@@ -31,14 +32,20 @@
 #include "Model.h"
 
 #include "Keyboard.h"
+#include "ScriptingEngine.h"
 
 using namespace Input;
 
 namespace Wreckless
 {
 	EditorLayer::EditorLayer()
-		: m_Domain("Sandbox.dll")
 	{
+		//m_Domain = Scripting::ScriptingEngine::GetDomain();
+
+		//m_Domain = Scripting::ScriptDomain("Sandbox.dll");
+
+		Scripting::ScriptingEngine::Initialize("Sandbox.dll");
+
 		m_pTexture = Bindable::Texture2D::Resolve("D:\\Downloads\\image.png");
 		m_pCubemap = Bindable::Texture3D::Resolve("assets/Environment/desertcube1024.dds");
 
@@ -61,7 +68,7 @@ namespace Wreckless
 
 		auto ent = m_pScene->CreateEntity();
 		ent.AddComponent<ECS::TagComponent>("Boxie");
-		ent.AddComponent<ECS::ScriptComponent>( m_Domain.GetClass("Sandbox", "Actor"));
+		ent.AddComponent<ECS::ScriptComponent>(Scripting::ScriptingEngine::GetDomain().GetClass("Sandbox.Actor"));
 		ent.AddComponent<ECS::TransformComponent>(DirectX::XMMatrixTranslation(5.0, 2.0f, 10.0f));
 		ent.AddComponent<ECS::MeshComponent>(std::make_shared<Drawables::TestCube>(ent.GetID(), 10));
 
@@ -147,6 +154,12 @@ namespace Wreckless
 		auto mouseCoords = Mouse::GetPosition();
 		static auto lastPos = mouseCoords;
 
+		float delta = Profiling::GlobalClock::DeltaTime();
+		auto rStickCoords = GamePad::Get().RightStick();
+		auto lStickCoords = GamePad::Get().LeftStick();
+		m_EditorCamera.Pitch(-XMConvertToRadians(rStickCoords.Y * delta * 400));
+		m_EditorCamera.Yaw(XMConvertToRadians(rStickCoords.X * delta * 400));
+		m_EditorCamera.Translate(lStickCoords.X * delta, 0.0f, lStickCoords.Y * delta);
 		auto checker = [this](int mouseX, int mouseY)
 		{
 			if (mouseX >= m_ViewportDimensions.Left && mouseX <= m_ViewportDimensions.Right && mouseY >= m_ViewportDimensions.Top && mouseY <= m_ViewportDimensions.Bottom)
@@ -163,20 +176,19 @@ namespace Wreckless
 			m_EditorCamera.Pitch(dy);
 			m_EditorCamera.Yaw(dx);
 
-			float delta = Profiling::GlobalClock::DeltaTime() * m_CameraSpeed;
 
 			if (Keyboard::IsKeyDown(KeyCode::W))
-				m_EditorCamera.Walk(delta);
+				m_EditorCamera.Walk(delta * m_CameraSpeed);
 			if (Keyboard::IsKeyDown(KeyCode::S))
-				m_EditorCamera.Walk(-delta);
+				m_EditorCamera.Walk(-delta * m_CameraSpeed);
 
 			if (Keyboard::IsKeyDown(KeyCode::D))
-				m_EditorCamera.Strafe(delta);
+				m_EditorCamera.Strafe(delta * m_CameraSpeed);
 			if (Keyboard::IsKeyDown(KeyCode::A))
-				m_EditorCamera.Strafe(-delta);
+				m_EditorCamera.Strafe(-delta * m_CameraSpeed);
 
-			m_EditorCamera.UpdateViewMatrix();
 		}
+		m_EditorCamera.UpdateViewMatrix();
 
 		lastPos = mouseCoords;
 
@@ -260,7 +272,11 @@ namespace Wreckless
 			if (ImGui::BeginMenu("Data"))
 			{
 				if (ImGui::MenuItem("Clear World"))
+				{
+					m_pScene->Clear();
+					m_pSceneHierarchyPanel->ResetFocus();
 					IO::cout << "Clear World command has been issued" << IO::endl;
+				}
 
 				if (ImGui::MenuItem("Load Mesh"))
 				{
@@ -318,7 +334,8 @@ namespace Wreckless
 			ImGui::Text("Image dimensions: %dx%d", m_CheckerboardTex->GetWidth(), m_CheckerboardTex->GetHeight());
 			ImGui::Image((ImTextureID)m_CheckerboardTex->NativePointer(), ImVec2(m_CheckerboardTex->GetWidth(), m_CheckerboardTex->GetHeight()));
 			ImGui::Image((ImTextureID)m_PlayButtonTex->NativePointer(), ImVec2(m_PlayButtonTex->GetWidth(), m_PlayButtonTex->GetHeight()));
-			ImGui::Image((ImTextureID)VanillaPass::GetDepthStencilSRV()->GetNativePointer(), ImVec2(400, 200));
+			//ImGui::Image((ImTextureID)VanillaPass::GetDepthStencilSRV()->GetNativePointer(), ImVec2(400, 200));
+			ImGui::Image((ImTextureID)ShadowPass::GetDepthStencilSRV()->GetNativePointer(), ImVec2(400, 400));
 		}
 		ImGui::End();
 		IO::ImGuiOutput::Draw(m_SceneState == SceneState::Play);
@@ -355,7 +372,7 @@ namespace Wreckless
 		ImGui::SameLine();
 		if (ImGui::ImageButton((ImTextureID)(m_PlayButtonTex->NativePointer()), ImVec2(32, 32), ImVec2(0, 0), ImVec2(1, 1), -1, ImVec4(0, 0, 0, 0), ImVec4(1.0f, 1.0f, 1.0f, 0.6f)))
 		{
-			IO::cout << "Play" << IO::endl;
+			IO::cout << "CHLEN" << IO::endl;
 		}
 
 		ImGui::End();

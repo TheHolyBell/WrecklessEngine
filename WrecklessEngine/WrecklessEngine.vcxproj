@@ -152,7 +152,6 @@
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="ImGui\ImSequencer.cpp" />
-    <ClCompile Include="IRenderContext.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="KeyboardCSharp.cpp" />
     <ClCompile Include="Layer.cpp" />
@@ -187,6 +186,7 @@
     <ClCompile Include="ScriptProperty.cpp" />
     <ClCompile Include="ScriptString.cpp" />
     <ClCompile Include="ShaderReflector.cpp" />
+    <ClCompile Include="ShadowPass.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TestCube.cpp" />
@@ -325,7 +325,7 @@
     <ClInclude Include="ScriptProperty.h" />
     <ClInclude Include="ScriptString.h" />
     <ClInclude Include="ShaderReflector.h" />
-    <ClInclude Include="ShadowMapPass.h" />
+    <ClInclude Include="ShadowPass.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="TestCube.h" />
@@ -373,6 +373,14 @@
     <FxCompile Include="DefaultPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="DefaultShadowPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="DefaultShadowVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="DefaultVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>

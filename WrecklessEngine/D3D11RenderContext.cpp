@@ -6,6 +6,15 @@ namespace Graphics
 		: m_pDeviceContext(pDeviceContext)
 	{
 	}
+	void D3D11RenderContext::SetOutputTarget(Ref<IRenderTarget> render_target, Ref<IDepthStencilView> depth_stencil)
+	{
+		ID3D11RenderTargetView* rtv = nullptr;
+		if (render_target != nullptr)
+		{
+			rtv = reinterpret_cast<ID3D11RenderTargetView*>(render_target->GetNativePointer());
+		}
+		m_pDeviceContext->OMSetRenderTargets(1, &rtv, reinterpret_cast<ID3D11DepthStencilView*>(depth_stencil->GetNativePointer()));
+	}
 	void D3D11RenderContext::SetOutputRenderTarget(Ref<IRenderTarget> render_target)
 	{
 		ID3D11RenderTargetView* _rtv = reinterpret_cast<ID3D11RenderTargetView*>(render_target->GetNativePointer());
@@ -15,7 +24,7 @@ namespace Graphics
 	{
 		std::vector<ID3D11RenderTargetView*> rtvs;
 
-		for(auto& rt : render_targets)
+		for (auto& rt : render_targets)
 			rtvs.push_back(reinterpret_cast<ID3D11RenderTargetView*>(rt->GetNativePointer()));
 		m_pDeviceContext->OMSetRenderTargets(rtvs.size(), rtvs.data(), reinterpret_cast<ID3D11DepthStencilView*>(depth_stencil->GetNativePointer()));
 	}
@@ -29,11 +38,31 @@ namespace Graphics
 	}
 	void D3D11RenderContext::BindVertexShader(Ref<IVertexShader> vertex_shader)
 	{
-		m_pDeviceContext->VSSetShader(reinterpret_cast<ID3D11VertexShader*>(vertex_shader->GetNativePointer()), nullptr, 0);
+		if (vertex_shader != nullptr)
+			m_pDeviceContext->VSSetShader(reinterpret_cast<ID3D11VertexShader*>(vertex_shader->GetNativePointer()), nullptr, 0);
+		else
+			m_pDeviceContext->VSSetShader(nullptr, nullptr, 0);
+	}
+	void D3D11RenderContext::BindHullShader(Ref<IHullShader> hull_shader)
+	{
+		if(hull_shader != nullptr)
+			m_pDeviceContext->HSSetShader(reinterpret_cast<ID3D11HullShader*>(hull_shader->GetNativePointer()), nullptr, 0);
+		else
+			m_pDeviceContext->HSSetShader(nullptr, nullptr, 0);
+	}
+	void D3D11RenderContext::BindDomainShader(Ref<IDomainShader> domain_shader)
+	{
+		if(domain_shader != nullptr)
+			m_pDeviceContext->DSSetShader(reinterpret_cast<ID3D11DomainShader*>(domain_shader->GetNativePointer()), nullptr, 0);
+		else
+			m_pDeviceContext->DSSetShader(nullptr, nullptr, 0);
 	}
 	void D3D11RenderContext::BindPixelShader(Ref<IPixelShader> pixel_shader)
 	{
-		m_pDeviceContext->PSSetShader(reinterpret_cast<ID3D11PixelShader*>(pixel_shader->GetNativePointer()), nullptr, 0);
+		if(pixel_shader != nullptr)
+			m_pDeviceContext->PSSetShader(reinterpret_cast<ID3D11PixelShader*>(pixel_shader->GetNativePointer()), nullptr, 0);
+		else
+			m_pDeviceContext->PSSetShader(nullptr, nullptr, 0);
 	}
 	void D3D11RenderContext::BindViewport(Viewport viewport)
 	{

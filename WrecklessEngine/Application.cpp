@@ -67,7 +67,7 @@ namespace Wreckless
 
 					Graphics::Renderer::GetRenderContext()->ClearRenderTarget(backBuffer, color);
 					Graphics::Renderer::GetRenderContext()->ClearDepthStencilView(depthBuffer, 1.0f);
-					Graphics::Renderer::GetRenderContext()->SetOutputTargets(backBuffer, depthBuffer);
+					Graphics::Renderer::GetRenderContext()->SetOutputTarget(backBuffer, depthBuffer);
 					for (Layer* layer : m_LayerStack)
 						layer->OnUpdate();
 

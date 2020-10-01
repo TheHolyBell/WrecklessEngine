@@ -23,6 +23,22 @@ namespace CameraSystem
 	{
 		m_Position = v;
 	}
+	void PerspectiveCamera::Translate(float x, float y, float z)
+	{
+		using namespace DirectX;
+		XMFLOAT3 translation = { x, y, z };
+		
+		XMStoreFloat3(&translation, XMVector3Transform(
+			XMLoadFloat3(&translation),
+			XMMatrixRotationRollPitchYaw(m_Pitch, m_Yaw, 0.0f) *
+			XMMatrixScaling(80, 80, 80)
+		));
+		m_Position = {
+			m_Position.x + translation.x,
+			m_Position.y + translation.y,
+			m_Position.z + translation.z
+		};
+	}
 	DirectX::XMVECTOR PerspectiveCamera::GetRight() const
 	{
 		return DirectX::XMLoadFloat3(&m_Right);
@@ -170,7 +186,7 @@ namespace CameraSystem
 	void PerspectiveCamera::Pitch(float angle)
 	{
 		// Rotate up and look vector about the right vector.
-
+		m_Pitch += angle;
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationAxis(DirectX::XMLoadFloat3(&m_Right), angle);
 
 		DirectX::XMStoreFloat3(&m_Up, DirectX::XMVector3TransformNormal(XMLoadFloat3(&m_Up), R));
@@ -182,7 +198,7 @@ namespace CameraSystem
 	void PerspectiveCamera::Yaw(float angle)
 	{
 		// Rotate the basis vectors about the world y-axis.
-
+		m_Yaw += angle;
 		DirectX::XMMATRIX R = DirectX::XMMatrixRotationY(angle);
 
 		DirectX::XMStoreFloat3(&m_Right, DirectX::XMVector3TransformNormal(DirectX::XMLoadFloat3(&m_Right), R));

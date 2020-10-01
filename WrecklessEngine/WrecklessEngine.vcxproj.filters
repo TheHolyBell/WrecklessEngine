@@ -303,9 +303,6 @@
     <ClCompile Include="FileHelper.cpp">
       <Filter>FileSystem</Filter>
     </ClCompile>
-    <ClCompile Include="IRenderContext.cpp">
-      <Filter>Graphics\Interfaces</Filter>
-    </ClCompile>
     <ClCompile Include="D3D11Texture.cpp">
       <Filter>Graphics\Implementations\D3D11</Filter>
     </ClCompile>
@@ -434,6 +431,9 @@
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowPass.cpp">
+      <Filter>RenderPasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -758,9 +758,6 @@
     <ClInclude Include="VanillaPass.h">
       <Filter>RenderPasses</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowMapPass.h">
-      <Filter>RenderPasses</Filter>
-    </ClInclude>
     <ClInclude Include="TextureDesc.h">
       <Filter>Graphics</Filter>
     </ClInclude>
@@ -860,6 +857,9 @@
     <ClInclude Include="Model.h">
       <Filter>Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowPass.h">
+      <Filter>RenderPasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -910,6 +910,12 @@
       <Filter>Shaders\VS</Filter>
     </FxCompile>
     <FxCompile Include="AnimatedPS.hlsl">
+      <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="DefaultShadowVS.hlsl">
+      <Filter>Shaders\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="DefaultShadowPS.hlsl">
       <Filter>Shaders\PS</Filter>
     </FxCompile>
   </ItemGroup>

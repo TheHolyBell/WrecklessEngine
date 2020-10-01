@@ -76,11 +76,22 @@ namespace CameraSystem
 		m_LeftPlane = left;
 		m_RightPlane = right;
 		m_TopPlane = top;
-		m_BottomPlane = top;
+		m_BottomPlane = bottom;
 		m_NearZ = zn;
 		m_FarZ = zf;
 
 		DirectX::XMStoreFloat4x4(&m_Proj, DirectX::XMMatrixOrthographicOffCenterLH(left, right, bottom, top, zn, zf));
+	}
+	void OrthogonalCamera::SetFrustumProperties(float width, float height, float zn, float zf)
+	{
+		m_LeftPlane = -1;
+		m_RightPlane = width;
+		m_TopPlane = -1;
+		m_BottomPlane = height;
+		m_NearZ = zn;
+		m_FarZ = zf;
+
+		DirectX::XMStoreFloat4x4(&m_Proj, DirectX::XMMatrixOrthographicLH(width, height, zn, zf));
 	}
 	void OrthogonalCamera::LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp)
 	{

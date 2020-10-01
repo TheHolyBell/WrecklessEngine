@@ -121,7 +121,7 @@ namespace Graphics
 		float color[] = { 0,0,0,1 };
 		Renderer::GetRenderContext()->ClearRenderTarget(m_RenderTarget, color);
 		Renderer::GetRenderContext()->ClearDepthStencilView(m_DepthStencil, 1.0f);
-		Renderer::GetRenderContext()->SetOutputTargets(m_RenderTarget, m_DepthStencil);
+		Renderer::GetRenderContext()->SetOutputTarget(m_RenderTarget, m_DepthStencil);
 
 		Viewport vp = {};
 		vp.Width = m_RenderTarget->GetWidth();
@@ -141,16 +141,16 @@ namespace Graphics
 			for (const auto& cm : cubemapView)
 			{
 				ECS::CubemapComponent& cc = cubemapView.get<ECS::CubemapComponent>(cm);
-				if(cc.pCubemap != nullptr)
-					cc.pCubemap->Draw();
+				if(cc.Cubemap != nullptr)
+					cc.Cubemap->Draw();
 			}
 
 			auto view = pActiveScene->QueryElementsByComponent<ECS::MeshComponent>();
 			for (const auto& m : view)
 			{
 				ECS::MeshComponent& mc = view.get<ECS::MeshComponent>(m);
-				mc.pMesh->Update();
-				mc.pMesh->Draw();
+				mc.Mesh->Update();
+				mc.Mesh->Draw();
 			}
 
 		}

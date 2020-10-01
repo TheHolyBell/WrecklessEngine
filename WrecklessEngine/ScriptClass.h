@@ -32,6 +32,8 @@ namespace Scripting
 
 		void Invoke(const std::string& method, ParameterList params = {});
 	
+		std::string GetName() const;
+
 		// Convenience methods for runtime reflection of classes
 		std::vector<std::string> GetFieldNames() const;
 		std::vector<std::string> GetMethodNames() const;

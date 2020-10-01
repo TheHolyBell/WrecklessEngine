@@ -6,6 +6,10 @@
 #include <wrl.h>
 #include <DirectXMath.h>
 
+#include "IBuffer.h"
+#include "IShader.h"
+#include "ISamplerState.h"
+
 namespace Drawables
 {
 	class Terrain : public IMesh
@@ -50,11 +54,11 @@ namespace Drawables
 		float Average(int i, int j);
 		void CalcAllPatchBoundsY();
 		void CalcPatchBoundsY(UINT i, UINT j);
-		void BuildQuadPatchVB(ID3D11Device* device);
-		void BuildShaders(ID3D11Device* device);
+		void BuildQuadPatchVB();
+		void BuildShaders();
 		void BuildInputLayout(ID3D11Device* device);
-		void BuildTerrainCB(ID3D11Device* device);
-		void BuildQuadPatchIB(ID3D11Device* device);
+		void BuildTerrainCB();
+		void BuildQuadPatchIB();
 		void BuildHeightmapSRV(ID3D11Device* device);
 
 	private:
@@ -63,12 +67,14 @@ namespace Drawables
 		// to 64, we use all the data from the heightmap. 
 		static const int CellsPerPatch = 64;
 
-		Microsoft::WRL::ComPtr<ID3D11Buffer> mQuadPatchVB;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> mQuadPatchIB;
+		Ref<Graphics::IVertexBuffer> m_pQuadPatchVB;
+		Ref<Graphics::IIndexBuffer>  m_pQuadPatchIB;
 
-		Microsoft::WRL::ComPtr<ID3D11Buffer> mTerrainCBHS;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> mTerrainCBDS;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> mTerrainCBPS;
+		Ref<Graphics::IConstantBuffer> m_pTerrainCBHS;
+		Ref<Graphics::IConstantBuffer> m_pTerrainCBDS;
+		Ref<Graphics::IConstantBuffer> m_pTerrainCBPS;
+
+		Ref<Graphics::ISamplerState> m_pSamplerState;
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mLayerMapArraySRV;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mBlendMapSRV;
@@ -76,17 +82,10 @@ namespace Drawables
 
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> mInputLayout;
 
-		Microsoft::WRL::ComPtr<ID3DBlob> mVSCode;
-		Microsoft::WRL::ComPtr<ID3D11VertexShader> mVertexShader;
-
-		Microsoft::WRL::ComPtr<ID3DBlob> mHSCode;
-		Microsoft::WRL::ComPtr<ID3D11HullShader> mHullShader;
-
-		Microsoft::WRL::ComPtr<ID3DBlob> mDSCode;
-		Microsoft::WRL::ComPtr<ID3D11DomainShader> mDomainShader;
-
-		Microsoft::WRL::ComPtr<ID3DBlob> mPSCode;
-		Microsoft::WRL::ComPtr<ID3D11PixelShader> mPixelShader;
+		Ref<Graphics::IVertexShader> m_pVertexShader;
+		Ref<Graphics::IHullShader> m_pHullShader;
+		Ref<Graphics::IDomainShader> m_pDomainShader;
+		Ref<Graphics::IPixelShader> m_pPixelShader;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> mWireframeRasterizer;
 

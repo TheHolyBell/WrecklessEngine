@@ -13,6 +13,7 @@ namespace Graphics
 	public:
 		D3D11RenderContext(Microsoft::WRL::ComPtr<ID3D11DeviceContext> pDeviceContext);
 
+		virtual void SetOutputTarget(Ref<IRenderTarget> render_target, Ref<IDepthStencilView> depth_stencil) override;
 		virtual void SetOutputRenderTarget(Ref<IRenderTarget> render_target) override;
 		virtual void SetOutputTargets(std::vector<Ref<IRenderTarget>> render_targets, Ref<IDepthStencilView> depth_stencil) override;
 
@@ -20,6 +21,8 @@ namespace Graphics
 		virtual void ClearDepthStencilView(Ref<IDepthStencilView> depth_stencil, float depth, UINT stencil = 0) override;
 
 		virtual void BindVertexShader(Ref<IVertexShader> vertex_shader) override;
+		virtual void BindHullShader(Ref<IHullShader> hull_shader) override;
+		virtual void BindDomainShader(Ref<IDomainShader> domain_shader) override;
 		virtual void BindPixelShader(Ref<IPixelShader> pixel_shader) override;
 		virtual void BindViewport(Viewport viewport) override;
 

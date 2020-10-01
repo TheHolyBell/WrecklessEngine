@@ -3,6 +3,8 @@
 #include "ScriptField.h"
 #include "Hasher.h"
 
+#include <mono/metadata/attrdefs.h>
+
 namespace Scripting
 {
     ScriptClass::ScriptClass(MonoClass* pClass, MonoDomain* pDomain)
@@ -33,6 +35,11 @@ namespace Scripting
             SCRIPT_ERROR("Cannot find method: " + method);
     }
 
+    std::string ScriptClass::GetName() const
+    {
+        return mono_class_get_name(m_pClass);
+    }
+
     std::vector<std::string> ScriptClass::GetFieldNames() const
     {
         std::vector<std::string> _Fields;
@@ -41,7 +48,13 @@ namespace Scripting
         void* iter = nullptr;
 
         while ((field = mono_class_get_fields(m_pClass, &iter)) != nullptr)
+        {
+            if ((mono_field_get_flags(field) & MONO_FIELD_ATTR_PUBLIC) == 0)
+                continue;
             _Fields.push_back(mono_field_get_name(field));
+        }
+
+        
 
         return _Fields;
     }

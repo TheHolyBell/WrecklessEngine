@@ -42,9 +42,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	using namespace Input;
 	using namespace IO;
 	Console::Initialize();
-	Scripting::ScriptingEngine::Initialize();
-	
-
 	/*std::hash<std::string> hasher;
 	
 	IO::cout << hasher("dick") << IO::endl;
@@ -158,7 +155,7 @@ _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//cout << FileSystem::FileHelper::GetFileExtension("D:\\VisualStudio\\C++\\WrecklessEngine\\WrecklessEngine\\WrecklessScript.Core.dll") << IO::endl;
 	try
 	{
-		Wreckless::Application* app = new Wreckless::FinalApplication("Dickie", 1600, 900);
+		Wreckless::Application* app = new Wreckless::FinalApplication("Dickson", 1600, 900);
 		app->Run();
 		delete app;
 	}

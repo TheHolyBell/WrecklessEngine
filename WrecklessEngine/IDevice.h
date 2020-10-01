@@ -36,6 +36,8 @@ namespace Graphics
 		virtual Ref<ITexture> CreateTexture3D(const std::string& path) PURE;
 
 		virtual Ref<IVertexShader> CreateVertexShader(const std::string& path) PURE;
+		virtual Ref<IHullShader> CreateHullShader(const std::string& path) PURE;
+		virtual Ref<IDomainShader> CreateDomainShader(const std::string& path) PURE;
 		virtual Ref<IPixelShader> CreatePixelShader(const std::string& path) PURE;
 
 		virtual Ref<IRasterizer> CreateRasterizer(RASTERIZER_DESC rasterizer_desc) PURE;

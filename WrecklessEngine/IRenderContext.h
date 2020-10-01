@@ -26,7 +26,7 @@ namespace Graphics
 
 		virtual ~IRenderContext() = default;
 
-		void SetOutputTargets(Ref<IRenderTarget> render_target, Ref<IDepthStencilView> depth_stencil);
+		virtual void SetOutputTarget(Ref<IRenderTarget> render_target, Ref<IDepthStencilView> depth_stencil) PURE;
 		virtual void SetOutputRenderTarget(Ref<IRenderTarget> render_target) PURE;
 		virtual void SetOutputTargets(std::vector<Ref<IRenderTarget>> render_targets, Ref<IDepthStencilView> depth_stencil) PURE;
 
@@ -34,6 +34,8 @@ namespace Graphics
 		virtual void ClearDepthStencilView(Ref<IDepthStencilView> depth_stencil, float depth, UINT stencil = 0) PURE;
 
 		virtual void BindVertexShader(Ref<IVertexShader> vertex_shader) PURE;
+		virtual void BindHullShader(Ref<IHullShader> hull_shader) PURE;
+		virtual void BindDomainShader(Ref<IDomainShader> domain_shader) PURE;
 		virtual void BindPixelShader(Ref<IPixelShader> pixel_shader) PURE;
 		virtual void BindViewport(Viewport viewport) PURE;
 

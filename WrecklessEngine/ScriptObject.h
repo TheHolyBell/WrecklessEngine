@@ -30,7 +30,9 @@ namespace Scripting
 
 		void Invoke(const std::string& method, ParameterList params = {});
 
-		MonoObject* GetObject() const;
+		MonoObject* GetObjectPointer() const;
+
+		std::string GetTypeName() const;
 
 		ScriptProperty& GetProperty(const std::string& name);
 		ScriptField& GetField(const std::string& name);

@@ -16,6 +16,10 @@ namespace Sandbox
         int m_Number = 0;
         
         public string Name { get; set; }
+
+        public int Scale = 0;
+        public Vector3 Translation = default;
+
         public override void Start()
         {
             m_Number = Number;
@@ -70,14 +74,14 @@ namespace Sandbox
                 translation.X--;
             }
 
-            rotMat.D41 = translation.X;
-            rotMat.D42 = translation.Y;
-            rotMat.D43 = translation.Z;
+            rotMat.D41 = Translation.X;
+            rotMat.D42 = Translation.Y;
+            rotMat.D43 = Translation.Z;
             GetComponent<TransformComponent>().Transform = rotMat;
 
             if (GamePad.IsPressed(Button.LShoulder))
                 Debug.Log("LS pressed");
-            Debug.Log("Dickson " + Time.TotalTime);
+            Debug.Log("Dickson " + Time.TotalTime + " Scale: " + Scale);
         }
     }
 }

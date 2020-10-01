@@ -14,6 +14,7 @@ namespace CameraSystem
 		DirectX::XMFLOAT3 GetPosition3f() const;
 		void SetPosition(float x, float y, float z);
 		void SetPosition(const DirectX::XMFLOAT3& v);
+		void Translate(float x, float y, float z);
 
 		// Get camera basis vectors
 		DirectX::XMVECTOR GetRight() const;
@@ -77,6 +78,9 @@ namespace CameraSystem
 		float m_FovY = 0.0f;
 		float m_NearWindowHeight = 0.0f;
 		float m_FarWindowHeight = 0.0f;
+
+		float m_Pitch = 0.0f;
+		float m_Yaw = 0.0f;
 
 		// Cache View/Proj matrices
 		DirectX::XMFLOAT4X4 m_View;

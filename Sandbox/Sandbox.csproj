@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Actor.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Dummy.cs" />
     <Compile Include="Sandbox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

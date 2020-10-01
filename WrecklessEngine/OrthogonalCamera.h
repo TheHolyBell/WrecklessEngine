@@ -34,6 +34,7 @@ namespace CameraSystem
 
 		// Set frustum
 		void SetFrustumProperties(float left, float right, float bottom, float top, float zn, float zf);
+		void SetFrustumProperties(float width, float height, float zn, float zf);
 
 		// Define camera space via LookAt parameters
 		void LookAt(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR target, DirectX::FXMVECTOR worldUp);

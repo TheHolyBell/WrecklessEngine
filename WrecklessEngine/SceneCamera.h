@@ -18,6 +18,7 @@ namespace CameraSystem
 
 		static void SetProjection(DirectX::FXMMATRIX projection);
 		static void SetProjection(DirectX::XMFLOAT4X4 projection);
+
 	private:
 		static DirectX::XMMATRIX s_View;
 		static DirectX::XMMATRIX s_Projeciton;

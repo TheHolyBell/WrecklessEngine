@@ -16,6 +16,7 @@
 #include "SceneCamera.h"
 #include "Entity.h"
 
+
 #include <d3dcompiler.h>
 
 using namespace DirectX;
@@ -55,14 +56,6 @@ static Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> CreateTexture2DArraySRV(
 	return nullptr;
 }
 
-template<typename C>
-static void UpdateBufferData(ID3D11DeviceContext* context, ID3D11Buffer* buffer, C data)
-{
-	D3D11_MAPPED_SUBRESOURCE mappedSub = {};
-	context->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedSub);
-	memcpy(mappedSub.pData, &data, sizeof(C));
-	context->Unmap(buffer, 0);
-}
 
 void ExtractFrustumPlanes(XMFLOAT4* planes, CXMMATRIX M)
 {
@@ -206,6 +199,7 @@ namespace Drawables
 	}
 	void Terrain::Update()
 	{
+		using namespace Graphics;
 		ID3D11DeviceContext* deviceContext = reinterpret_cast<ID3D11DeviceContext*>(Graphics::Renderer::GetRenderContext()->GetNativePointer());
 		using namespace ECS;
 
@@ -234,7 +228,7 @@ namespace Drawables
 			hsBuffer.gWorldFrustumPlanes[i] = worldPlanes[i];
 		}
 
-		UpdateBufferData(deviceContext, mTerrainCBHS.Get(), hsBuffer);
+		Renderer::GetRenderContext()->MapDataToBuffer(m_pTerrainCBHS, &hsBuffer, sizeof(hsBuffer));
 	
 		TerrainCBDS dsBuffer;
 		dsBuffer.gTexScale = { 50,50 };
@@ -242,23 +236,24 @@ namespace Drawables
 		dsBuffer.view = DirectX::XMMatrixTranspose(view);
 		dsBuffer.projection = DirectX::XMMatrixTranspose(projection);
 
-		UpdateBufferData(deviceContext, mTerrainCBDS.Get(), dsBuffer);
+		Renderer::GetRenderContext()->MapDataToBuffer(m_pTerrainCBDS, &dsBuffer, sizeof(dsBuffer));
 
 		TerrainCBPS psbuffer;
 		psbuffer.gTexelCellSpaceU = 1.0f / mInfo.HeightmapWidth;
 		psbuffer.gTexelCellSpaceV = 1.0f / mInfo.HeightmapHeight;
 		psbuffer.gWorldCellSpace = mInfo.CellSpacing;
 
-		UpdateBufferData(deviceContext, mTerrainCBPS.Get(), psbuffer);
+		Renderer::GetRenderContext()->MapDataToBuffer(m_pTerrainCBPS, &psbuffer, sizeof(psbuffer));
 	}
 	void Terrain::Draw()
 	{
+		using namespace Graphics;
 		Update();
 		
 		ID3D11Device* device = reinterpret_cast<ID3D11Device*>(Graphics::Renderer::GetDevice()->GetNativePointer());
 		ID3D11DeviceContext* deviceContext = reinterpret_cast<ID3D11DeviceContext*>(Graphics::Renderer::GetRenderContext()->GetNativePointer());
 	
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
+		Renderer::GetRenderContext()->BindTopology(PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
 		deviceContext->IASetInputLayout(mInputLayout.Get());
 
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
@@ -268,22 +263,21 @@ namespace Drawables
 		deviceContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
 		deviceContext->OMSetDepthStencilState(nullptr, 0);
 
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
+		Renderer::GetRenderContext()->BindVertexShader(m_pVertexShader);
+		Renderer::GetRenderContext()->BindHullShader(m_pHullShader);
+		Renderer::GetRenderContext()->BindDomainShader(m_pDomainShader);
+		Renderer::GetRenderContext()->BindPixelShader(m_pPixelShader);
 
-		deviceContext->VSSetShader(mVertexShader.Get(), nullptr, 0);
-		deviceContext->HSSetShader(mHullShader.Get(), nullptr, 0);
-		deviceContext->DSSetShader(mDomainShader.Get(), nullptr, 0);
-		deviceContext->PSSetShader(mPixelShader.Get(), nullptr, 0);
+		Renderer::GetRenderContext()->BindSamplerState(m_pSamplerState, 0);
 
-		deviceContext->HSSetConstantBuffers(0, 1, mTerrainCBHS.GetAddressOf());
+		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBHS, SHADER_TYPE::Hull, 0);
+		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBDS, SHADER_TYPE::Vertex, 0);
+		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBDS, SHADER_TYPE::Domain, 0);
+		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBPS, SHADER_TYPE::Pixel, 0);
 
-		deviceContext->VSSetConstantBuffers(0, 1, mTerrainCBDS.GetAddressOf());
-		deviceContext->DSSetConstantBuffers(0, 1, mTerrainCBDS.GetAddressOf());
-		deviceContext->PSSetConstantBuffers(0, 1, mTerrainCBPS.GetAddressOf());
+		Renderer::GetRenderContext()->BindVertexBuffer(m_pQuadPatchVB, sizeof(Vertex), 0);
+		Renderer::GetRenderContext()->BindIndexBuffer(m_pQuadPatchIB, 0);
 
-		deviceContext->IASetVertexBuffers(0, 1, mQuadPatchVB.GetAddressOf(), &stride, &offset);
-		deviceContext->IASetIndexBuffer(mQuadPatchIB.Get(), DXGI_FORMAT_R16_UINT, 0);
 
 		deviceContext->VSSetShaderResources(0, 1, mHeightMapSRV.GetAddressOf());
 		deviceContext->DSSetShaderResources(0, 1, mHeightMapSRV.GetAddressOf());
@@ -292,10 +286,10 @@ namespace Drawables
 		deviceContext->PSSetShaderResources(1, 1, mBlendMapSRV.GetAddressOf());
 		deviceContext->PSSetShaderResources(2, 1, mHeightMapSRV.GetAddressOf());
 	
-		deviceContext->DrawIndexed(mNumPatchQuadFaces * 4, 0, 0);
+		Renderer::GetRenderContext()->DrawIndexed(mNumPatchQuadFaces * 4, 0, 0);
 
-		deviceContext->HSSetShader(nullptr, nullptr, 0);
-		deviceContext->DSSetShader(nullptr, nullptr, 0);
+		Renderer::GetRenderContext()->BindHullShader(nullptr);
+		Renderer::GetRenderContext()->BindDomainShader(nullptr);
 	}
 	void Terrain::LoadHeightMap()
 	{
@@ -416,8 +410,9 @@ namespace Drawables
 		UINT patchID = i * (mNumPatchVertCols - 1) + j;
 		mPatchBoundsY[patchID] = XMFLOAT2(minY, maxY);
 	}
-	void Terrain::BuildQuadPatchVB(ID3D11Device* device)
+	void Terrain::BuildQuadPatchVB()
 	{
+		using namespace Graphics;
 		std::vector<Vertex> patchVertices(mNumPatchVertRows * mNumPatchVertCols);
 
 		float halfWidth = 0.5f * GetWidth();
@@ -453,36 +448,20 @@ namespace Drawables
 			}
 		}
 
-		D3D11_BUFFER_DESC vbd = {};
-		vbd.Usage = D3D11_USAGE_IMMUTABLE;
-		vbd.ByteWidth = sizeof(Vertex) * patchVertices.size();
-		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		vbd.CPUAccessFlags = 0;
-		vbd.MiscFlags = 0;
-		vbd.StructureByteStride = 0;
-
-		D3D11_SUBRESOURCE_DATA vinitData = {};
-		vinitData.pSysMem = &patchVertices[0];
-		WRECK_HR(device->CreateBuffer(&vbd, &vinitData, &mQuadPatchVB));
+		m_pQuadPatchVB = Renderer::GetDevice()->CreateVertexBuffer(&patchVertices[0], sizeof(Vertex) * patchVertices.size());
 	}
-	void Terrain::BuildShaders(ID3D11Device* device)
+	void Terrain::BuildShaders()
 	{
-		std::wstring vertexPath = L"Shaders/Bin/TerrainVS.cso";
-		std::wstring hullPath = L"Shaders/Bin/TerrainHS.cso";
-		std::wstring domainPath = L"Shaders/Bin/TerrainDS.cso";
-		std::wstring pixelPath = L"Shaders/Bin/TerrainPS.cso";
+		using namespace Graphics;
+		std::string vertexPath = "Shaders/Bin/TerrainVS.cso";
+		std::string hullPath = "Shaders/Bin/TerrainHS.cso";
+		std::string domainPath = "Shaders/Bin/TerrainDS.cso";
+		std::string pixelPath = "Shaders/Bin/TerrainPS.cso";
 
-		WRECK_HR(D3DReadFileToBlob(vertexPath.c_str(), &mVSCode));
-		WRECK_HR(D3DReadFileToBlob(hullPath.c_str(), &mHSCode));
-		WRECK_HR(D3DReadFileToBlob(domainPath.c_str(), &mDSCode));
-		WRECK_HR(D3DReadFileToBlob(pixelPath.c_str(), &mPSCode));
-
-		WRECK_HR(device->CreateVertexShader(mVSCode->GetBufferPointer(), mVSCode->GetBufferSize(), nullptr, &mVertexShader));
-
-		WRECK_HR(device->CreateHullShader(mHSCode->GetBufferPointer(), mHSCode->GetBufferSize(), nullptr, &mHullShader));
-		WRECK_HR(device->CreateDomainShader(mDSCode->GetBufferPointer(), mDSCode->GetBufferSize(), nullptr, &mDomainShader));
-
-		WRECK_HR(device->CreatePixelShader(mPSCode->GetBufferPointer(), mPSCode->GetBufferSize(), nullptr, &mPixelShader));
+		m_pVertexShader = Renderer::GetDevice()->CreateVertexShader(vertexPath);
+		m_pHullShader = Renderer::GetDevice()->CreateHullShader(hullPath);
+		m_pDomainShader = Renderer::GetDevice()->CreateDomainShader(domainPath);
+		m_pPixelShader = Renderer::GetDevice()->CreatePixelShader(pixelPath);
 	}
 	void Terrain::BuildInputLayout(ID3D11Device* device)
 	{
@@ -494,36 +473,22 @@ namespace Drawables
 			{"TEXCOORD", 1, DXGI_FORMAT_R32G32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0},		
 		};
 
-		WRECK_HR(device->CreateInputLayout(layoutDesc, std::size(layoutDesc), mVSCode->GetBufferPointer(),
-			mVSCode->GetBufferSize(), &mInputLayout));
+		ID3DBlob* vsCode = (ID3DBlob*)m_pVertexShader->GetByteCode();
+
+		WRECK_HR(device->CreateInputLayout(layoutDesc, std::size(layoutDesc), vsCode->GetBufferPointer(),
+			vsCode->GetBufferSize(), &mInputLayout));
 	}
-	void Terrain::BuildTerrainCB(ID3D11Device* device)
+	void Terrain::BuildTerrainCB()
 	{
-		D3D11_BUFFER_DESC cbhsDesc = {};
-		cbhsDesc.ByteWidth = CalcConstantBufferByteSize(sizeof(TerrainCBHS));
-		cbhsDesc.Usage = D3D11_USAGE_DYNAMIC;
-		cbhsDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbhsDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		WRECK_HR(device->CreateBuffer(&cbhsDesc, nullptr, &mTerrainCBHS));
-
-		D3D11_BUFFER_DESC cbdsDesc = {};
-		cbdsDesc.ByteWidth = CalcConstantBufferByteSize(sizeof(TerrainCBDS));
-		cbdsDesc.Usage = D3D11_USAGE_DYNAMIC;
-		cbdsDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbdsDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		WRECK_HR(device->CreateBuffer(&cbdsDesc, nullptr, &mTerrainCBDS));
-
-		D3D11_BUFFER_DESC cbpsDesc = {};
-		cbpsDesc.ByteWidth = CalcConstantBufferByteSize(sizeof(TerrainCBPS));
-		cbpsDesc.Usage = D3D11_USAGE_DYNAMIC;
-		cbpsDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbpsDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-
-		WRECK_HR(device->CreateBuffer(&cbpsDesc, nullptr, &mTerrainCBPS));
+		using namespace Graphics;
+		m_pTerrainCBHS = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(TerrainCBHS)));
+		m_pTerrainCBDS = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(TerrainCBDS)));
+		m_pTerrainCBPS = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(TerrainCBPS)));
 	}
-	void Terrain::BuildQuadPatchIB(ID3D11Device* device)
+	void Terrain::BuildQuadPatchIB()
 	{
-		std::vector<USHORT> indices(mNumPatchQuadFaces * 4); // 4 indices per quad face
+		using namespace Graphics;
+		std::vector<unsigned int> indices(mNumPatchQuadFaces * 4); // 4 indices per quad face
 
 	// Iterate over each quad and compute indices.
 		int k = 0;
@@ -543,17 +508,7 @@ namespace Drawables
 			}
 		}
 
-		D3D11_BUFFER_DESC ibd;
-		ibd.Usage = D3D11_USAGE_IMMUTABLE;
-		ibd.ByteWidth = sizeof(USHORT) * indices.size();
-		ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		ibd.CPUAccessFlags = 0;
-		ibd.MiscFlags = 0;
-		ibd.StructureByteStride = 0;
-		mIndices = indices.size();
-		D3D11_SUBRESOURCE_DATA iinitData;
-		iinitData.pSysMem = &indices[0];
-		WRECK_HR(device->CreateBuffer(&ibd, &iinitData, &mQuadPatchIB));
+		m_pQuadPatchIB = Renderer::GetDevice()->CreateIndexBuffer(indices);
 	}
 	void Terrain::BuildHeightmapSRV(ID3D11Device* device)
 	{
@@ -592,7 +547,7 @@ namespace Drawables
 	Terrain::Terrain(unsigned entID)
 		: mEntID(entID)
 	{
-		mInfo.HeightMapFilename = L"assets/Textures/terrain2.raw";
+		mInfo.HeightMapFilename = L"assets/Textures/terrain.raw";
 		mInfo.LayerMapFilename0 = L"assets/Textures/grass.dds";
 		mInfo.LayerMapFilename1 = L"assets/Textures/darkdirt.dds";
 		mInfo.LayerMapFilename2 = L"assets/Textures/stone.dds";
@@ -617,11 +572,11 @@ namespace Drawables
 		Smooth();
 		CalcAllPatchBoundsY();
 
-		BuildShaders(device);
+		BuildShaders();
 		BuildInputLayout(device);
-		BuildQuadPatchVB(device);
-		BuildTerrainCB(device);
-		BuildQuadPatchIB(device);
+		BuildQuadPatchVB();
+		BuildTerrainCB();
+		BuildQuadPatchIB();
 		BuildHeightmapSRV(device);
 		std::vector<std::wstring> layerFilenames;
 		layerFilenames.push_back(mInfo.LayerMapFilename0);
@@ -630,7 +585,19 @@ namespace Drawables
 		layerFilenames.push_back(mInfo.LayerMapFilename3);
 		layerFilenames.push_back(mInfo.LayerMapFilename4);
 		//mLayerMapArraySRV = CreateTexture2DArraySRV(device, context,
-			//layerFilenames);
+		//	layerFilenames);
+
+		{
+			using namespace Graphics;
+			SAMPLER_DESC samplerDesc = {};
+			samplerDesc.AddressU = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_WRAP;
+			samplerDesc.AddressV = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_WRAP;
+			samplerDesc.AddressW = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_WRAP;
+			samplerDesc.Filter = SAMPLE_FILTER::ANISOTROPIC;
+			samplerDesc.MaxAnisotropy = 16;
+			samplerDesc.MaxLOD = FLT_MAX;
+			m_pSamplerState = Renderer::GetDevice()->CreateSamplerState(samplerDesc);
+		}
 
 		WRECK_HR(DirectX::CreateDDSTextureFromFile(device,
 			context, mInfo.BlendMapFilename.c_str(), nullptr, &mBlendMapSRV));

@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <memory>
+#include <unordered_map>
 #include "ScriptDomain.h"
 
 namespace Scripting
@@ -13,13 +15,15 @@ namespace Scripting
 	class ScriptingEngine
 	{
 	public:
-		static void Initialize();
-		static ScriptDomain GetDomain(const char* filename);
+		static void Initialize(const char* filename);
+		static ScriptDomain& GetDomain();
 
 		template<typename FuncPtr>
 		static void DirectBindCallback(const std::string& fullName, FuncPtr funcPtr)
 		{
 			mono_add_internal_call(fullName.c_str(), (const void*)funcPtr);
 		}
+	private:
+		static std::unique_ptr<ScriptDomain> m_Domain;
 	};
 }

@@ -44,7 +44,7 @@ namespace Wreckless
 		Ref<Bindable::Texture3D> m_pCubemap;
 
 		Ref<ECS::Scene> m_pScene;
-		Scripting::ScriptDomain m_Domain;
+		//Scripting::ScriptDomain m_Domain;
 
 		bool m_ViewportPanelMouseOver = false;
 		bool m_ViewportPanelFocused = false;

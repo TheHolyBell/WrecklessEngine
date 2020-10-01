@@ -26,6 +26,8 @@ namespace Graphics
 		virtual Ref<IDepthStencilState> CreateDepthStencilState(DEPTH_STENCIL_DESC depth_stencil_desc) override;
 
 		virtual Ref<IVertexShader> CreateVertexShader(const std::string& path) override;
+		virtual Ref<IHullShader> CreateHullShader(const std::string& path) override;
+		virtual Ref<IDomainShader> CreateDomainShader(const std::string& path) override;
 		virtual Ref<IPixelShader> CreatePixelShader(const std::string& path) override;
 
 		virtual Ref<IVertexBuffer> CreateVertexBuffer(const Dynamic::VertexBuffer& buffer) override;

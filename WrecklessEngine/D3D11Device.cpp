@@ -94,6 +94,26 @@ namespace Graphics
 
 		return std::make_shared<D3D11VertexShader>(_pVertexShader, _pCompiledCode);
 	}
+	Ref<IHullShader> D3D11Device::CreateHullShader(const std::string& path)
+	{
+		Microsoft::WRL::ComPtr<ID3DBlob> _pCompiledCode;
+		Microsoft::WRL::ComPtr<ID3D11HullShader> _pHullShader;
+
+		WRECK_HR(D3DReadFileToBlob(Misc::StringHelper::ToWide(path).c_str(), &_pCompiledCode));
+		WRECK_HR(m_pDevice->CreateHullShader(_pCompiledCode->GetBufferPointer(), _pCompiledCode->GetBufferSize(), nullptr, &_pHullShader));
+
+		return std::make_shared<D3D11HullShader>(_pHullShader, _pCompiledCode);
+	}
+	Ref<IDomainShader> D3D11Device::CreateDomainShader(const std::string& path)
+	{
+		Microsoft::WRL::ComPtr<ID3DBlob> _pCompiledCode;
+		Microsoft::WRL::ComPtr<ID3D11DomainShader> _pDomainShader;
+
+		WRECK_HR(D3DReadFileToBlob(Misc::StringHelper::ToWide(path).c_str(), &_pCompiledCode));
+		WRECK_HR(m_pDevice->CreateDomainShader(_pCompiledCode->GetBufferPointer(), _pCompiledCode->GetBufferSize(), nullptr, &_pDomainShader));
+
+		return std::make_shared<D3D11DomainShader>(_pDomainShader, _pCompiledCode);
+	}
 	Ref<IPixelShader> D3D11Device::CreatePixelShader(const std::string& path)
 	{
 		Microsoft::WRL::ComPtr<ID3DBlob> _pCompiledCode;

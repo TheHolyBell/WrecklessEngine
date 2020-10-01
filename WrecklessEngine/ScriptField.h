@@ -11,12 +11,17 @@
 
 namespace Scripting
 {
+	enum class FieldType
+	{
+		None = 0, Float, Int, UnsignedInt, String, Vec2, Vec3, Vec4
+	};
+
 	class ScriptField
 	{
 	public:
-		ScriptField(MonoObject* pObject, MonoClassField* pField);
+		ScriptField(MonoObject* pObject, MonoClassField* pField, FieldType type);
 		std::string GetName() const;
-		const char* GetType();
+		FieldType GetType() const;
 
 		template<typename T>
 		void SetValue(T value)
@@ -53,7 +58,8 @@ namespace Scripting
 		}
 
 	private:
-		MonoClassField* m_pField;
-		MonoObject* m_pObject;
+		MonoClassField* m_pField = nullptr;
+		MonoObject* m_pObject = nullptr;
+		FieldType m_Type = FieldType::None;
 	};
 }

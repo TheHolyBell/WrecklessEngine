@@ -5,6 +5,7 @@
 
 #include "ScriptObject.h"
 #include "ScriptClass.h"
+#include "ScriptingEngine.h"
 #include "IMesh.h"
 #include "Cubemap.h"
 
@@ -41,14 +42,26 @@ namespace ECS
 	class ScriptComponent
 	{
 	public:
+		ScriptComponent()
+			: ScriptComponent(Scripting::ScriptingEngine::GetDomain().GetClass("Sandbox.Actor"))
+		{
+
+		}
+
 		ScriptComponent(Scripting::ScriptClass klass)
 			: m_Object(klass.CreateInstance())
 		{
+			TypeName = m_Object.GetTypeName();
 		}
+
+		std::string TypeName;
+		Scripting::ScriptObject m_Object;
+
 		void Update()
 		{
 			m_Object.Invoke("Update");
 		}
+		
 	private:
 		void OnCreate(uint32_t handle)
 		{
@@ -58,23 +71,22 @@ namespace ECS
 		}
 	private:
 		bool m_bCreated = false;
-		Scripting::ScriptObject m_Object;
 		friend class Scene;
 	};
 
 	struct MeshComponent
 	{
-		Ref<Drawables::IMesh> pMesh;
+		Ref<Drawables::IMesh> Mesh;
 		MeshComponent() = default;
 		MeshComponent(Ref<Drawables::IMesh> mesh)
-			: pMesh(mesh){}
+			: Mesh(mesh){}
 	};
 
 	struct CubemapComponent
 	{
-		Ref<Drawables::Cubemap> pCubemap;
+		Ref<Drawables::Cubemap> Cubemap;
 		CubemapComponent() = default;
 		CubemapComponent(Ref<Drawables::Cubemap> cubemap)
-			 : pCubemap(cubemap) {}
+			 : Cubemap(cubemap) {}
 	};
 }

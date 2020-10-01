@@ -16,7 +16,7 @@ namespace Scripting
 		MonoObject* obj = nullptr;
 
 		if (object != nullptr)
-			obj = object->GetObject();
+			obj = object->GetObjectPointer();
 
 		mono_runtime_invoke(m_pMethod, obj, params.GetArgs(), nullptr);
 	}

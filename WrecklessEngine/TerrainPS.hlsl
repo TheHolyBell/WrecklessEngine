@@ -10,6 +10,8 @@ Texture2D gLayerMap : register(t0);
 Texture2D gBlendMap : register(t1);
 Texture2D gHeightMap : register(t2);
 
+SamplerState g_SamplerState : register(s0);
+
 SamplerState samLinear
 {
 	Filter = MIN_MAG_MIP_LINEAR;
@@ -70,5 +72,5 @@ float4 main(DomainOut pin) : SV_TARGET
 
 	return texColor;*/
 
-	return gLayerMap.Sample(samLinear, pin.TiledTex);
+	return gLayerMap.Sample(g_SamplerState, pin.TiledTex);
 }

@@ -41,6 +41,11 @@ namespace ECS
 			m_Registry.destroy(entity.m_Entity);
 	}
 
+	void Scene::Clear()
+	{
+		m_Registry.clear();
+	}
+
 	void Scene::OnUpdate()
 	{
 		auto view = QueryElementsByComponent<ScriptComponent>();
