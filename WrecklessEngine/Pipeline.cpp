@@ -6,7 +6,7 @@ namespace Graphics
 {
 	void Pipeline::Initialize(unsigned width, unsigned height)
 	{
-		ShadowPass::Initialize(2048, 2048);
+		ShadowPass::Initialize(4096, 4096);
 		VanillaPass::Initialize(width, height);
 	}
 	void Pipeline::Execute()

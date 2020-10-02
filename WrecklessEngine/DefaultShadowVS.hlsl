@@ -44,7 +44,7 @@ VertexOutput main(VertexInput vin)
 	vout.Binormal = vin.Binormal;
 	vout.TexCoords = vin.TexCoords;
 
-	vout.ShadowPosH = mul(float4(vin.PosL, 1.0f), g_ShadowTransform);
+	vout.ShadowPosH = mul(float4(vout.PosW, 1.0f), g_ShadowTransform);
 
 	return vout;
 }

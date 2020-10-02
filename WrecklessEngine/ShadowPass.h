@@ -19,6 +19,8 @@ namespace Graphics
 
 		static void Execute();
 
+		static DirectX::XMMATRIX GetShadowTransform();
+
 		static Ref<ITexture> GetDepthStencilSRV();
 	private:
 		static Ref<IDepthStencilView> m_DepthStencil;

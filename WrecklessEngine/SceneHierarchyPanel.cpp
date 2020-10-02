@@ -52,6 +52,14 @@ namespace Wreckless
 					}
 				}
 
+				if (!m_SelectionContext.HasComponent<ECS::ShadowCasterComponent>())
+				{
+					if (ImGui::Button("Shadow caster"))
+					{
+						m_SelectionContext.AddComponent<ECS::ShadowCasterComponent>();
+						ImGui::CloseCurrentPopup();
+					}
+				}
 
 				ImGui::EndPopup();
 			}
@@ -374,6 +382,8 @@ namespace Wreckless
 				}
 			}
 		}
+
+		DrawComponent<ECS::ShadowCasterComponent>("Shadow caster", entity, [=](ECS::ShadowCasterComponent& scriptComponent) {});
 
 		DrawComponent<ECS::ScriptComponent>("Script", entity, [=](ECS::ScriptComponent& scriptComponent) mutable
 		{

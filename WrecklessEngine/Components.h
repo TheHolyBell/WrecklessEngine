@@ -89,4 +89,13 @@ namespace ECS
 		CubemapComponent(Ref<Drawables::Cubemap> cubemap)
 			 : Cubemap(cubemap) {}
 	};
+
+	struct ShadowCasterComponent
+	{
+		// Just a simple dummy-class for turning on-off shadow casting for entities
+	private:
+		char dummy; // Dummy member-field
+	public:
+		ShadowCasterComponent() = default;
+	};
 }

@@ -74,7 +74,10 @@ namespace Drawables
 		Ref<Graphics::IConstantBuffer> m_pTerrainCBDS;
 		Ref<Graphics::IConstantBuffer> m_pTerrainCBPS;
 
+		Ref<Graphics::IConstantBuffer> m_pShadowCB;
+
 		Ref<Graphics::ISamplerState> m_pSamplerState;
+		Ref<Graphics::ISamplerState> m_pShadowSampler;
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mLayerMapArraySRV;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mBlendMapSRV;

@@ -8,6 +8,7 @@
 #include "SceneCamera.h"
 #include "Components.h"
 #include <entt.hpp>
+#include "GlobalClock.h"
 
 namespace Graphics
 {
@@ -22,9 +23,7 @@ namespace Graphics
 
 	void ShadowPass::Resize(unsigned width, unsigned height)
 	{
-		m_LightCamera.SetFrustumProperties(width, height, 1.0f, 100);
-		m_LightCamera.LookAt(DirectX::XMFLOAT3{ 5, 8, 10 }, {}, { 0,1,0 });
-		m_LightCamera.UpdateViewMatrix();
+		m_LightCamera.SetFrustumProperties(width, height, 0.5f, 1000);
 		/*m_DepthStencilSRV.reset();
 		m_DepthStencil.reset();
 
@@ -90,6 +89,11 @@ namespace Graphics
 		Renderer::GetRenderContext()->ClearDepthStencilView(m_DepthStencil, 1.0f);
 		Renderer::GetRenderContext()->SetOutputTarget(nullptr, m_DepthStencil);
 
+		float radius = 180;
+		float time = Profiling::GlobalClock::TotalTime() * 0.1;
+		m_LightCamera.LookAt(DirectX::XMFLOAT3{ radius * cos(time), 20, radius * sin(time) }, {}, { 0,1,0 });
+		m_LightCamera.UpdateViewMatrix();
+
 		Viewport vp = {};
 		vp.Width = m_DepthStencil->GetWidth();
 		vp.Height = m_DepthStencil->GetHeight();
@@ -108,7 +112,7 @@ namespace Graphics
 
 		if (pActiveScene != nullptr)
 		{
-			auto view = pActiveScene->QueryElementsByComponent<ECS::MeshComponent>();
+			auto view = pActiveScene->QueryElementsByComponent<ECS::MeshComponent, ECS::ShadowCasterComponent>();
 			for (const auto& m : view)
 			{
 				ECS::MeshComponent& mc = view.get<ECS::MeshComponent>(m);
@@ -120,6 +124,11 @@ namespace Graphics
 
 		CameraSystem::SceneCamera::SetView(prevView);
 		CameraSystem::SceneCamera::SetProjection(prevProj);
+	}
+
+	DirectX::XMMATRIX ShadowPass::GetShadowTransform()
+	{
+		return m_LightCamera.GetView() * m_LightCamera.GetProjection();
 	}
 
 	Ref<ITexture> ShadowPass::GetDepthStencilSRV()

@@ -145,9 +145,11 @@ namespace Wreckless
 	}
 	void EditorLayer::OnUpdate()
 	{
-		if(m_SceneState == SceneState::Play)
+		Profiling::GlobalClock::Update();
+		if (m_SceneState == SceneState::Play)
+		{
 			ECS::SceneManager::GetActiveScene()->OnUpdate();
-
+		}
 		using namespace Input;
 		using namespace DirectX;
 
@@ -356,9 +358,9 @@ namespace Wreckless
 			if (ImGui::ImageButton((ImTextureID)(m_PlayButtonTex->NativePointer()), ImVec2(32, 32), ImVec2(0, 0), ImVec2(1, 1), -1, ImVec4(0, 0, 0, 0), ImVec4(0.9f, 0.9f, 0.9f, 1.0f)))
 			{
 				m_SceneState = SceneState::Play;
-				IO::cout << "Play" << IO::endl;
 				Profiling::GlobalClock::Reset();
 				IO::ImGuiOutput::Clear();
+				IO::cout << "Play" << IO::endl;
 			}
 			break;
 		case SceneState::Play:

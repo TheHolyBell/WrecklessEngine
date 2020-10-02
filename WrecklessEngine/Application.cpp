@@ -55,7 +55,6 @@ namespace Wreckless
 			{
 				if (!m_Minimized)
 				{
-					Profiling::GlobalClock::Update();
 					Input::GamePad::Get().UpdateState();
 
 					float color[] = { 0.2f, 0.6, 0.8, 1.0f };

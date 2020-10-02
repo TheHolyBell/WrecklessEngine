@@ -16,6 +16,7 @@
 #include "SceneCamera.h"
 #include "Entity.h"
 
+#include "ShadowPass.h"
 
 #include <d3dcompiler.h>
 
@@ -147,6 +148,11 @@ struct TerrainCBPS
 	float Padding;
 };
 
+struct ShadowCB
+{
+	XMMATRIX shadowTransform;
+};
+
 namespace Drawables
 {
 	float Terrain::GetWidth() const
@@ -244,6 +250,11 @@ namespace Drawables
 		psbuffer.gWorldCellSpace = mInfo.CellSpacing;
 
 		Renderer::GetRenderContext()->MapDataToBuffer(m_pTerrainCBPS, &psbuffer, sizeof(psbuffer));
+
+		ShadowCB shadowBuff;
+		shadowBuff.shadowTransform = DirectX::XMMatrixTranspose(ShadowPass::GetShadowTransform());
+
+		Renderer::GetRenderContext()->MapDataToBuffer(m_pShadowCB, &shadowBuff, sizeof(shadowBuff));
 	}
 	void Terrain::Draw()
 	{
@@ -269,21 +280,25 @@ namespace Drawables
 		Renderer::GetRenderContext()->BindPixelShader(m_pPixelShader);
 
 		Renderer::GetRenderContext()->BindSamplerState(m_pSamplerState, 0);
+		Renderer::GetRenderContext()->BindSamplerState(m_pShadowSampler, 1);
 
 		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBHS, SHADER_TYPE::Hull, 0);
 		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBDS, SHADER_TYPE::Vertex, 0);
 		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBDS, SHADER_TYPE::Domain, 0);
+		Renderer::GetRenderContext()->BindConstantBuffer(m_pShadowCB, SHADER_TYPE::Domain, 1);
 		Renderer::GetRenderContext()->BindConstantBuffer(m_pTerrainCBPS, SHADER_TYPE::Pixel, 0);
+
 
 		Renderer::GetRenderContext()->BindVertexBuffer(m_pQuadPatchVB, sizeof(Vertex), 0);
 		Renderer::GetRenderContext()->BindIndexBuffer(m_pQuadPatchIB, 0);
 
+		Renderer::GetRenderContext()->BindTexture2D(ShadowPass::GetDepthStencilSRV(), SHADER_TYPE::Pixel, 1);
 
 		deviceContext->VSSetShaderResources(0, 1, mHeightMapSRV.GetAddressOf());
 		deviceContext->DSSetShaderResources(0, 1, mHeightMapSRV.GetAddressOf());
 
 		deviceContext->PSSetShaderResources(0, 1, mLayerMapArraySRV.GetAddressOf());
-		deviceContext->PSSetShaderResources(1, 1, mBlendMapSRV.GetAddressOf());
+		//deviceContext->PSSetShaderResources(1, 1, mBlendMapSRV.GetAddressOf());
 		deviceContext->PSSetShaderResources(2, 1, mHeightMapSRV.GetAddressOf());
 	
 		Renderer::GetRenderContext()->DrawIndexed(mNumPatchQuadFaces * 4, 0, 0);
@@ -453,10 +468,10 @@ namespace Drawables
 	void Terrain::BuildShaders()
 	{
 		using namespace Graphics;
-		std::string vertexPath = "Shaders/Bin/TerrainVS.cso";
-		std::string hullPath = "Shaders/Bin/TerrainHS.cso";
-		std::string domainPath = "Shaders/Bin/TerrainDS.cso";
-		std::string pixelPath = "Shaders/Bin/TerrainPS.cso";
+		std::string vertexPath = "Shaders/Bin/TerrainShadowVS.cso";
+		std::string hullPath = "Shaders/Bin/TerrainShadowHS.cso";
+		std::string domainPath = "Shaders/Bin/TerrainShadowDS.cso";
+		std::string pixelPath = "Shaders/Bin/TerrainShadowPS.cso";
 
 		m_pVertexShader = Renderer::GetDevice()->CreateVertexShader(vertexPath);
 		m_pHullShader = Renderer::GetDevice()->CreateHullShader(hullPath);
@@ -484,6 +499,7 @@ namespace Drawables
 		m_pTerrainCBHS = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(TerrainCBHS)));
 		m_pTerrainCBDS = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(TerrainCBDS)));
 		m_pTerrainCBPS = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(TerrainCBPS)));
+		m_pShadowCB = Renderer::GetDevice()->CreateConstantBuffer(CalcConstantBufferByteSize(sizeof(ShadowCB)));
 	}
 	void Terrain::BuildQuadPatchIB()
 	{
@@ -597,6 +613,26 @@ namespace Drawables
 			samplerDesc.MaxAnisotropy = 16;
 			samplerDesc.MaxLOD = FLT_MAX;
 			m_pSamplerState = Renderer::GetDevice()->CreateSamplerState(samplerDesc);
+		}
+
+		{
+			using namespace Graphics;
+
+			SAMPLER_DESC samplerDesc = {};
+
+			samplerDesc.AddressU = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_BORDER;
+			samplerDesc.AddressV = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_BORDER;
+			samplerDesc.AddressW = TEXTURE_ADDRESS_MODE::TEXTURE_ADDRESS_BORDER;
+			samplerDesc.Filter = SAMPLE_FILTER::MIN_MAG_MIP_POINT;
+
+			samplerDesc.BorderColor[0] = 1.0f;
+			samplerDesc.BorderColor[1] = 1.0f;
+			samplerDesc.BorderColor[2] = 1.0f;
+			samplerDesc.BorderColor[3] = 1.0f;
+
+			samplerDesc.MaxLOD = FLT_MAX;
+
+			m_pShadowSampler = Renderer::GetDevice()->CreateSamplerState(samplerDesc);
 		}
 
 		WRECK_HR(DirectX::CreateDDSTextureFromFile(device,

@@ -918,5 +918,17 @@
     <FxCompile Include="DefaultShadowPS.hlsl">
       <Filter>Shaders\PS</Filter>
     </FxCompile>
+    <FxCompile Include="TerrainShadowVS.hlsl">
+      <Filter>Shaders\VS</Filter>
+    </FxCompile>
+    <FxCompile Include="TerrainShadowPS.hlsl">
+      <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="TerrainShadowHS.hlsl">
+      <Filter>Shaders\HS</Filter>
+    </FxCompile>
+    <FxCompile Include="TerrainShadowDS.hlsl">
+      <Filter>Shaders\DS</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
