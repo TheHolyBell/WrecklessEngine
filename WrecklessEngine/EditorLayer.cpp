@@ -40,14 +40,7 @@ namespace Wreckless
 {
 	EditorLayer::EditorLayer()
 	{
-		//m_Domain = Scripting::ScriptingEngine::GetDomain();
-
-		//m_Domain = Scripting::ScriptDomain("Sandbox.dll");
-
 		Scripting::ScriptingEngine::Initialize("Sandbox.dll");
-
-		m_pTexture = Bindable::Texture2D::Resolve("D:\\Downloads\\image.png");
-		m_pCubemap = Bindable::Texture3D::Resolve("assets/Environment/desertcube1024.dds");
 
 		m_pScene = std::make_shared<ECS::Scene>("main");
 		ECS::SceneManager::AddScene(m_pScene);
