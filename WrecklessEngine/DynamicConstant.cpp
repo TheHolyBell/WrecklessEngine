@@ -1,3 +1,5 @@
+// Copy-pasted from ChiliTomatoNoodle
+
 #define DCB_IMPL_SOURCE
 #include "DynamicConstant.h"
 #include <string>

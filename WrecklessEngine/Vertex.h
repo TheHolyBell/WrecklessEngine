@@ -1,3 +1,5 @@
+// Copy-pasted from ChiliTomatoNoodle
+
 #pragma once
 #include <vector>
 #include <type_traits>

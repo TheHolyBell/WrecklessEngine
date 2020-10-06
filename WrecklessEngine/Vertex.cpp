@@ -1,3 +1,5 @@
+// Copy-pasted from ChiliTomatoNoodle
+
 #define DVTX_SOURCE_FILE
 #include "Vertex.h"
 
