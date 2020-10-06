@@ -104,16 +104,19 @@ namespace Input
 	GamePad::GamePad()
 		: m_PlayerID(-1), m_Sensitivity(1500)
 	{
-		for (int i = 0; i < XUSER_MAX_COUNT && m_PlayerID == -1; ++i)
+		for (int i = 0; i < XUSER_MAX_COUNT; ++i)
 		{
 			m_State = {};
 			if (XInputGetState(i, &m_State) == ERROR_SUCCESS)
 			{
 				m_PlayerID = i;
 				m_PrevDWPacketNumber = m_State.dwPacketNumber;
+				break;
 			}
 		}
 
-		assert(m_PlayerID != -1 && "Failed to connect Gamepad device");
+		//assert(m_PlayerID != -1 && "Failed to connect Gamepad device");
+		if (m_PlayerID == -1)
+			MessageBoxA(nullptr, "Failed to find GamePad. You may have some issues during usage because of that", "Error", MB_ICONERROR);
 	}
 }

@@ -876,12 +876,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DickPS.hlsl">
-      <Filter>Shaders\PS</Filter>
-    </FxCompile>
-    <FxCompile Include="DickVS.hlsl">
-      <Filter>Shaders\VS</Filter>
-    </FxCompile>
     <FxCompile Include="CubeMapVS.hlsl">
       <Filter>Shaders\VS</Filter>
     </FxCompile>
@@ -929,6 +923,12 @@
     </FxCompile>
     <FxCompile Include="TerrainShadowDS.hlsl">
       <Filter>Shaders\DS</Filter>
+    </FxCompile>
+    <FxCompile Include="DummyPS.hlsl">
+      <Filter>Shaders\PS</Filter>
+    </FxCompile>
+    <FxCompile Include="DummyVS.hlsl">
+      <Filter>Shaders\VS</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

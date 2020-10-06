@@ -7,7 +7,7 @@ namespace IO
 
     IOutput& IOStream::GetOutputStream()
     {
-        static ImGuiOutput _Output;
+        static ConsoleOutput _Output;
         return _Output;
     }
 

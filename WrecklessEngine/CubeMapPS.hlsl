@@ -11,12 +11,5 @@ struct VS_OUT
 
 float4 main(VS_OUT pin) : SV_TARGET
 {
-	//return float4(0, 1, 1, 1);
-	//return g_CubeMap.Sample(g_SamplerState, pin.PosL);
-
-	float red = -0.00022 * (abs(pin.PosW.y) - 2800) + 0.18;
-	float green = -0.00025 * (abs(pin.PosW.y) - 2800) + 0.27;
-	float blue = -0.00019 * (abs(pin.PosW.y) - 2800) + 0.47;
-
-	return float4(red, green, blue, 1.0f);
+	return g_CubeMap.Sample(g_SamplerState, pin.PosL);
 }

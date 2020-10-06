@@ -53,13 +53,7 @@ VertexOutput main(VertexInput vin)
 	vout.Binormal = vin.Binormal;
 	vout.TexCoords = vin.TexCoords;
 
-	return vout;*/
-
-	float weights[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	weights[0] = vin.BoneWeights.x;
-	weights[1] = vin.BoneWeights.y;
-	weights[2] = vin.BoneWeights.z;
-	weights[3] = 1.0f - weights[0] - weights[1] - weights[2];
+	return vout;*/	
 
 	float4 localPosition = float4(0.0f, 0.0f, 0.0f, 1.0f);
 	float3 normalL = float3(0.0f, 0.0f, 0.0f);
@@ -69,7 +63,7 @@ VertexOutput main(VertexInput vin)
 		// Assume no nonuniform scaling when transforming normals, so 
 		// that we do not have to use the inverse-transpose.
 
-		localPosition += weights[i] * mul(float4(vin.PosL, 1.0f), g_BoneTransforms[vin.BoneIndices[i]]);
+		localPosition += vin.BoneWeights[i] * mul(float4(vin.PosL, 1.0f), g_BoneTransforms[vin.BoneIndices[i]]);
 	}
 
 	matrix modelViewProjection = mul(model, mul(view, projection));

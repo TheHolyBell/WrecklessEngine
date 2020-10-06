@@ -26,14 +26,14 @@ namespace Drawables
 		AddBind(VertexBuffer::Resolve(geometryTag, model.vertices));
 		AddBind(IndexBuffer::Resolve(geometryTag, model.indices));
 
-		auto pvs = VertexShader::Resolve("DickVS.cso");
+		auto pvs = VertexShader::Resolve("DummyVS.cso");
 
 
 		ID3D10Blob* bc = reinterpret_cast<ID3D10Blob*>(pvs->GetByteCode());
 		AddBind(InputLayout::Resolve(ShaderReflector::GetLayoutFromShader(bc), bc));
 		AddBind(std::move(pvs));
 
-		AddBind(PixelShader::Resolve("DickPS.cso"));
+		AddBind(PixelShader::Resolve("DummyPS.cso"));
 
 		AddBind(Rasterizer::Resolve(false));
 		AddBind(DepthStencil::Resolve());

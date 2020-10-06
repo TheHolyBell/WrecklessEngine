@@ -45,28 +45,6 @@ namespace Drawables
 		
 
 		AddBind(std::make_shared<TransformCBuf>(entID));
-
-		/*
-		auto model = Cube::MakeIndependentTextured();
-		model.Transform(DirectX::XMMatrixScaling(size, size, size));
-		model.SetNormalsIndependentFlat();
-
-		const auto geometryTag = "$cube." + std::to_string(size);
-		AddBind(VertexBuffer::Resolve(geometryTag, model.vertices));
-		AddBind(IndexBuffer::Resolve(geometryTag, model.indices));
-
-		auto pvs = VertexShader::Resolve("DickVS.cso");
-
-
-		ID3D10Blob* bc = reinterpret_cast<ID3D10Blob*>(pvs->GetByteCode());
-		AddBind(InputLayout::Resolve(ShaderReflector::GetLayoutFromShader(bc), bc));
-		AddBind(std::move(pvs));
-
-		AddBind(PixelShader::Resolve("DickPS.cso"));
-
-		AddBind(Topology::Resolve());
-		AddBind(std::make_shared<TransformCBuf>(entID));
-		*/
 	}
 	std::string Cubemap::GetPath() const
 	{

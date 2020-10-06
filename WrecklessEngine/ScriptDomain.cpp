@@ -7,7 +7,8 @@ namespace Scripting
 	ScriptDomain::ScriptDomain(const char* filename)
 	{
 		m_pDomain = mono_jit_init(filename);
-
+		//m_pDomain = mono_jit_init_version("myapp", "v4.0.30319");
+		//m_pDomain = mono_jit_init_version("myapp", "v2.0.50727");
 		if (m_pDomain == nullptr)
 			SCRIPT_ERROR("m_pDomain is null");
 

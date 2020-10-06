@@ -8,12 +8,6 @@
 
 #include "Components.h"
 
-/*
-		[MethodImpl(MethodImplOptions.InternalCall)]
-		private static extern void AddComponent_Native(uint entityID, Type type);
-		[MethodImpl(MethodImplOptions.InternalCall)]
-		private static extern bool HasComponent_Native(uint entityID, Type type);
-*/
 
 enum class ComponentType
 {
@@ -44,23 +38,6 @@ ComponentType GetType(MonoObject* monoType)
 		_Type = ComponentType::TransformComponent;
 
 	return _Type;
-
-	/*int type = mono_type_get_type(monoType);
-	switch (type)
-	{
-	case MONO_TYPE_R4: return ComponentType::Float;
-	case MONO_TYPE_I4: return ComponentType::Int;
-	case MONO_TYPE_U4: return ComponentType::UnsignedInt;
-	case MONO_TYPE_STRING: return ComponentType::String;
-	case MONO_TYPE_CLASS:
-	{
-		char* name = mono_type_get_name(monoType);
-		if (strcmp(name, "TagComponent") == 0) return ComponentType::Vec2;
-		if (strcmp(name, "TransformComponent") == 0) return ComponentType::Vec3;
-		if (strcmp(name, "Hazel.Vector4") == 0) return ComponentType::Vec4;
-	}
-	}
-	return ComponentType::None;*/
 }
 
 static void AddComponent_Native(unsigned int entityID, MonoObject* type)

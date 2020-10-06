@@ -216,8 +216,6 @@ namespace Wreckless
 		static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
 		bool opt_fullscreen = opt_fullscreen_persistant;
 
-		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-		// because it would be confusing to have two docking targets within each others.
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		if (opt_fullscreen)
 		{
@@ -230,10 +228,6 @@ namespace Wreckless
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 		}
-
-		// When using ImGuiDockNodeFlags_PassthruDockspace, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
-		//if (opt_flags & ImGuiDockNodeFlags_PassthruDockspace)
-		//	window_flags |= ImGuiWindowFlags_NoBackground;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace", &p_open, window_flags);
@@ -261,13 +255,6 @@ namespace Wreckless
 					IO::cout << *FileSystem::FileDialog::SaveFile() << IO::endl;
 				if (ImGui::MenuItem("Exit"))
 					Application::GetInstance().Close();
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Camera"))
-			{
-					if(ImGui::MenuItem("Spawn"))
-					{ }
 				ImGui::EndMenu();
 			}
 
@@ -370,11 +357,6 @@ namespace Wreckless
 				IO::cout << "Edit" << IO::endl;
 			}
 			break;
-		}
-		ImGui::SameLine();
-		if (ImGui::ImageButton((ImTextureID)(m_PlayButtonTex->NativePointer()), ImVec2(32, 32), ImVec2(0, 0), ImVec2(1, 1), -1, ImVec4(0, 0, 0, 0), ImVec4(1.0f, 1.0f, 1.0f, 0.6f)))
-		{
-			IO::cout << "CHLEN" << IO::endl;
 		}
 
 		ImGui::End();

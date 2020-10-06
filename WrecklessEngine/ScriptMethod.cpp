@@ -1,6 +1,6 @@
 #include "ScriptMethod.h"
 #include "ScriptObject.h"
-
+#include "CommonInclude.h"
 namespace Scripting
 {
 	ScriptMethod::ScriptMethod(MonoMethod* pMethod)
@@ -18,6 +18,12 @@ namespace Scripting
 		if (object != nullptr)
 			obj = object->GetObjectPointer();
 
-		mono_runtime_invoke(m_pMethod, obj, params.GetArgs(), nullptr);
+		MonoObject* exception = nullptr;
+		mono_runtime_invoke(m_pMethod, obj, params.GetArgs(), &exception);
+		if (exception != nullptr)
+		{
+			Scripting::String str((MonoString*)mono_property_get_value(mono_class_get_property_from_name(mono_object_get_class(exception), "Message"), exception, nullptr, nullptr));
+			SCRIPT_ERROR(str.ToUTF8());
+		}
 	}
 }

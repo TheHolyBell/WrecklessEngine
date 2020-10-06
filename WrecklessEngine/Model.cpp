@@ -27,6 +27,7 @@ static const uint32_t s_MeshImportFlags =
 	aiProcess_ConvertToLeftHanded |
 	aiProcess_GenNormals |
 	aiProcess_CalcTangentSpace |
+	aiProcess_JoinIdenticalVertices |
 	aiProcess_GenUVCoords;
 
 static UINT CalcConstantBufferByteSize(UINT byteSize)
